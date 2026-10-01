@@ -1,0 +1,1996 @@
+\documentclass[aspectratio=169, 9pt]{beamer}
+\mode<presentation>
+
+% Theme choice:
+\usetheme{Madrid}%Darmstadt 
+\usepackage{xcolor}
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mRed}{rgb}{0.6,0,0}
+\usecolortheme[RGB={0,100,50}]{structure}
+ \usefonttheme{structurebold} 
+\setbeamercovered{invisible}
+%\setbeamertemplate{navigation symbols}{}
+\usepackage{dynblocks}
+\usepackage{textpos}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{
+  arrows.meta,
+  positioning,
+  calc,
+  fit,
+  shadows,
+  shapes.geometric,
+  shapes.misc
+}
+\newtheorem{teorema}{Teorema}\usepackage{mathtools}
+\renewcommand{\proofname}{Prova}
+\usepackage[portuguese]{babel}
+
+\lstdefinestyle{javastyle}{
+  language=Java,
+  basicstyle=\ttfamily\tiny,
+  keywordstyle=\color{structure.fg}\bfseries,
+  commentstyle=\color{mGreen}\itshape,
+  stringstyle=\color{mRed},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=4pt,
+  backgroundcolor=\color{gray!5},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  rulecolor=\color{structure.fg!30},
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false
+}
+
+\uselanguage{Portuguese}
+\languagepath{Portuguese}
+
+\deftranslation[to=Portuguese]{Theorem}{Teorema}
+\deftranslation[to=Portuguese]{Lemma}{Lema}
+\deftranslation[to=Portuguese]{Corollary}{Corolário}
+\deftranslation[to=Portuguese]{Proof}{Prova}
+
+\usepackage{dutchcal}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage[affil-it]{authblk} 
+\usepackage{etoolbox}
+\usepackage{lmodern}
+\usepackage[pscoord]{eso-pic}
+\usepackage{hyperref}
+
+\makeatletter
+\patchcmd{\@maketitle}{\LARGE \@title}{\fontsize{18}{19.2}\selectfont\@title}{}{}
+\makeatother
+
+\renewcommand\Authfont{\fontsize{12}{14.4}\selectfont}
+\renewcommand\Affilfont{\fontsize{9}{10.8}\itshape}
+
+% Estilos TikZ reutilizáveis (tema verde da apresentação)
+\tikzset{
+  softbox/.style={
+    draw=structure.fg,
+    fill=structure.fg!12,
+    rounded corners=3pt,
+    align=center,
+    font=\small,
+    minimum height=0.9cm,
+    inner sep=4pt
+  },
+  softboxalert/.style={
+    draw=mRed,
+    fill=mRed!10,
+    rounded corners=3pt,
+    align=center,
+    font=\small,
+    minimum height=0.9cm,
+    inner sep=4pt
+  },
+  softcore/.style={
+    draw=structure.fg,
+    fill=structure.fg!25,
+    circle,
+    align=center,
+    font=\bfseries\small,
+    minimum size=1.55cm,
+    inner sep=2pt
+  },
+  softarrow/.style={
+    -{Latex[length=2.2mm]},
+    thick,
+    structure.fg
+  },
+  softarrowalert/.style={
+    -{Latex[length=2.2mm]},
+    thick,
+    mRed
+  },
+  softlabel/.style={font=\scriptsize\bfseries, text=structure.fg},
+  % Mockups de interface gráfica
+  guiwin/.style={
+    draw=#1!70!black,
+    fill=white,
+    rounded corners=2pt,
+    inner sep=0pt,
+    thick
+  },
+  guibar/.style={
+    draw=none,
+    fill=#1,
+    minimum height=0.32cm,
+    inner sep=1pt,
+    font=\tiny\bfseries,
+    text=white,
+    anchor=north west
+  },
+  guibtn/.style={
+    circle,
+    fill=#1,
+    minimum size=0.14cm,
+    inner sep=0pt
+  },
+  guiphone/.style={
+    draw=#1!80!black,
+    fill=black!85,
+    rounded corners=6pt, 
+    thick,
+    inner sep=2pt
+  },
+  qcard/.style={
+    draw=structure.fg!70!black,
+    fill=structure.fg!5,
+    rounded corners=4pt,
+    thick,
+    text width=4.8cm,
+    minimum height=1.5cm,
+    align=left,
+    inner sep=6pt
+  }
+}
+
+% Fundo artístico estilizado para os slides de conteúdo
+\makeatletter
+\setbeamertemplate{background}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \ifnum\c@framenumber>1
+      % Fundo com tonalidade off-white/cinza suave
+      \fill[gray!3] (current page.south west) rectangle (current page.north east);
+
+      % Barra decorativa no topo (Verde UniRV)
+      \fill[structure.fg] (current page.north west) rectangle ($(current page.north east)+(0,-0.10cm)$);
+      \fill[mGreen!70!black] ($(current page.north west)+(0,-0.10cm)$) rectangle ($(current page.north east)+(0,-0.13cm)$);
+
+      % Curvas orgânicas sutis no canto inferior direito (Marca d'água de processo ágil)
+      \path[fill=structure.fg!6, opacity=0.75]
+        ($(current page.south east)+(-6.8cm, 0)$)
+        to[out=25, in=195] ($(current page.south east)+(0, 3.4cm)$)
+        -- (current page.south east) -- cycle;
+
+      \path[fill=mGreen!10, opacity=0.5]
+        ($(current page.south east)+(-4.5cm, 0)$)
+        to[out=35, in=185] ($(current page.south east)+(0, 2.1cm)$)
+        -- (current page.south east) -- cycle;
+
+      % Detalhes sutis de grade tech no canto superior direito
+      \foreach \x in {14.4, 14.8, 15.2, 15.6} {
+        \foreach \y in {7.8, 8.1, 8.4} {
+          \fill[structure.fg!15] (\x, \y) circle (0.6pt);
+        }
+      }
+    \fi
+  \end{tikzpicture}
+}
+\makeatother
+
+% Title page details: 
+\title[XP, Kanban e DevOps]{Extreme Programming (XP), Kanban e DevOps}
+\subtitle{Metodologias Ágeis, Enxutas e Estudos de Caso Práticos}
+\author[Prof. Me. Sergio Souza Novak]{Prof. Me. Sergio Souza Novak}
+\institute[UniRV]{Faculdade de Engenharia de Software --- Universidade de Rio Verde (UniRV)\\
+\textit{Disciplina: Processo de Software}}
+\titlegraphic{\includegraphics[width=4.5cm]{Universidade_de_Rio_Verde.jpg}}
+\date{}
+
+\begin{document}
+
+% Slide 1: Capa
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Slide 2: Sumário
+\begin{frame}{Sumário}
+  \tableofcontents
+\end{frame}
+
+% ==============================================================================
+% PARTE I: EXTREME PROGRAMMING (XP)
+% ==============================================================================
+
+\section{Panorama da Extreme Programming (XP)}
+
+% Slide 3: Introdução ao XP (com Diagrama de Blocos)
+\begin{frame}{Panorama Geral da Extreme Programming (XP)}
+  \begin{block}{O que é a Extreme Programming (XP)?}
+    Uma das abordagens metodológicas mais populares e consolidadas no \textbf{desenvolvimento ágil de software}. Foi proposta por \textbf{Kent Beck} em seu trabalho seminal (\textit{Beck, 2004}).
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ das 4 Atividades
+  \begin{center}
+    \begin{tikzpicture}[scale=0.82, transform shape]
+      \node[softbox, minimum width=2.7cm, font=\bfseries\small] (p1) at (0,0) {1. Planejamento\\ \tiny Histórias \& Velocidade};
+      \node[softbox, minimum width=2.7cm, font=\bfseries\small] (p2) at (3.5,0) {2. Projeto\\ \tiny KISS \& Cartões CRC};
+      \node[softbox, minimum width=2.7cm, font=\bfseries\small] (p3) at (7.0,0) {3. Codificação\\ \tiny TDD \& Pares};
+      \node[softbox, minimum width=2.7cm, font=\bfseries\small] (p4) at (10.5,0) {4. Testes\\ \tiny Regressão \& Aceitação};
+
+      \draw[softarrow, line width=1.2pt] (p1.east) -- (p2.west);
+      \draw[softarrow, line width=1.2pt] (p2.east) -- (p3.west);
+      \draw[softarrow, line width=1.2pt] (p3.east) -- (p4.west);
+      \draw[softarrowalert, line width=1.2pt] (p4.south) .. controls +(0,-0.7) and +(0,-0.7) .. node[above, font=\tiny\bfseries, text=mRed] {Feedback Contínuo \& Iteração} (p1.south);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Filosofia Fundamental}
+        \begin{itemize}
+          \item Leva ao \textbf{"extremo"} práticas eficientes da Engenharia de Software.
+          \item Enfoca a satisfação do cliente e entrega de alto valor.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+    
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Foco na Adaptabilidade}
+        \begin{itemize}
+          \item Resposta rápida e flexível a mudanças de requisitos.
+          \item Envolvimento ativo e constante do cliente.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 4: O Processo XP (Diagrama TikZ baseado na Figura 3.3)
+\begin{frame}{O Processo da Extreme Programming (XP)}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85, transform shape, node distance=1.8cm]
+      % Nós Principais das Fases
+      \node[softbox, minimum width=3.2cm, font=\bfseries\small] (plan) at (0, 2.2) {1. Planejamento};
+      \node[softbox, minimum width=3.2cm, font=\bfseries\small] (proj) at (5.5, 2.2) {2. Projeto};
+      \node[softbox, minimum width=3.2cm, font=\bfseries\small] (cod) at (5.5, -1.8) {3. Codificação};
+      \node[softbox, minimum width=3.2cm, font=\bfseries\small] (test) at (0, -1.8) {4. Teste};
+
+      % Detalhes do Planejamento
+      \node[align=left, font=\tiny, text=gray!80!black, anchor=south west] at (-2.4, 2.7) {
+        $\bullet$ Histórias de usuário\\
+        $\bullet$ Valores e prioridades\\
+        $\bullet$ Critérios de aceitação\\
+        $\bullet$ Plano de iteração
+      };
+
+      % Detalhes do Projeto
+      \node[align=left, font=\tiny, text=gray!80!black, anchor=south east] at (8.2, 2.7) {
+        $\bullet$ Projeto simples (KISS)\\
+        $\bullet$ Cartões CRC\\
+        $\bullet$ Protótipos (\textit{Spikes})
+      };
+
+      % Detalhes da Codificação
+      \node[align=left, font=\tiny, text=gray!80!black, anchor=north east] at (8.2, -2.3) {
+        $\bullet$ Programação em pares\\
+        $\bullet$ Refatoração contínua\\
+        $\bullet$ Propriedade coletiva
+      };
+
+      % Detalhes do Teste
+      \node[align=left, font=\tiny, text=gray!80!black, anchor=north west] at (-2.4, -2.3) {
+        $\bullet$ Testes de unidade (TDD)\\
+        $\bullet$ Integração contínua\\
+        $\bullet$ Testes de aceitação
+      };
+
+      % Setas de Fluxo do Ciclo Incremental
+      \draw[softarrow, line width=1.2pt] (plan.east) -- (proj.west);
+      \draw[softarrow, line width=1.2pt] (proj.south) -- (cod.north);
+      \draw[softarrow, line width=1.2pt] (cod.west) -- (test.east);
+      \draw[softarrow, line width=1.2pt] (test.north) -- (plan.south);
+
+      % Loop de Refatoração em Codificação
+      \draw[softarrow, line width=1pt] (cod.east) .. controls +(1.2, 0.8) and +(1.2, -0.8) .. node[right, font=\tiny\bfseries, text=mGreen!80!black] {Refatoração} (cod.east);
+
+      % Saída para Entrega da Versão
+      \node[softboxalert, minimum width=3.5cm, font=\bfseries\tiny, align=center] (rel) at (-3.5, -0.2) {
+        \textbf{Versão / Incremento}\\
+        \textit{Velocidade calculada}
+      };
+      \draw[softarrowalert, line width=1.2pt] (test.west) .. controls +(-1, 0) .. (rel.east);
+
+    \end{tikzpicture}
+  \end{center}
+  \begin{center}
+    \tiny\textcolor{gray}{\textit{Figura: Visão simplificada do ciclo de desenvolvimento iterativo e incremental do XP.}}
+  \end{center}
+\end{frame}
+
+\section{Atividade 1: Planejamento (XP)}
+
+% Slide 5: O Jogo do Planejamento (com Diagrama Cliente x Equipe)
+\begin{frame}{Atividade 1: Planejamento --- O Jogo do Planejamento}
+  \begin{block}{O Início: "Ouvir"}
+    A atividade de planejamento (conhecida como \textbf{O Jogo do Planejamento}) começa com o ato de \textbf{ouvir} o cliente.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama de Interação do Planejamento
+  \begin{center}
+    \begin{tikzpicture}[scale=0.8, transform shape]
+      \node[softbox, minimum width=3.2cm, fill=structure.fg!15] (client) at (-3.6, 0.8) {\textbf{Cliente}\\ \tiny Escreve Histórias de Usuário\\ Atribui Valor (Prioridade)};
+      \node[softbox, minimum width=3.2cm, fill=mGreen!15] (team) at (3.6, 0.8) {\textbf{Equipe XP}\\ \tiny Avalia Complexidade\\ Estima Custo (Semanas)};
+      \node[softboxalert, minimum width=4.8cm] (release) at (0, -0.9) {\textbf{Compromisso de Versão}\\ \tiny Escopo, Data de Entrega \& Ordenação};
+
+      \draw[softarrow, line width=1.2pt] (client.east) -- node[above, font=\tiny\bfseries] {Fichas de História} (team.west);
+      \draw[softarrow, line width=1.2pt] (client.south) -- (release.north west);
+      \draw[softarrow, line width=1.2pt] (team.south) -- (release.north east);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Histórias de Usuário}
+        \begin{itemize}
+          \item Escritas em fichas pelo cliente.
+          \item Criadas a qualquer momento do projeto.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+    
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Atribuição de Valor vs. Custo}
+        \begin{itemize}
+          \item \textbf{Cliente:} Define o Valor de Negócio.
+          \item \textbf{Devs:} Estimam o Custo em semanas.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 6: Agrupamento e Ordenação das Histórias
+\begin{frame}{Planejamento: Ordenação e Compromisso de Versão}
+  \begin{block}{Compromisso de Versão (\textit{Release Commitment})}
+    Clientes e desenvolvedores trabalham em conjunto para agrupar as histórias que comporão o \textbf{próximo incremento de software} (próxima versão), pactuando datas de entrega e escopo.
+  \end{block}
+
+  \vspace{0.3cm}
+  
+  \textbf{Formas de Ordenação das Histórias para Desenvolvimento:}
+  \begin{enumerate}
+    \item \textbf{Implementação Imediata:} Todas as histórias selecionadas serão implementadas imediatamente em um curto prazo (poucas semanas).
+    \item \textbf{Maior Valor Primeiro:} As histórias com maior valor de negócio são movidas para o topo do cronograma e desenvolvidas primeiro.
+    \item \textbf{Maior Risco Primeiro:} As histórias que apresentam maior risco técnico ou operacional sobem no cronograma para mitigação antecipada.
+  \end{enumerate}
+\end{frame}
+
+% Slide 7: Velocidade do Projeto
+\begin{frame}{Planejamento: Velocidade do Projeto (\textit{Project Velocity})}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{O que é a Velocidade do Projeto?}
+        É o \textbf{número de histórias de clientes efetivamente implementadas} durante a entrega da primeira versão/incremento do software.
+      \end{block}
+      
+      \vspace{0.2cm}
+      
+      \begin{exampleblock}{Utilidade Prática}
+        \begin{itemize}
+          \item Utilizada como métrica empírica real da equipe.
+          \item Ajuda a estimar datas de entrega e cronogramas das \textbf{versões subsequentes}.
+          \item Substitui estimativas teóricas por dados reais de produtividade.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+    
+    \begin{column}{0.41\textwidth}
+      \begin{alertblock}{Adaptação Contínua}
+        A velocidade não é rígida. A equipe XP \textbf{modifica e adapta seus planos continuamente} à medida que a velocidade do projeto oscila ou se consolida ao longo das iterações.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ESTUDO DE CASO XP: JOGO DO PLANEJAMENTO NA TELEMEDICINA
+\begin{frame}{Estudo de Caso 6: Priorização e Planejamento na Telemedicina}
+  \begin{block}{Cenário: Startup HealthTech \textit{MediConnect}}
+    Necessidade de lançar uma plataforma de teleconsulta emergencial em 4 semanas com conformidade regulatória rigorosa (LGPD e ANVISA).
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ da Matriz de Priorização (Planejamento)
+  \begin{center}
+    \begin{tikzpicture}[scale=0.74, transform shape]
+      % Eixos da Matriz
+      \draw[->, thick, structure.fg] (-0.5, 0) -- (6.5, 0) node[right, font=\tiny\bfseries] {Custo / Complexidade};
+      \draw[->, thick, structure.fg] (0, -0.5) -- (0, 3.2) node[above, font=\tiny\bfseries] {Valor de Negócio};
+
+      % Linhas Divisórias de Quadrantes
+      \draw[dashed, gray!60] (3.0, 0) -- (3.0, 3.0);
+      \draw[dashed, gray!60] (0, 1.5) -- (6.0, 1.5);
+
+      % Quadrante I (Alto Valor / Baixo Custo) - SELECIONADO PRIMEIRO
+      \node[softbox, fill=mGreen!25, draw=mGreen!80!black, minimum width=2.4cm, font=\tiny] at (1.5, 2.35) {
+        \textbf{Triagem \& Vídeo}\\ \tiny Histórias 1, 2 e 3\\ \textbf{Incremento 1}
+      };
+
+      % Quadrante II (Alto Valor / Alto Custo) - SPIKE TÉCNICO
+      \node[softboxalert, minimum width=2.4cm, font=\tiny] at (4.5, 2.35) {
+        \textbf{Prontuário LGPD}\\ \tiny História 4 (Spike)\\ \textbf{Investigação Rápida}
+      };
+
+      % Quadrante III (Baixo Valor / Baixo Custo) - SEGUNDO INCREMENTO
+      \node[softbox, fill=structure.fg!15, minimum width=2.4cm, font=\tiny] at (1.5, 0.75) {
+        \textbf{Notificação SMS}\\ \tiny História 5\\ \textbf{Incremento 2}
+      };
+
+      % Quadrante IV (Baixo Valor / Alto Custo) - DESCARTADO
+      \node[softbox, fill=gray!20, draw=gray!60, minimum width=2.4cm, font=\tiny] at (4.5, 0.75) {
+        \textbf{Chatbot IA}\\ \tiny História 6\\ \textbf{Fora de Escopo}
+      };
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Alcançadas}
+        \begin{itemize}
+          \item MVP regulatório lançado em \textbf{28 dias} (4 semanas).
+          \item Estabilidade da Velocidade em \textbf{14 Story Points/semana}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Solução da Matriz}
+        O alinhamento quinzenal entre médicos (clientes) e desenvolvedores permitiu eliminar funcionalidades redundantes.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Atividade 2: Projeto (XP)}
+
+% Slide 8: O Princípio KISS no Projeto XP
+\begin{frame}{Atividade 2: Projeto --- O Princípio KISS}
+  \begin{block}{Princípio KISS (\textit{Keep It Simple, Stupid!})}
+    O projeto XP segue rigorosamente o princípio da simplicidade: \textbf{"Não complique!"}.
+  \end{block}
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{O que é Desestimulado?}
+        \begin{itemize}
+          \item \textbf{Projeto Especulativo:} Projetar funcionalidades extras prevendo que "serão necessárias no futuro".
+          \item Complexidade arquitetural antecipada e desnecessária.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Foco na Necessidade Atual}
+        \begin{itemize}
+          \item O projeto deve atender \textbf{apenas e exatamente} às histórias do incremento atual.
+          \item Projetos simples são mais fáceis de modificar quando novas necessidades surgirem.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 9: Cartões CRC e Protótipos (com Diagrama Mockup de Cartão CRC)
+\begin{frame}{Projeto: Cartões CRC e Soluções Pontuais}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      % Mockup TikZ de um Cartão CRC
+      \begin{center}
+        \begin{tikzpicture}[scale=0.76, transform shape]
+          \draw[thick, fill=white, rounded corners=3pt, drop shadow] (0,0) rectangle (7.5, 3.4);
+          \draw[thick] (0, 2.7) -- (7.5, 2.7);
+          \draw[thick] (3.75, 0) -- (3.75, 2.7);
+
+          \node[font=\bfseries\tiny, text=structure.fg] at (3.75, 3.05) {Classe: PedidoDeCompra};
+          
+          \node[font=\bfseries\tiny, text=gray!80!black] at (1.87, 2.4) {Responsabilidades};
+          \node[font=\tiny, align=left] at (1.87, 1.2) {
+            $\bullet$ Calcular valor total\\
+            $\bullet$ Validar cupom\\
+            $\bullet$ Alterar status
+          };
+
+          \node[font=\bfseries\tiny, text=gray!80!black] at (5.62, 2.4) {Colaboradores};
+          \node[font=\tiny, align=left] at (5.62, 1.2) {
+            $\bullet$ Cliente\\
+            $\bullet$ ItemPedido\\
+            $\bullet$ ServicoPagto
+          };
+        \end{tikzpicture}
+      \end{center}
+      \vspace{-0.2cm}
+      \begin{center}
+        \tiny\textcolor{gray}{\textit{Exemplo de estrutura de um Cartão CRC para Orientação a Objetos.}}
+      \end{center}
+    \end{column}
+
+    \begin{column}{0.45\textwidth}
+      \begin{block}{Cartões CRC (Artefato Único)}
+        Identificam e organizam as classes de objetos. É o \textbf{único artefato de projeto formal} no XP.
+      \end{block}
+
+      \vspace{0.1cm}
+
+      \begin{exampleblock}{Soluções Pontuais (\textit{Spikes})}
+        Criação de um \textbf{protótipo operacional} imediato para mitigar problemas de projeto difíceis.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 10: Refatoração Contínua
+\begin{frame}{Projeto: Refatoração Contínua (\textit{Refactoring})}
+  \begin{block}{Projeto Dinâmico e Incremental}
+    Na XP, a elaboração do projeto \textbf{não é uma fase estática}: ocorre tanto \textbf{antes} quanto \textbf{depois} de se ter iniciado a codificação. A própria atividade de desenvolvimento guia o aprimoramento do projeto.
+  \end{block}
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{exampleblock}{O Conceito de Refatoração (\textit{Fowler, 2000})}
+        \textit{"Modificar e otimizar a estrutura interna do código sem alterar o seu comportamento externo."}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.41\textwidth}
+      \begin{alertblock}{Projetar Continuamente}
+        Significa que o projeto é aperfeiçoado de forma ininterrupta enquanto o sistema está sendo construído.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ESTUDO DE CASO XP: REFATORAÇÃO CONTÍNUA NO E-COMMERCE
+\begin{frame}{Estudo de Caso 2: Refatoração Contínua no E-Commerce}
+  \begin{block}{Contexto: Plataforma E-Commerce \textit{BuyEasy}}
+    O módulo de Checkout continha um método monolítico de 1.500 linhas de código com alta complexidade ciclomática, tornando perigosa a adição de novos meios de pagamento.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ da Refatoração
+  \begin{center}
+    \begin{tikzpicture}[scale=0.78, transform shape]
+      \node[softboxalert, minimum width=2.8cm] (before) at (-4.2, 0) {\textbf{Antes (Monólito)}\\ \tiny 1.500 linhas de código;\\ Alta complexidade ciclomática;\\ Medo de alterar o código.};
+      \node[softbox, minimum width=3.2cm, fill=mGreen!15] (process) at (0, 0) {\textbf{Ciclo de Refatoração}\\ \tiny Testes Verdes $\rightarrow$ Extração de Método\\ $\rightarrow$ Validação Automatizada.};
+      \node[softbox, minimum width=2.8cm, fill=structure.fg!20] (after) at (4.2, 0) {\textbf{Depois (Modular)}\\ \tiny 4 Métodos de Resp. Única;\\ Código Limpo \& Legível;\\ Alta Manutenibilidade.};
+
+      \draw[softarrow, line width=1.3pt] (before.east) -- (process.west);
+      \draw[softarrow, line width=1.3pt] (process.east) -- (after.west);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Alcançadas}
+        \begin{itemize}
+          \item \textbf{Redução de 70\%} na complexidade ciclomática.
+          \item Redução do tempo de integração de novas formas de pagamento de \textbf{2 semanas para 2 dias}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Lição Aprendida}
+        A refatoração orientada por testes permite modernizar código legado em produção com \textbf{risco zero de quebra}.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Atividade 3: Codificação (XP)}
+
+% Slide 11: Testes de Unidade Antes do Código (com Ciclo TDD TikZ)
+\begin{frame}{Atividade 3: Codificação --- Testes de Unidade Antes do Código}
+  \begin{block}{Inversão da Sequência Tradicional (\textit{Test-First} / TDD)}
+    A equipe desenvolve primeiramente os \textbf{testes de unidade} para exercitar a história antes de escrever o código de produção.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Ciclo TDD TikZ
+  \begin{center}
+    \begin{tikzpicture}[scale=0.78, transform shape]
+      \node[softboxalert, minimum width=2.6cm] (red) at (0, 1.5) {\textbf{1. RED}\\ \tiny Teste de unidade falha};
+      \node[softbox, minimum width=2.6cm, fill=mGreen!20, draw=mGreen!80!black] (green) at (3.8, 0) {\textbf{2. GREEN}\\ \tiny Código mínimo passa};
+      \node[softbox, minimum width=2.6cm, fill=structure.fg!20] (refactor) at (-3.8, 0) {\textbf{3. REFACTOR}\\ \tiny Otimizar código};
+
+      \draw[softarrowalert, line width=1.3pt] (red.east) .. controls +(1.0,0) .. (green.north);
+      \draw[softarrow, line width=1.3pt] (green.south) .. controls +(0,-0.9) and +(0,-0.9) .. (refactor.south);
+      \draw[softarrow, line width=1.3pt] (refactor.north) .. controls +(-0.2,0.9) .. (red.west);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Foco no Requisito}
+        O desenvolvedor se concentra no que deve ser implementado para ser aprovado no teste.
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Feedback Instantâneo}
+        Testado em unidade imediatamente, fornecendo feedback em tempo real sobre a correção.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ESTUDO DE CASO XP: TDD EM GATEWAY DE PAGAMENTOS PIX
+\begin{frame}{Estudo de Caso 7: Test-First e Cobertura no Gateway Pix}
+  \begin{block}{Cenário: Gateway Financeiro \textit{PixPay}}
+    Falhas de concorrência esporádicas no processamento de pagamentos Pix em horários de picos (Black Friday), resultando em duplicidade de transações.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ da Arquitetura TDD / Test-First
+  \begin{center}
+    \begin{tikzpicture}[scale=0.76, transform shape]
+      \node[softboxalert, minimum width=2.5cm, font=\tiny\bfseries] (t1) at (-4.2, 0) {1. Teste de Falha\\ \tiny Escreve Teste de Concorrência (Vermelho)};
+      \node[softbox, fill=mGreen!20, draw=mGreen!80!black, minimum width=2.5cm, font=\tiny\bfseries] (t2) at (-1.4, 0) {2. Locks Mutex\\ \tiny Código Mínimo (Verde)};
+      \node[softbox, fill=structure.fg!20, minimum width=2.5cm, font=\tiny\bfseries] (t3) at (1.4, 0) {3. Otimização\\ \tiny Refatora sem Side-Effects};
+      \node[softcore, minimum size=1.5cm, font=\tiny\bfseries] (t4) at (4.2, 0) {Regressão\\ \tiny CI/CD (100\% Passa)};
+
+      \draw[softarrowalert, line width=1.2pt] (t1.east) -- (t2.west);
+      \draw[softarrow, line width=1.2pt] (t2.east) -- (t3.west);
+      \draw[softarrow, line width=1.2pt] (t3.east) -- (t4.west);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Alcançadas}
+        \begin{itemize}
+          \item \textbf{Zero transações duplicadas} durante a Black Friday (1,2 mi de ops/dia).
+          \item Cobertura de testes unitários atingiu \textbf{98.5\%}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Feedback Instantâneo}
+        A suíte de testes de unidade automatizados reduziu o tempo de detecção de regressão de \textbf{3 horas para 4 segundos}.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 12: Programação em Pares (Pair Programming)
+\begin{frame}{Codificação: Programação em Pares (\textit{Pair Programming})}
+  \begin{block}{Conceito-Chave da XP}
+    A XP recomenda que \textbf{duas pessoas trabalhem juntas na mesma estação de trabalho} para criar o código de uma história de usuário. É um dos aspectos mais discutidos e característicos da XP.
+  \end{block}
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Solução de Problemas em Tempo Real}
+        \begin{itemize}
+          \item Baseado na premissa de que \textit{"duas cabeças normalmente funcionam melhor do que uma"}.
+          \item Diálogo e brainstorm contínuos para resolver desafios de algoritmo e lógica.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Garantia da Qualidade em Tempo Real}
+        \begin{itemize}
+          \item O código é \textbf{revisado à medida que é criado} pelo parceiro de programação.
+          \item Reduz defeitos precocemente e promove a troca e disseminação contínua de conhecimento.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 13: Integração Contínua
+\begin{frame}{Codificação: Integração Contínua (\textit{Continuous Integration})}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{Integração Frequente do Código}
+        Conforme a dupla de programadores conclui o trabalho de uma história, o código desenvolvido é \textbf{imediatamente integrado} ao trabalho dos outros membros da equipe.
+      \end{block}
+
+      \vspace{0.2cm}
+
+      \begin{exampleblock}{Eliminação do "Inferno da Integração"}
+        \begin{itemize}
+          \item Evita o acúmulo de divergências em ramos de código por longos períodos.
+          \item Promove uma base de código viva e constantemente atualizada.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.41\textwidth}
+      \begin{alertblock}{Prevenção Precoce de Erros}
+        A estratégia de \textbf{integração contínua} ajuda a detectar e evitar problemas de compatibilidade e de interface de forma extremamente \textbf{precoce}.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==============================================================================
+% SEÇÃO ESPECIAL: DEEP-DIVE PROGRAMAÇÃO PAREADA E ESTUDO DE CASO
+% ==============================================================================
+
+\section{Deep-Dive: Programação Pareada e Estudo de Caso}
+
+% Slide 14: Os Papéis na Programação Pareada (Piloto vs Navegador)
+\begin{frame}{Programação Pareada: Dinâmica dos Papéis}
+  \begin{block}{Divisão de Papéis em Uma Estação de Trabalho}
+    Na programação pareada, a dupla assume responsabilidades complementares e bem definidas, alternando os papéis constantemente ao longo do dia.
+  \end{block}
+
+  \vspace{0.2cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{O Piloto (\textit{Driver})}
+        \begin{itemize}
+          \item Controla o teclado e o mouse.
+          \item Foca na \textbf{implementação imediata}: escrever o código, cuidar da sintaxe e fazer os testes passarem.
+          \item Expressa em voz alta o que está digitando.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{O Navegador (\textit{Navigator})}
+        \begin{itemize}
+          \item Observa a digitação e faz a \textbf{revisão contínua em tempo real}.
+          \item Pensa na visão macro: arquitetura, casos de borda, simplificação e refatoração.
+          \item Pesquisa documentação e guia o rumo da solução.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 15: Estudo de Caso - Contexto e Desafio Organizacional
+\begin{frame}{Estudo de Caso 1: Programação Pareada na Prática}
+  \begin{block}{Cenário do Estudo de Caso: Fintech \textit{PayFlow}}
+    A empresa enfrentava sérios problemas no módulo crítico de \textbf{Cálculo de Impostos Fiscais e Alíquotas}.
+  \end{block}
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Diagnóstico dos Problemas Inicial}
+        \begin{itemize}
+          \item \textbf{Alta Taxa de Defeitos:} Média de 12 defeitos graves encontrados em produção a cada mês.
+          \item \textbf{"Silo" de Conhecimento:} Apenas 1 desenvolvedor Sênior compreendia o código legado de regras fiscais.
+          \item \textbf{Gargalo de QA:} Longos ciclos de teste e depuração.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{A Decisão XP}
+        \begin{itemize}
+          \item Adoção obrigatória de \textbf{Programação Pareada} no módulo de cálculo de impostos.
+          \item Formação de duplas híbridas: \textbf{Dev Sênior (Especialista)} + \textbf{Dev Pleno (Novo no projeto)}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 16: Estudo de Caso - Fluxo da Sessão de Pareamento
+\begin{frame}{Estudo de Caso 1: O Passo a Passo da Sessão em Par}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.82, transform shape]
+      \node[softbox, minimum width=3.2cm] (step1) at (-4.2, 0) {\textbf{1. Teste TDD}\\ \tiny Navegador sugere regra fiscal;\\ Piloto escreve o teste falho.};
+      \node[softbox, minimum width=3.2cm] (step2) at (0, 0) {\textbf{2. Codificação}\\ \tiny Piloto programa a solução;\\ Navegador pega erro de lógica.};
+      \node[softbox, minimum width=3.2cm] (step3) at (4.2, 0) {\textbf{3. Troca de Papéis}\\ \tiny Alternam teclado/mouse;\\ Refatoração continuada.};
+
+      \draw[softarrow, line width=1.3pt] (step1.east) -- (step2.west);
+      \draw[softarrow, line width=1.3pt] (step2.east) -- (step3.west);
+      \draw[softarrow, line width=1.3pt] (step3.south) .. controls +(0, -1.2) and +(0, -1.2) .. node[above, font=\tiny\bfseries] {Próxima História / Loop} (step1.south);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{0.2cm}
+
+  \begin{block}{Dinâmica Observada no Estudo de Caso}
+    O Dev Sênior (Navegador) orientava as regras de negócio enquanto o Dev Pleno (Piloto) escrevia os testes de unidade. Na troca de papéis, o Pleno revisava simplificações de código propostas pelo Sênior.
+  \end{block}
+\end{frame}
+
+% Slide 17: Estudo de Caso - Resultados e Métricas Comprovadas
+\begin{frame}{Estudo de Caso 1: Resultados e Impactos Medidos}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Quantitativas Medidas}
+        \begin{itemize}
+          \item \textbf{Queda de 83\% nos Bugs:} O número de bugs em produção caiu de 12 para apenas 2/mês.
+          \item \textbf{Redução do Tempo de Ciclo:} Redução de 35\% no tempo de liberação da funcionalidade (menos retrabalho no QA).
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Ganhos Qualitativos e de Equipe}
+        \begin{itemize}
+          \item \textbf{Disseminação do Conhecimento:} Em 3 semanas, 2 novos devs dominavam integralmente a regra fiscal.
+          \item \textbf{Confiança e Moral:} Eliminação do medo de alterar código complexo legado.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.3cm}
+
+  \begin{block}{Conclusão do Estudo de Caso}
+    A programação pareada comprovou que o custo inicial de utilizar dois desenvolvedores em uma mesma máquina é amplamente compensado pela drástica redução de retrabalho, melhoria da arquitetura e eliminação de ilhas de conhecimento.
+  \end{block}
+\end{frame}
+
+\section{Atividade 4: Testes (XP)}
+
+% Slide 18: Automação e Testes de Regressão
+\begin{frame}{Atividade 4: Testes --- Automação e Testes de Regressão}
+  \begin{block}{Automação dos Testes de Unidade}
+    Os testes de unidade criados devem ser implementados usando metodologias e frameworks que permitam a sua \textbf{automação completa} (para execução fácil e repetida).
+  \end{block}
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Suporte à Refatoração}
+        \begin{itemize}
+          \item Na XP, o código é modificado e otimizado com extrema frequência.
+          \item A suíte automatizada possibilita uma estratégia sólida de \textbf{testes de regressão}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Garantia Contra Quebras}
+        \begin{itemize}
+          \item Toda vez que o código é alterado, todos os testes são reexecutados.
+          \item Garante que alterações no projeto não quebrem funcionalidades já consolidadas.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide Prático: Exemplo de Teste de Unidade em Java (JUnit 5)
+\begin{frame}[fragile]{Exemplo Prático: Teste de Unidade em Java (JUnit 5)}
+  \begin{block}{Estrutura AAA (\textit{Arrange, Act, Assert})}
+    Exemplo de teste unitário limpo exercitando o cálculo de desconto para garantir regressão automatizada.
+  \end{block}
+
+  \begin{lstlisting}[style=javastyle]
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CalculadoraDescontoTest {
+    private CalculadoraDesconto calculadora;
+
+    @BeforeEach
+    void setUp() {
+        calculadora = new CalculadoraDesconto(); // Arrange comum
+    }
+
+    @Test
+    @DisplayName("Deve aplicar 10% de desconto para compras acima de R$ 500,00")
+    void deveAplicarDescontoParaComprasAcimaDoLimite() {
+        // 1. Arrange (Preparacao dos dados)
+        double valorPedido = 600.00;
+
+        // 2. Act (Execucao do metodo testado)
+        double valorFinal = calculadora.calcular(valorPedido);
+
+        // 3. Assert (Verificacao do resultado)
+        assertEquals(540.00, valorFinal, 0.001, "Desconto de 10% incorreto");
+    }
+}
+  \end{lstlisting}
+\end{frame}
+
+% Slide Prático: Teste de Regressão e Validação de Exceções
+\begin{frame}[fragile]{Exemplo Prático: Teste de Regressão e Exceções em Java}
+  \begin{block}{Proteção Automatizada Contra Quebras}
+    Validação de regras de fronteira e exceções lançadas para impedir regressões em atualizações futuras.
+  \end{block}
+
+  \begin{lstlisting}[style=javastyle]
+public class ValidadorPedidoTest {
+
+    @Test
+    @DisplayName("Deve lancar IllegalArgumentException para valor de pedido negativo")
+    void deveLancarExcecaoParaValorNegativo() {
+        CalculadoraDesconto calc = new CalculadoraDesconto();
+
+        // Garante que o sistema impede entradas invalidas (Protecao contra regressao)
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> calc.calcular(-50.00),
+            "Deveria proibir valores negativos"
+        );
+
+        assertEquals("Valor do pedido invalido", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Nao deve aplicar desconto no valor limite exato de R$ 100,00")
+    void naoDeveAplicarDescontoNoLimite() {
+        CalculadoraDesconto calc = new CalculadoraDesconto();
+        assertEquals(100.00, calc.calcular(100.00), 0.001);
+    }
+}
+  \end{lstlisting}
+\end{frame}
+
+% Slide Prático: Teste de Unidade com Mocking (Mockito)
+\begin{frame}[fragile]{Exemplo Prático: Isolamento de Dependências com Mocks (Mockito)}
+  \begin{block}{Isolamento de Unidade e Simulação de Gateway}
+    Uso de Mocks (\texttt{@Mock}) para testar o \texttt{ProcessadorDePagamento} isolado de serviços externos de rede.
+  \end{block}
+
+  \begin{lstlisting}[style=javastyle]
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+public class ProcessadorDePagamentoTest {
+
+    @Mock
+    private GatewayPagamentoPix gatewayMock; // Dependencia externa simulada
+
+    @InjectMocks
+    private ProcessadorDePagamento processador; // Objeto sob teste
+
+    @Test
+    void deveAprovarTransacaoQuandoGatewayRetornarSucesso() {
+        // Arrange: Configura expectativa no Mock
+        when(gatewayMock.autorizar("TX123", 150.00)).thenReturn(true);
+
+        // Act: Executa a regra de negocio
+        boolean resultado = processador.processar("TX123", 150.00);
+
+        // Assert & Verify: Valida resultado e chamada obrigatoria
+        assertTrue(resultado);
+        verify(gatewayMock, times(1)).autorizar("TX123", 150.00);
+    }
+}
+  \end{lstlisting}
+\end{frame}
+
+% Slide 19: Testes de Aceitação (Testes do Cliente)
+\begin{frame}{Testes: Testes de Aceitação (\textit{Customer Tests})}
+  \begin{block}{Definição e Foco no Cliente}
+    Os \textbf{testes de aceitação} (também denominados \textbf{testes de cliente}) são especificados pelo próprio cliente e mantêm o foco nas características e funcionalidades visíveis do sistema total.
+  \end{block}
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Origem nas Histórias de Usuário}
+        \begin{itemize}
+          \item São obtidos diretamente das \textbf{histórias de usuário} implementadas na versão corrente.
+          \item Definem os critérios práticos para considerar uma história como "concluída".
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Homologação do Incremento}
+        \begin{itemize}
+          \item Permitem que o cliente revise e valide se o software atende aos requisitos de negócio.
+          \item Servem como a palavra final para a liberação da versão/incremento de software.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==============================================================================
+% PARTE II: O MÉTODO KANBAN
+% ==============================================================================
+
+\section{Panorama do Método Kanban}
+
+% Slide 20: Origem e Conceito do Kanban
+\begin{frame}{Panorama do Método Kanban}
+  \begin{block}{O que é o Método Kanban?}
+    O método Kanban (\textit{Anderson, 2016}) é uma \textbf{metodologia enxuta (\textit{Lean})} que descreve abordagens práticas para gerenciar e melhorar qualquer processo ou fluxo de trabalho.
+  \end{block}
+
+  \vspace{0.2cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Origem e Adaptação}
+        \begin{itemize}
+          \item Nasceu na \textbf{Toyota} como um conjunto de práticas de engenharia industrial (sistema puxado).
+          \item Adaptado para o desenvolvimento de software por \textbf{David Anderson}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Pilares de Gestão}
+        \begin{description}[Serviços]
+          \item[\textbf{Gestão de Alterações:}] Integração sistemática de solicitações ao software.
+          \item[\textbf{Entrega de Serviços:}] Foco total no entendimento das necessidades do cliente.
+          \item[\textbf{Auto-organização:}] Membros têm liberdade para organizar seu trabalho.
+        \end{description}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 21: As 6 Práticas Fundamentais do Kanban
+\begin{frame}{As 6 Práticas Fundamentais do Kanban}
+  \begin{block}{Práticas Fundamentais (David Anderson)}
+    O método Kanban fundamenta-se em \textbf{seis práticas chave} para a otimização contínua de processos:
+  \end{block}
+
+  \vspace{0.2cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{enumerate}
+        \item \textbf{Visualizar o fluxo de trabalho} (uso do Quadro Kanban).
+        \item \textbf{Limitar o estoque em processo} (WIP --- \textit{Work In Progress}).
+        \item \textbf{Gerenciar o fluxo de trabalho} (redução de desperdícios e gargalos).
+      \end{enumerate}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{enumerate}
+        \setcounter{enumi}{3}
+        \item \textbf{Explicitar as políticas do processo} (critérios claros e visíveis).
+        \item \textbf{Enfocar a melhoria contínua} (ciclos de feedback orientados por dados).
+        \item \textbf{Alterar o processo colaborativamente} (engajamento de todo o time).
+      \end{enumerate}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Práticas Kanban em Detalhe}
+
+% Slide 22: Prática 1 - Visualizar o Fluxo de Trabalho
+\begin{frame}{Prática 1: Visualizar o Fluxo de Trabalho}
+  \begin{block}{O Quadro Kanban (\textit{Kanban Board})}
+    O fluxo de trabalho é representado graficamente em um \textbf{quadro dividido em colunas}, que representam as diferentes etapas de desenvolvimento de cada item.
+  \end{block}
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Elementos de Trabalho (Cartões)}
+        \begin{itemize}
+          \item Cartões em notas adesivas (\textit{post-its}) representam \textbf{histórias de usuário} ou \textbf{defeitos recém-descobertos}.
+          \item Os cartões contêm informações essenciais do item de trabalho.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Movimentação Puxada (\textit{Pull System})}
+        \begin{itemize}
+          \item A equipe movimenta os cartões da coluna \textbf{"Por Fazer"} $\rightarrow$ \textbf{"Fazendo"} $\rightarrow$ \textbf{"Feito"}.
+          \item Dá visibilidade total do status de cada funcionalidade em tempo real.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 23: Quadro Kanban Ilustrativo (Figura 3.4)
+\begin{frame}{O Quadro Kanban Ilustrativo (Figura 3.4)}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.76, transform shape]
+      % Cabeçalho das Colunas
+      \node[font=\bfseries\small] at (-5.1, 2.3) {Backlog};
+      \node[font=\bfseries\small] at (-2.8, 2.3) {Selecionado};
+      \node[font=\bfseries\small] at (-0.3, 2.3) {Análise};
+      \node[font=\bfseries\small] at (2.8, 2.3) {Desenvolvimento};
+      \node[font=\bfseries\small] at (5.3, 2.3) {Testes};
+      \node[font=\bfseries\small] at (7.3, 2.3) {Feito};
+
+      % Sub-cabeçalhos Fazendo / Feito em Análise e Desenvolvimento
+      \node[font=\tiny\bfseries] at (-0.9, 1.9) {Fazendo};
+      \node[font=\tiny\bfseries] at (0.3, 1.9) {Feito};
+      \node[font=\tiny\bfseries] at (2.2, 1.9) {Fazendo};
+      \node[font=\tiny\bfseries] at (3.4, 1.9) {Feito};
+
+      % Linhas Horizontais Principais
+      \draw[thick] (-6.2, 2.6) -- (8.2, 2.6);
+      \draw[thick] (-6.2, 1.7) -- (8.2, 1.7);
+      \draw[thick] (-6.2, -2.2) -- (8.2, -2.2);
+
+      % Divisórias de Colunas Principais
+      \draw[thick] (-4.0, 2.6) -- (-4.0, -2.2);
+      \draw[thick] (-1.7, 2.6) -- (-1.7, -2.2);
+      \draw[thick] (1.1, 2.6) -- (1.1, -2.2);
+      \draw[thick] (4.4, 2.6) -- (4.4, -2.2);
+      \draw[thick] (6.3, 2.6) -- (6.3, -2.2);
+
+      % Divisórias Sub-etapas (Fazendo / Feito)
+      \draw[dashed, thick] (-0.3, 1.7) -- (-0.3, -2.2);
+      \draw[dashed, thick] (2.8, 1.7) -- (2.8, -2.2);
+
+      % Faixa Urgente (Swimlane)
+      \draw[thick, fill=mRed!8] (-4.0, -1.3) rectangle (6.3, -2.1);
+      \node[font=\bfseries\tiny, text=mRed!80!black, anchor=west] at (-3.9, -1.7) {\textbf{Faixa urgente}};
+
+      % Cartões no Backlog (Pilha infinita)
+      \draw[fill=white, draw=black] (-5.7, 1.0) rectangle (-4.5, 1.5);
+      \draw[fill=white, draw=black] (-5.6, 0.3) rectangle (-4.4, 0.8);
+      \node[font=\tiny\bfseries] at (-5.0, -0.1) {$\infty$};
+      \draw[fill=white, draw=black] (-5.7, -0.9) rectangle (-4.5, -0.4);
+
+      % Cartões Selecionados
+      \draw[fill=white, draw=black] (-3.7, 0.9) rectangle (-2.1, 1.4);
+      \draw[fill=white, draw=black] (-3.7, 0.2) rectangle (-2.1, 0.7);
+
+      % Cartões em Análise
+      \draw[fill=white, draw=black] (-1.5, 0.9) rectangle (-0.5, 1.4);
+      \draw[fill=white, draw=black] (-1.5, 0.2) rectangle (-0.5, 0.7);
+      \draw[fill=white, draw=black] (-1.5, -0.5) rectangle (-0.5, 0.0);
+      \draw[fill=white, draw=black] (-0.1, 0.9) rectangle (0.9, 1.4);
+
+      % Cartões em Desenvolvimento
+      \draw[fill=white, draw=black] (1.3, 0.9) rectangle (2.6, 1.4);
+      \draw[fill=white, draw=black] (1.3, 0.2) rectangle (2.6, 0.7);
+      \draw[fill=white, draw=black] (3.0, 0.9) rectangle (4.2, 1.4);
+
+      % Cartão Urgente em Desenvolvimento
+      \draw[fill=mRed!25, draw=mRed!90!black, thick] (1.3, -1.9) rectangle (2.6, -1.5);
+
+      % Cartão em Testes
+      \draw[fill=white, draw=black] (4.6, 0.9) rectangle (6.1, 1.4);
+
+      % Cartões em Feito
+      \draw[fill=structure.fg!15, draw=structure.fg] (6.5, 1.0) rectangle (8.0, 1.5);
+      \draw[fill=structure.fg!15, draw=structure.fg] (6.5, 0.3) rectangle (8.0, 0.8);
+      \draw[fill=structure.fg!15, draw=structure.fg] (6.5, -0.4) rectangle (8.0, 0.1);
+      \draw[fill=structure.fg!15, draw=structure.fg] (6.5, -1.1) rectangle (8.0, -0.6);
+
+      % Seta Indicativa de Fluxo
+      \draw[softarrow, line width=1.4pt] (-6.0, -2.5) -- (8.0, -2.5);
+    \end{tikzpicture}
+  \end{center}
+  \begin{center}
+    \tiny\textcolor{gray}{\textit{Figura 3.4: Exemplo de um Quadro Kanban com raia urgente e divisões de sub-estágios (Fazendo/Feito).}}
+  \end{center}
+\end{frame}
+
+% Slide 24: Prática 2 - Limitar o Estoque em Processo (com Diagrama de Comparação WIP)
+\begin{frame}{Prática 2: Limitar o Trabalho em Processo (WIP)}
+  \begin{block}{Limitação do WIP (\textit{Work In Progress})}
+    Fixa-se um limite máximo de itens permitidos simultaneamente em cada etapa do fluxo. Desenvolvedores são incentivados a \textbf{concluir a tarefa atual antes de iniciar outra}.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama de Limitação de WIP
+  \begin{center}
+    \begin{tikzpicture}[scale=0.76, transform shape]
+      % Sem limite WIP (Gargalo)
+      \draw[thick, fill=mRed!8, rounded corners=3pt] (-5.2, 0.5) rectangle (-0.4, 2.5);
+      \node[font=\bfseries\tiny, text=mRed!80!black] at (-2.8, 2.2) {Sem Limite WIP (Multitarefa \& Gargalos)};
+      \node[softboxalert, minimum width=1.1cm, font=\tiny] at (-4.3, 1.3) {Item A};
+      \node[softboxalert, minimum width=1.1cm, font=\tiny] at (-3.1, 1.3) {Item B};
+      \node[softboxalert, minimum width=1.1cm, font=\tiny] at (-1.9, 1.3) {Item C};
+      \node[softboxalert, minimum width=1.1cm, font=\tiny] at (-3.1, 0.8) {Item D};
+      \node[font=\tiny, text=mRed!80!black] at (-2.8, 0.2) {Alta Latência / Sobrecarga do Time};
+
+      % Com limite WIP (Fluxo Contínuo)
+      \draw[thick, fill=mGreen!8, rounded corners=3pt] (0.4, 0.5) rectangle (5.2, 2.5);
+      \node[font=\bfseries\tiny, text=mGreen!80!black] at (2.8, 2.2) {WIP Limitado (Fluxo Contínuo \& Focado)};
+      \node[softbox, fill=mGreen!20, minimum width=1.5cm, font=\tiny] at (1.7, 1.3) {Item A (WIP: 2)};
+      \node[softbox, fill=mGreen!20, minimum width=1.5cm, font=\tiny] at (3.9, 1.3) {Item B (WIP: 2)};
+      \node[font=\tiny, text=mGreen!80!black] at (2.8, 0.2) {Baixo Cycle Time / Alta Qualidade};
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Princípio: "Pare de Começar, Comece a Terminar"}
+        Evita a multitarefa desordenada e reduz o acúmulo de trabalho incompleto.
+      \end{alertblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Benefícios Diretos}
+        Redução do Tempo de Ciclo (\textit{Cycle Time}), maior qualidade e previsibilidade nas entregas.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ESTUDO DE CASO KANBAN: DESGARGALAMENTO COM WIP EM BANCO DIGITAL
+\begin{frame}{Estudo de Caso 3: Desgargalamento com WIP no Banco Digital}
+  \begin{block}{Cenário: Banco Digital \textit{TechBank}}
+    O time de desenvolvimento sofria com um gargalo severo na etapa de QA/Testes: \textbf{25 tarefas represadas} sem conclusão, atrasando novos lançamentos.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ de Desgargalamento
+  \begin{center}
+    \begin{tikzpicture}[scale=0.76, transform shape]
+      % Gargalo Inicial
+      \draw[thick, fill=mRed!10, rounded corners=3pt] (-5.2, 0.4) rectangle (-0.4, 2.4);
+      \node[font=\bfseries\tiny, text=mRed!80!black] at (-2.8, 2.1) {Antes: Gargalo sem WIP (25 Itens Presos em QA)};
+      \node[softboxalert, minimum width=1.0cm, font=\tiny] at (-4.2, 1.2) {QA 1};
+      \node[softboxalert, minimum width=1.0cm, font=\tiny] at (-3.0, 1.2) {QA 2};
+      \node[softboxalert, minimum width=1.0cm, font=\tiny] at (-1.8, 1.2) {QA 3};
+      \node[font=\tiny\bfseries, text=mRed] at (-2.8, 0.7) {+22 tarefas acumuladas!};
+
+      % Fluxo Nivelado
+      \draw[thick, fill=mGreen!10, rounded corners=3pt] (0.4, 0.4) rectangle (5.2, 2.4);
+      \node[font=\bfseries\tiny, text=mGreen!80!black] at (2.8, 2.1) {Depois: WIP = 3 + Prática de \textit{Swarming}};
+      \node[softbox, fill=mGreen!25, minimum width=1.2cm, font=\tiny] at (1.5, 1.2) {QA 1};
+      \node[softbox, fill=mGreen!25, minimum width=1.2cm, font=\tiny] at (2.8, 1.2) {QA 2};
+      \node[softbox, fill=mGreen!25, minimum width=1.2cm, font=\tiny] at (4.1, 1.2) {QA 3};
+      \node[font=\tiny\bfseries, text=mGreen!80!black] at (2.8, 0.7) {Vazão Contínua (Devs ajudam em QA)};
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Alcançadas}
+        \begin{itemize}
+          \item Redução do \textit{Cycle Time} de \textbf{18 dias para 4 dias}.
+          \item Previsibilidade de entrega nas datas contratadas subiu para \textbf{92\%}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Solução de Swarming}
+        Ao atingir o limite WIP, devs impedidos de abrir novas tarefas atuaram na automação de testes para escoar o backlog.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ESTUDO DE CASO KANBAN: CFD E GESTÃO DE LEITOS HOSPITALARES
+\begin{frame}{Estudo de Caso 8: Diagrama de Fluxo Cumulativo (CFD) na Saúde}
+  \begin{block}{Cenário: Regulação de Leitos de UTI no \textit{Hospital Santa Vida}}
+    Filas de espera extensas para transferência de pacientes e falta de visibilidade do gargalo na etapa de higienização de leitos.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ representando um CFD (Cumulative Flow Diagram)
+  \begin{center}
+    \begin{tikzpicture}[scale=0.74, transform shape]
+      % Eixos do CFD
+      \draw[->, thick, structure.fg] (0, 0) -- (7.0, 0) node[right, font=\tiny\bfseries] {Tempo (Dias)};
+      \draw[->, thick, structure.fg] (0, 0) -- (0, 3.0) node[above, font=\tiny\bfseries] {Pacientes Acumulados};
+
+      % Áreas Empilhadas do CFD
+      \fill[structure.fg!35] (0,0) -- (2, 0.4) -- (4, 1.0) -- (6.5, 1.8) -- (6.5, 2.5) -- (4, 2.0) -- (2, 1.2) -- (0, 0.5) -- cycle;
+      \node[font=\tiny\bfseries, text=structure.fg!80!black] at (3.2, 1.5) {Alta / Leito Liberado};
+
+      \fill[mRed!30] (0, 0.5) -- (2, 1.2) -- (4, 2.0) -- (6.5, 2.5) -- (6.5, 2.8) -- (4, 2.7) -- (2, 2.0) -- (0, 1.1) -- cycle;
+      \node[font=\tiny\bfseries, text=mRed!90!black] at (3.2, 2.2) {Higienização (Gargalo Identificado!)};
+
+      \fill[mGreen!20] (0, 1.1) -- (2, 2.0) -- (4, 2.7) -- (6.5, 2.8) -- (6.5, 3.0) -- (0, 3.0) -- cycle;
+      \node[font=\tiny\bfseries, text=mGreen!80!black] at (2.5, 2.85) {Triagem Médica};
+
+      % Marcador de Lead Time
+      \draw[<->, thick, mRed] (2.0, 1.2) -- (4.0, 1.2) node[midway, below, font=\tiny\bfseries] {Lead Time de Espera};
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Alcançadas}
+        \begin{itemize}
+          \item Tempo de liberação de leito reduzido de \textbf{4.5h para 38 min}.
+          \item Aumento de \textbf{28\% na capacidade útil} da UTI.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Diagnóstico via CFD}
+        A análise visual do CFD revelou que a faixa de "Higienização" alargava continuamente, motivando o reescalonamento da equipe de apoio.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 25: Práticas 3 e 4 - Gerenciar Fluxo e Políticas Explícitas
+\begin{frame}{Práticas 3 e 4: Gerenciamento do Fluxo e Políticas Explícitas}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Prática 3: Gerenciar o Fluxo de Trabalho}
+        \begin{itemize}
+          \item Busca \textbf{reduzir desperdícios} através da compreensão do fluxo de valor.
+          \item Analisa os pontos em que o trabalho sofre interrupções ou acúmulo (\textbf{gargalos}).
+          \item Define e implementa mudanças para restabelecer o fluxo contínuo.
+        \end{itemize}
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Prática 4: Explicitar as Políticas}
+        \begin{itemize}
+          \item As regras do processo devem ser claras e visíveis para todos.
+          \item Registra os motivos de seleção de cada item de trabalho.
+          \item Define explicitamente os critérios para um item ser considerado \textbf{"Feito"} (\textit{Definition of Done - DoD}).
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 26: Práticas 5 e 6 - Melhoria Contínua e Alteração Colaborativa
+\begin{frame}{Práticas 5 e 6: Melhoria Contínua e Evolução Colaborativa}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Prática 5: Foco na Melhoria Contínua}
+        \begin{itemize}
+          \item Criação de \textbf{ciclos de feedback} regulares.
+          \item Mudanças no processo são introduzidas com base em \textbf{dados reais} de desempenho.
+          \item Os impactos das alterações são medidos para comprovar ganhos de eficiência.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Prática 6: Alteração Colaborativa}
+        \begin{itemize}
+          \item Evolução do processo feita de forma \textbf{colaborativa e consensual}.
+          \item Engaja todos os membros da equipe e partes interessadas (\textit{stakeholders}).
+          \item Promove senso de propriedade compartilhada do processo.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Reuniões de Equipe no Kanban}
+
+% Slide 27: Reuniões de Equipe e Inicialização do Quadro
+\begin{frame}{Reuniões de Equipe e Inicialização em Projetos Existentes}
+  \begin{block}{Alinhamento Contínuo e Semelhança com o Scrum}
+    As reuniões de equipe para o Kanban são \textbf{semelhantes àquelas realizadas no Scrum}, mantendo a equipe focada no fluxo de trabalho e na resolução rápida de impedimentos.
+  \end{block}
+
+  \vspace{0.2cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Introdução em Projetos Existentes}
+        \begin{itemize}
+          \item Nem todos os itens de trabalho iniciam na coluna do \textit{Backlog}.
+          \item Mapeia-se o estado real e corrente de cada tarefa em andamento.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{As 3 Perguntas Fundamentais}
+        Para posicionar os cartões corretamente no processo, os desenvolvedores perguntam:
+        \begin{enumerate}
+          \item \textbf{Onde estão agora?}
+          \item \textbf{De onde vieram?}
+          \item \textbf{Aonde vão?}
+        \end{enumerate}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 28: A Reunião Diária (Standup Meeting) no Kanban
+\begin{frame}{A Reunião Diária (\textit{Standup Meeting}) e "Caminhar pelo Quadro"}
+  \begin{block}{A Prática de "Caminhar pelo Quadro" (\textit{Walking the Board})}
+    A base para a reunião diária em pé do Kanban é \textbf{"caminhar pelo quadro"}. A liderança/facilitador da reunião muda diariamente entre os membros do time.
+  \end{block}
+
+  \vspace{0.2cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Mapeamento e Avanço de Itens}
+        \begin{itemize}
+          \item Identificação e adição de itens ausentes que estão sendo trabalhados.
+          \item \textbf{Objetivo Principal:} Avançar o máximo possível de itens para a coluna \textbf{"Feito"}.
+          \item Prioridade: Deslocar primeiro os itens de \textbf{alto valor de negócio}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Identificação de Obstáculos}
+        \begin{itemize}
+          \item Observação ativa do fluxo do quadro.
+          \item Análise da \textbf{carga de trabalho} e dos \textbf{riscos} para remover impedimentos rapidamente.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ESTUDO DE CASO KANBAN: REUNIÃO STANDUP CAMINHANDO PELO QUADRO
+\begin{frame}{Estudo de Caso 4: Standup "Caminhando pelo Quadro" em Logística}
+  \begin{block}{Cenário: Startup de Logística \textit{LogiExpress}}
+    A equipe perdia 45 minutos diários em reuniões ineficientes focadas em status individual (\textit{"o que eu fiz ontem"}), sem visibilidade das prioridades de negócio.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ do Sentido da Standup
+  \begin{center}
+    \begin{tikzpicture}[scale=0.78, transform shape]
+      \node[softboxalert, minimum width=2.4cm] (done) at (4.2, 0) {\textbf{1º Feito / Testes}\\ \tiny Foco no encerramento};
+      \node[softbox, minimum width=2.4cm] (dev) at (1.4, 0) {\textbf{2º Desenvolvimento}\\ \tiny Desbloquear gargalos};
+      \node[softbox, minimum width=2.4cm] (anal) at (-1.4, 0) {\textbf{3º Análise}\\ \tiny Validar premissas};
+      \node[softbox, minimum width=2.4cm] (back) at (-4.2, 0) {\textbf{4º Selecionado}\\ \tiny Puxar novo trabalho};
+
+      \draw[softarrowalert, line width=1.4pt] (done.west) -- (dev.east);
+      \draw[softarrow, line width=1.4pt] (dev.west) -- (anal.east);
+      \draw[softarrow, line width=1.4pt] (anal.west) -- (back.east);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Alcançadas}
+        \begin{itemize}
+          \item Duração da Standup reduzida de \textbf{45 min para 12 min}.
+          \item Aumento de \textbf{40\% na taxa de conclusão} de entregas de alto valor de negócio.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Mudança de Foco}
+        A análise passou a ser feita da \textbf{Direita para a Esquerda} (\textit{Right-to-Left}), priorizando puxar itens para a conclusão.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ESTUDO DE CASO KANBAN: CLASSES DE SERVIÇO EM EMPRESA SAAS ERP
+\begin{frame}{Estudo de Caso 9: Classes de Serviço no SaaS ERP}
+  \begin{block}{Cenário: Empresa de ERP Cloud \textit{ERPCloud}}
+    Interrupções constantes na sprint por chamados urgentes de clientes corporativos, desestabilizando o planejamento de novas funcionalidades.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ de Raias por Classe de Serviço
+  \begin{center}
+    \begin{tikzpicture}[scale=0.74, transform shape]
+      % Raia 1: Expedite (Emergencial)
+      \draw[thick, fill=mRed!10, rounded corners=2pt] (-5.2, 1.4) rectangle (5.2, 2.4);
+      \node[font=\tiny\bfseries, text=mRed!90!black, anchor=west] at (-5.0, 2.15) {Raia 1: Expedite (WIP = 1) --- Furo de fila para bugs em produção};
+      \node[softboxalert, minimum width=2.4cm, font=\tiny] at (0, 1.75) {SISTEMA INDISPONÍVEL};
+
+      % Raia 2: Data Fixa
+      \draw[thick, fill=structure.fg!10, rounded corners=2pt] (-5.2, 0.2) rectangle (5.2, 1.2);
+      \node[font=\tiny\bfseries, text=structure.fg, anchor=west] at (-5.0, 0.95) {Raia 2: Data Fixa --- Mudanças Regulatórias / Impostos};
+      \node[softbox, fill=structure.fg!20, minimum width=2.4cm, font=\tiny] at (-1.5, 0.55) {Nota Fiscal v4.0};
+
+      % Raia 3: Padrão
+      \draw[thick, fill=mGreen!10, rounded corners=2pt] (-5.2, -1.0) rectangle (5.2, 0.0);
+      \node[font=\tiny\bfseries, text=mGreen!80!black, anchor=west] at (-5.0, -0.25) {Raia 3: Padrão (WIP Puxado) --- Novas Funcionalidades};
+      \node[softbox, fill=mGreen!20, minimum width=2.4cm, font=\tiny] at (2.0, -0.65) {Filtro de Relatório};
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Alcançadas}
+        \begin{itemize}
+          \item Cumprimento de SLA em chamados urgentes subiu para \textbf{99.2\%}.
+          \item Fim das interrupções caóticas no fluxo de desenvolvimento regular.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Flexibilidade com Regras}
+        A raia \textit{Expedite} permite atender emergências reais com política explícita sem quebrar o ritmo da equipe.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 29: Retrospectiva Semanal e Integração Ágil
+\begin{frame}{Retrospectiva Semanal e Sinergia com Outras Práticas}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Reunião de Retrospectiva Semanal}
+        \begin{itemize}
+          \item Exame criterioso das \textbf{medidas de processo} (métricas empíricas).
+          \item Identificação de gargalos e oportunidades de otimização.
+          \item Proposta e implementação de mudanças de processo (\textit{Kaizen}).
+        \end{itemize}
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Combinação com Práticas Ágeis}
+        \begin{itemize}
+          \item O Kanban combina-se facilmente com outras metodologias (XP, Scrum).
+          \item Adiciona \textbf{mais disciplina e visibilidade} ao processo de desenvolvimento sem romper com os papéis existentes.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ==============================================================================
+% PARTE III: O FRAMEWORK DEVOPS
+% ==============================================================================
+
+\section{Panorama e Origem do DevOps}
+
+% Slide 30: Origem e Conceito de DevOps
+\begin{frame}{Panorama Geral do DevOps}
+  \begin{block}{O que é o DevOps?}
+    Criado por \textbf{Patrick DeBois} (\textit{Kim et al., 2016}), o DevOps une as áreas de \textbf{Desenvolvimento} (\textit{Development}) e \textbf{Operações} (\textit{Operations}) em um ciclo integrado.
+  \end{block}
+
+  \vspace{0.2cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Extensão dos Princípios Ágeis}
+        \begin{itemize}
+          \item Aplica os princípios de desenvolvimento \textbf{ágil e enxuto (\textit{Lean})} a toda a cadeia logística de software.
+          \item Substitui os tradicionais "silos" entre Dev e Ops por uma cultura colaborativa e contínua.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Ciclos Contínuos}
+        \begin{itemize}
+          \item O processo envolve diversas etapas interconectadas que formam \textbf{ciclos contínuos}.
+          \item Permanece ativo até que o produto desejado exista e opere em produção com qualidade.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 31: O Fluxo de Trabalho DevOps (Figura 3.5 - Infinity Loop)
+\begin{frame}{O Fluxo de Trabalho DevOps (Figura 3.5)}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.8, transform shape]
+      % Coluna Dev (Esquerda)
+      \node[softbox, minimum width=3.0cm, font=\bfseries\small] (plan) at (-4.2, 2.2) {Planejar};
+      \node[softbox, minimum width=3.0cm, font=\bfseries\small] (code) at (-4.2, 0.8) {Escrever código};
+      \node[softbox, minimum width=3.0cm, font=\bfseries\small] (build) at (-4.2, -0.6) {Construir};
+      \node[softbox, minimum width=3.0cm, font=\bfseries\small] (test) at (-4.2, -2.0) {Testar};
+
+      % Núcleo de Conexão (Central)
+      \node[softcore, minimum size=1.8cm, font=\bfseries\small] (integ) at (0, 0.1) {Integrar};
+
+      % Coluna Ops (Direita)
+      \node[softbox, minimum width=3.0cm, font=\bfseries\small] (deploy) at (4.2, 1.8) {Distribuir};
+      \node[softbox, minimum width=3.0cm, font=\bfseries\small] (oper) at (4.2, 0.3) {Operar};
+      \node[softbox, minimum width=3.0cm, font=\bfseries\small] (mon) at (4.2, -1.2) {Monitorar};
+
+      % Fluxo Dev Interno
+      \draw[softarrow] (plan.south) -- (code.north);
+      \draw[softarrow] (code.south) -- (build.north);
+      \draw[softarrow] (build.south) -- (test.north);
+
+      % Laço Dev -> Integrar -> Ops
+      \draw[softarrow, line width=1.4pt] (test.east) .. controls +(1.8,-0.2) and +(-1.5,-1.2) .. (integ.south);
+      \draw[softarrow, line width=1.4pt] (integ.north) .. controls +(1.5, 1.2) and +(-1.8, 0.2) .. (deploy.west);
+
+      % Fluxo Ops Interno
+      \draw[softarrow] (deploy.south) -- (oper.north);
+      \draw[softarrow] (oper.south) -- (mon.north);
+
+      % Laço Ops -> Retorno ao Planejar (Feedback Loop)
+      \draw[softarrowalert, line width=1.4pt] (mon.west) .. controls +(-1.8,-0.5) and +(1.5,-1.5) .. (integ.south);
+      \draw[softarrowalert, line width=1.4pt] (integ.north) .. controls +(-1.5, 1.5) and +(1.8, 0.5) .. (plan.east);
+
+    \end{tikzpicture}
+  \end{center}
+  \begin{center}
+    \tiny\textcolor{gray}{\textit{Figura 3.5: O fluxo contínuo do DevOps conectando o ciclo de desenvolvimento (Dev) e operações (Ops) via integração.}}
+  \end{center}
+\end{frame}
+
+\section{As 5 Práticas Contínuas do DevOps}
+
+% Slide 32: Desenvolvimento e Teste Contínuos
+\begin{frame}{DevOps: Desenvolvimento e Teste Contínuos}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Desenvolvimento Contínuo}
+        \begin{itemize}
+          \item Produtos de software divididos e construídos em \textbf{múltiplos \textit{sprints}}.
+          \item Incrementos frequentes entregues diretamente aos membros de Garantia da Qualidade (QA) da equipe.
+          \item Foco no alinhamento contínuo das novas funcionalidades.
+        \end{itemize}
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Teste Contínuo}
+        \begin{itemize}
+          \item Uso intensivo de \textbf{ferramentas de teste automatizadas}.
+          \item Teste simultâneo de múltiplos incrementos de código.
+          \item Garantia de zero defeitos antes que o código siga para a etapa de integração.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 33: Integração Contínua e Entrega Contínua (com Pipeline TikZ)
+\begin{frame}{DevOps: Integração Contínua e Entrega Contínua (CI/CD)}
+  % Pipeline CI/CD em TikZ
+  \begin{center}
+    \begin{tikzpicture}[scale=0.76, transform shape]
+      \node[softbox, minimum width=2.1cm, font=\tiny\bfseries] (c1) at (-4.5, 0) {Commit Código\\ \tiny Git / Repo};
+      \node[softbox, minimum width=2.1cm, font=\tiny\bfseries] (c2) at (-2.2, 0) {Build Automático\\ \tiny Compilação};
+      \node[softbox, minimum width=2.1cm, font=\tiny\bfseries] (c3) at (0.1, 0) {Testes Automatizados\\ \tiny Unidade / Regressão};
+      \node[softbox, minimum width=2.1cm, font=\tiny\bfseries] (c4) at (2.4, 0) {Staging\\ \tiny Homologação};
+      \node[softboxalert, minimum width=2.1cm, font=\tiny\bfseries] (c5) at (4.7, 0) {Produção\\ \tiny Deploy Global};
+
+      \draw[softarrow, line width=1.2pt] (c1.east) -- (c2.west);
+      \draw[softarrow, line width=1.2pt] (c2.east) -- (c3.west);
+      \draw[softarrow, line width=1.2pt] (c3.east) -- (c4.west);
+      \draw[softarrowalert, line width=1.2pt] (c4.east) -- (c5.west);
+
+      \node[font=\tiny\bfseries, text=structure.fg] at (-1.1, 0.8) {Continuous Integration (CI)};
+      \draw[thick, structure.fg, dashed] (-5.6, -0.6) rectangle (1.2, 1.1);
+
+      \node[font=\tiny\bfseries, text=mRed!80!black] at (3.5, 0.8) {Continuous Delivery (CD)};
+      \draw[thick, mRed!80!black, dashed] (1.3, -0.6) rectangle (5.8, 1.1);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Integração Contínua (CI)}
+        Adição automática de novas funcionalidades ao tronco de código principal e ambiente de execução (\textit{runtime}).
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Entrega Contínua (CD)}
+        Instalação automatizada do código em ambientes de produção preparados em nível global.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ESTUDO DE CASO DEVOPS: PIPELINE CI/CD E BLUE-GREEN DEPLOYMENT
+\begin{frame}{Estudo de Caso 5: Blue-Green Deployment em Streaming}
+  \begin{block}{Cenário: Plataforma de Mídia \textit{StreamFlix}}
+    A empresa realizava deploys manuais quinzenais com \textbf{3 horas de indisponibilidade (\textit{downtime})} a cada lançamento de versão.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ de Blue-Green Deployment
+  \begin{center}
+    \begin{tikzpicture}[scale=0.78, transform shape]
+      \node[softbox, minimum width=3.0cm, fill=structure.fg!20] (blue) at (-3.2, 0.7) {\textbf{Ambiente Blue}\\ \tiny Versão V1 (Ativa no Roteador)};
+      \node[softboxalert, minimum width=3.0cm] (green) at (-3.2, -0.7) {\textbf{Ambiente Green}\\ \tiny Versão V2 (Nova - Testes OK)};
+      \node[softcore, minimum size=1.7cm] (router) at (2.2, 0) {\textbf{Roteador}\\ \tiny Traffic Switch};
+
+      \draw[softarrow, line width=1.3pt] (blue.east) -- node[above, font=\tiny\bfseries] {Tráfego 100\%} (router.west);
+      \draw[softarrowalert, dashed, line width=1.3pt] (green.east) -- node[below, font=\tiny\bfseries] {Virada Instantânea (0 Downtime)} (router.west);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Alcançadas}
+        \begin{itemize}
+          \item Deploys passaram de 1 a cada 15 dias para \textbf{15 deploys/dia com Zero Downtime}.
+          \item MTTR (Tempo Médio de Recuperação) caiu de 3h para \textbf{45 segundos}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Rollback Automático}
+        Se o ambiente Green apresentar picos de erros 5xx, o roteador reverte o tráfego instantaneamente para o ambiente Blue.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 34: Monitoramento Contínuo
+\begin{frame}{DevOps: Monitoramento Contínuo}
+  \begin{block}{Integração de Operações na Equipe de Dev}
+    Membros da equipe de operações atuam diretamente integrados à equipe de desenvolvimento, atuando ativamente na garantia de qualidade em produção.
+  \end{block}
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Monitoramento de Desempenho}
+        \begin{itemize}
+          \item Acompanhamento contínuo da saúde, disponibilidade e desempenho do software em produção.
+          \item Coleta de métricas e telemetria em tempo real.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Atuação Proativa}
+        \begin{itemize}
+          \item Busca \textbf{proativa de possíveis falhas} e gargalos operacionais.
+          \item Resolução de problemas antes mesmo que os usuários finais os identifiquem.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ESTUDO DE CASO DEVOPS: PIPELINE DEVSECOPS E OBSERVABILIDADE
+\begin{frame}{Estudo de Caso 10: DevSecOps e Observabilidade na Fintech}
+  \begin{block}{Cenário: Corretora de Investimentos \textit{InvestNet}}
+    Gargalo de 3 semanas na auditoria manual de segurança antes de cada lançamento em produção, além de alto MTTR em falhas operacionais.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ do Pipeline DevSecOps Integrado
+  \begin{center}
+    \begin{tikzpicture}[scale=0.74, transform shape]
+      \node[softbox, minimum width=1.9cm, font=\tiny\bfseries] (p1) at (-4.8, 0) {Commit Código\\ \tiny Git Repo};
+      \node[softboxalert, minimum width=1.9cm, font=\tiny\bfseries] (p2) at (-2.5, 0) {SAST Scan\\ \tiny Análise Estática};
+      \node[softbox, minimum width=1.9cm, font=\tiny\bfseries] (p3) at (-0.2, 0) {DAST Test\\ \tiny Scan Dinâmico};
+      \node[softbox, fill=mGreen!20, draw=mGreen!80!black, minimum width=1.9cm, font=\tiny\bfseries] (p4) at (2.1, 0) {Canary Deploy\\ \tiny 5\% Tráfego};
+      \node[softcore, minimum size=1.5cm, font=\tiny\bfseries] (p5) at (4.5, 0) {Prometheus\\ \tiny Telemetria};
+
+      \draw[softarrow, line width=1.1pt] (p1.east) -- (p2.west);
+      \draw[softarrowalert, line width=1.1pt] (p2.east) -- (p3.west);
+      \draw[softarrow, line width=1.1pt] (p3.east) -- (p4.west);
+      \draw[softarrow, line width=1.1pt] (p4.east) -- (p5.west);
+
+      % Feedback Loop de Auto-Rollback
+      \draw[softarrowalert, line width=1.1pt] (p5.south) .. controls +(0,-0.8) and +(0,-0.8) .. node[below, font=\tiny\bfseries] {Auto-Rollback (Pico de Erros 5xx)} (p4.south);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Alcançadas}
+        \begin{itemize}
+          \item Tempo de auditoria reduzido de \textbf{21 dias para 15 minutos}.
+          \item MTTR (Tempo Médio de Recuperação) caiu para \textbf{30 segundos}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Shift-Left Security}
+        A segurança foi integrada diretamente ao pipeline CI/CD, bloqueando vulnerabilidades automaticamente antes do deploy.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Valor de Negócio e Conclusão}
+
+% Slide 35: Valor de Negócio do DevOps
+\begin{frame}{Impacto de Negócio e Redução do \textit{Time-to-Market}}
+  \begin{block}{Aceleração da Resposta ao Cliente}
+    O DevOps melhora significativamente a experiência do cliente ao acelerar a resposta às suas mudanças de necessidades, aumentando a \textbf{fidelidade à marca} e a \textbf{participação de mercado}.
+  \end{block}
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Capacidade de Inovação}
+        \begin{itemize}
+          \item Abordagens enxutas como o DevOps reduzem drasticamente o retrabalho.
+          \item Permite o redirecionamento da equipe para atividades de \textbf{maior valor de negócio}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Redução do Tempo de Entrega (\textit{Time-to-Market})}
+        \begin{itemize}
+          \item \textit{"Os produtos não geram receita até que os consumidores tenham acesso a eles"}.
+          \item O DevOps reduz drasticamente o tempo entre o desenvolvimento e a disponibilização em produção (\textit{Shah, 2017}).
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ESTUDO DE CASO SINERGIA INTEGRADA: XP + KANBAN + DEVOPS
+\begin{frame}{Estudo de Caso 11: O Hub Ágil Integrado (XP + Kanban + DevOps)}
+  \begin{block}{Cenário: Transformação Digital na Varejista \textit{MegaVarejo}}
+    Modernização completa do processo de engenharia de software para suportar 50 milhões de acessos simultâneos na Black Friday.
+  \end{block}
+
+  \vspace{0.1cm}
+
+  % Diagrama TikZ Tripartido de Integração Metodológica
+  \begin{center}
+    \begin{tikzpicture}[scale=0.76, transform shape]
+      % Núcleo XP
+      \node[softbox, fill=structure.fg!20, minimum width=3.2cm, font=\tiny\bfseries] (xp) at (-3.6, 0) {
+        \textbf{Engenharia XP (Núcleo)}\\ \tiny TDD, Pair Programming,\\ Refatoração \& KISS
+      };
+
+      % Camada Kanban
+      \node[softbox, fill=mGreen!20, draw=mGreen!80!black, minimum width=3.2cm, font=\tiny\bfseries] (kanban) at (0, 0) {
+        \textbf{Gestão Kanban (Fluxo)}\\ \tiny Limite WIP, Quadro Visual,\\ Gestão de Gargalos
+      };
+
+      % Camada DevOps
+      \node[softboxalert, minimum width=3.2cm, font=\tiny\bfseries] (devops) at (3.6, 0) {
+        \textbf{Entrega DevOps (Operações)}\\ \tiny CI/CD Pipeline, Blue-Green,\\ Observabilidade \& Nuvem
+      };
+
+      \draw[softarrow, line width=1.3pt] (xp.east) -- node[above, font=\tiny\bfseries] {Código Limpo} (kanban.west);
+      \draw[softarrowalert, line width=1.3pt] (kanban.east) -- node[above, font=\tiny\bfseries] {Fluxo Puxado} (devops.west);
+
+      \draw[softarrow, line width=1.3pt] (devops.south) .. controls +(0,-1.0) and +(0,-1.0) .. node[below, font=\tiny\bfseries] {Feedback Contínuo de Produção} (xp.south);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{-0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Métricas Alcançadas}
+        \begin{itemize}
+          \item Frequência de deploys aumentada em \textbf{50x}.
+          \item Queda de \textbf{88\% nas falhas em produção}.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Sinergia Tripla}
+        A XP garante a qualidade técnica, o Kanban garante o fluxo sem sobrecarga, e o DevOps garante a entrega contínua.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 36: Quadro Comparativo Geral (XP vs. Kanban vs. DevOps)
+\begin{frame}{Quadro Comparativo: XP, Kanban e DevOps}
+  \begin{table}
+    \centering
+    \tiny
+    \begin{tabular}{@{}llll@{}}
+      \toprule
+      \textbf{Dimensão} & \textbf{Extreme Programming (XP)} & \textbf{Método Kanban} & \textbf{DevOps} \\
+      \midrule
+      \textbf{Foco Principal} & Práticas de Engenharia e Código & Gestão e Visibilidade do Fluxo & Integração Dev + Ops e Entrega Contínua \\
+      \textbf{Escopo} & Equipe de Desenvolvimento & Fluxo de Trabalho (End-to-End) & Cadeia Logística Completa do Software \\
+      \textbf{Práticas Chave} & TDD, Pair Programming, Refatoração & Limitar WIP, Quadro Kanban, DoD & CI/CD, Teste Automatizado, Monitoramento \\
+      \textbf{Ritmo de Entrega} & Incremental por Iteração & Fluxo Contínuo (Sistema Puxado) & Implantação Contínua em Produção \\
+      \textbf{Métrica Chave} & Velocidade do Projeto & Tempo de Ciclo (\textit{Cycle Time}) & \textit{Time-to-Market} e MTTR (Tempo de Reparo) \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+
+  \vspace{0.3cm}
+
+  \begin{block}{Integração no Contexto Moderno}
+    As metodologias não são mutuamente exclusivas: equipes modernas aplicam as \textbf{práticas de código da XP}, a \textbf{gestão de fluxo do Kanban} e a \textbf{automação de deploy/monitoramento do DevOps}.
+  \end{block}
+\end{frame}
+
+% Slide 37: Conclusão Geral da Aula
+\begin{frame}{Conclusão Geral: XP, Kanban e DevOps}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{exampleblock}{Extreme Programming}
+        Garante a \textbf{qualidade e a robustez técnica do código} com práticas engenhosas de desenvolvimento.
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.32\textwidth}
+      \begin{block}{Método Kanban}
+        Garante a \textbf{transparência e fluidez das demandas}, eliminando desperdícios e limitando o WIP.
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.32\textwidth}
+      \begin{alertblock}{DevOps}
+        Garante a \textbf{entrega rápida e confiável em produção}, fechando o ciclo contínuo de valor para o cliente.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.4cm}
+
+  \begin{center}
+    \small\textbf{\textcolor{structure.fg}{A sinergia entre XP, Kanban e DevOps sustenta o desenvolvimento de software ágil e enxerto de alta performance nas organizações modernas.}}
+  \end{center}
+\end{frame}
+
+\end{document}

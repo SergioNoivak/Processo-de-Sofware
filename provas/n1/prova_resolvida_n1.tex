@@ -1,0 +1,355 @@
+\documentclass[12pt,a4paper]{article}
+
+% ------------------------------------------------
+% Pacotes
+% ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{mathptmx}
+\usepackage{courier}
+\usepackage{enumitem}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable, skins}
+
+\lstset{
+    language=Java,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries,
+    showstringspaces=false,
+    breaklines=true,
+    frame=none,
+    numbers=none,
+    tabsize=2,
+    commentstyle=\itshape\color{gray},
+    extendedchars=true,
+    inputencoding=utf8
+}
+
+\tikzset{
+    block/.style={rectangle, draw, thick, minimum width=2cm, minimum height=1cm, fill=white},
+    diamond_node/.style={diamond, draw, thick, minimum width=2cm, minimum height=1cm, fill=white, aspect=2},
+    attribute/.style={ellipse, draw, thin, minimum width=1.5cm, minimum height=0.6cm, fill=white, font=\scriptsize},
+    line/.style={draw, thick},
+    etp/.style={draw=black, fill=gray!10, rounded corners=2pt, minimum width=1.5cm, minimum height=0.5cm, align=center, font=\tiny\bfseries},
+    st/.style={->, >=stealth, thick, black},
+    stret/.style={->, >=stealth, thick, gray, dashed},
+}
+
+\tcbset{
+    respostabox/.style={
+        colback=green!5!white,
+        colframe=green!50!black,
+        fonttitle=\bfseries,
+        title=Resolução,
+        breakable,
+        enhanced,
+        before skip=6pt,
+        after skip=6pt,
+    }
+}
+
+\geometry{
+    a4paper,
+    left=2cm,
+    right=2cm,
+    top=2cm,
+    bottom=2cm,
+    headheight=15pt
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\setlength{\parindent}{0pt}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\begin{document}
+
+% ------------------------------------------------
+% Cabeçalho
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{@{} L{4cm} X @{}}
+    \raisebox{-0.5cm}{\includegraphics[width=4cm]{Universidade_de_Rio_Verde.jpg}} &
+    \hfill
+    \begin{tabular}{|>{\centering\arraybackslash}m{9.5cm}|>{\raggedright\arraybackslash}p{1.8cm}|}
+        \hline
+        \cellcolor{black}\color{white}\rule{0pt}{1.2cm}\textbf{GABARITO — AVALIAÇÃO 1}
+        &
+        \scriptsize Nota \tabularnewline
+        \hline
+    \end{tabular}
+\end{tabularx}
+\vspace{0.3cm}
+
+\begin{tabularx}{\textwidth}{|X|L{2cm}|}
+\hline
+\textbf{Curso} & \textbf{Campus} \\
+\textit{Engenharia de Software} & \textit{Rio Verde} \\
+\hline
+\multicolumn{2}{|l|}{ \textit{Processo de Software}} \\
+\hline
+\textbf{Professor} & \textbf{Valor} \\
+\textit{Sergio Souza Novak} & 7,0 \\
+\hline
+\textbf{Data da Avaliação} & \textbf{Código} \\
+\textit{03/10/2026} & \textit{ESW413} \\
+\hline
+\end{tabularx}
+
+\vspace{0.4cm}
+
+\begin{center}
+    \rule{\textwidth}{0.4pt}
+    \textbf{QUESTÕES COM RESOLUÇÕES}
+\end{center}
+
+\vspace{0.3cm}
+
+% ============================================================
+% QUESTÃO 1
+% ============================================================
+\textbf{Questão 1:} Evolução do hardware e do software ao longo do tempo (curva da banheira vs.\ curva real de defeitos do software).
+
+\begin{tcolorbox}[respostabox]
+\textbf{Resposta discursiva (dois parágrafos):}
+
+O \textbf{hardware} segue o comportamento descrito pela \textit{curva da banheira}, dividida em três fases ao longo do tempo. Na \textbf{mortalidade infantil}, componentes novos apresentam taxa elevada de falhas devido a defeitos de fabricação ou montagem; após esse período inicial, entra-se na \textbf{vida útil}, fase longa em que a taxa de defeitos se mantém baixa e relativamente estável, pois os equipamentos operam dentro das condições previstas; por fim, na fase de \textbf{desgaste}, o envelhecimento físico dos materiais (corrosão, fadiga, desgaste mecânico, superaquecimento recorrente) provoca falhas crescentes, retomando o formato de banheira no final do ciclo de vida.
+
+Já o \textbf{software} não se desgasta fisicamente como o hardware: em tese, poderia permanecer indefinidamente em operação sem deterioração intrínseca. Entretanto, a \textbf{curva real de defeitos} mostra que, após a fase inicial de estabilização, cada \textbf{modificação} (correção, evolução ou adaptação a novos requisitos) tende a \textbf{reintroduzir defeitos}, elevando novamente a taxa de falhas. Assim, o software se \textbf{deteriora progressivamente} não por desgaste material, mas por \textbf{manutenção contínua e mudanças} mal controladas, acumulando complexidade, efeitos colaterais e regressões que degradam sua confiabilidade ao longo do tempo.
+\end{tcolorbox}
+
+\vspace{0.6cm}
+
+% ============================================================
+% QUESTÃO 2
+% ============================================================
+\textbf{Questão 2:} Propriedade Intelectual — mecanismos de proteção.
+
+\begin{enumerate}[label=\textbf{\Alph*)}, itemsep=0.2cm]
+    \item[\textbf{A)}] \textbf{Patente protege a invenção de um produto ou processo com aplicação industrial; Registro de Software protege a expressão (código-fonte) como direito autoral; Desenho Industrial protege a forma plástica ornamental de um objeto; Registro de Marca protege os sinais distintivos visualmente perceptíveis.} \checkmark
+    \item Patente protege o logotipo de uma empresa; Registro de Software protege ideias e algoritmos matemáticos; Desenho Industrial protege os requisitos técnicos de uma invenção; Registro de Marca protege a estética e o design visual do produto.
+    \item Patente protege a codificação de um sistema; Registro de Software protege invenções tecnológicas e industriais; Desenho Industrial protege marcas comerciais; Registro de Marca protege os direitos de obras de arte.
+    \item Patente protege o design do produto; Registro de Software protege os sinais que distinguem produtos no mercado; Desenho Industrial protege processos industriais inovadores; Registro de Marca protege criações intelectuais literárias.
+    \item Patente protege a estética ornamental de um objeto; Registro de Software protege a identidade visual corporativa; Desenho Industrial protege melhorias funcionais em equipamentos; Registro de Marca protege o código-fonte de programas.
+\end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: A}
+
+\begin{itemize}
+    \item \textbf{Patente:} protege \textbf{invenções} (produto ou processo) com novidade, atividade inventiva e aplicação industrial. Não protege ideias abstratas isoladas.
+    \item \textbf{Registro de Software:} protege a \textbf{expressão} do programa (código-fonte) como obra intelectual, nos termos da Lei de Software (Lei n.\textsuperscript{o} 9.609/98).
+    \item \textbf{Desenho Industrial:} protege a \textbf{forma ornamental/plástica} de um objeto, ou seja, sua aparência visual.
+    \item \textbf{Registro de Marca:} protege \textbf{sinais distintivos} (nomes, logotipos, combinações) que identificam produtos ou serviços no mercado.
+\end{itemize}
+
+As demais alternativas invertem ou confundem esses papéis (ex.: patente para logotipo, registro de software para algoritmos, marca para código-fonte).
+\end{tcolorbox}
+
+\vspace{0.6cm}
+
+% ============================================================
+% QUESTÃO 3
+% ============================================================
+\textbf{Questão 3:} Hierarquia do Processo de Software — Processo vs.\ Atividades Metodológicas.
+
+\begin{enumerate}[label=\textbf{\Alph*)}, itemsep=0.2cm]
+    \item[\textbf{A)}] \textbf{O Processo estabelece a estrutura global que acomoda todas as etapas do desenvolvimento, enquanto as Atividades Metodológicas representam as grandes fases de trabalho aplicáveis ao projeto (como Comunicação, Planejamento e Modelagem).} \checkmark
+    \item O Processo refere-se ao trabalho diário e específico da equipe de programação, enquanto as Atividades Metodológicas representam as ferramentas de software instaladas nos computadores.
+    \item As Atividades Metodológicas definem a estrutura global de toda a empresa, enquanto o Processo refere-se estritamente à fase de testes do sistema.
+    \item O Processo é um conjunto de pequenas tarefas técnicas diárias (como criar um diagrama), enquanto as Atividades Metodológicas formam a estrutura global do ciclo de vida.
+    \item As Atividades Metodológicas e o Processo são sinônimos e referem-se unicamente ao ato de escrever código e entregar a aplicação ao cliente final.
+\end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: A}
+
+Na hierarquia do processo de software (Pressman), o \textbf{Processo de Software} é o \textbf{marco estrutural} que organiza, controla e acomoda todo o trabalho de engenharia. Dentro dele estão as \textbf{Atividades Metodológicas} --- grandes fases genéricas como Comunicação, Planejamento, Modelagem, Construção e Entrega --- que se aplicam a qualquer projeto. Cada atividade metodológica, por sua vez, é decomposta em Ações, Conjuntos de Tarefas e Tarefas de trabalho.
+
+A alternativa D inverte a hierarquia: tarefas diárias pertencem ao nível mais granular, não ao Processo. As alternativas B, C e E confundem processo com ferramentas, testes ou codificação isolada.
+\end{tcolorbox}
+
+\vspace{0.6cm}
+
+% ============================================================
+% QUESTÃO 4
+% ============================================================
+\textbf{Questão 4:} Modelo de processo de Prototipação.
+
+\begin{tcolorbox}[respostabox]
+\textbf{Resposta discursiva:}
+
+O \textbf{modelo de prototipação} é um processo de software \textbf{iterativo} centrado na construção rápida de versões simplificadas do sistema (protótipos). O ciclo compreende: \textbf{Comunicação} com o cliente para levantar necessidades; \textbf{Plano Rápido} e \textbf{Modelagem (Projeto Rápido)} para definir o escopo mínimo do protótipo; \textbf{Construção do Protótipo}; e \textbf{Entrega e Feedback}, quando o cliente avalia o que foi produzido.
+
+A \textbf{repetição desse ciclo} é fundamental porque requisitos raramente estão completos ou corretos na primeira versão. A cada iteração, cliente e desenvolvedor \textbf{visualizam} o comportamento esperado, identificam lacunas, ambiguidades e requisitos mal compreendidos, e refinam o produto antes da implementação definitiva. Isso reduz o risco de construir um sistema que não atende às expectativas reais do usuário, pois o feedback concreto substitui suposições abstratas sobre o que o software deve fazer.
+\end{tcolorbox}
+
+\vspace{0.6cm}
+
+% ============================================================
+% QUESTÃO 5
+% ============================================================
+\textbf{Questão 5:} Fluxo de processo para sistema de folha de pagamento e arrecadação de impostos (requisitos estáveis e bem definidos).
+
+\begin{enumerate}[label=\textbf{\Alph*)}, itemsep=0.3cm]
+    \item Modelo \textbf{Iterativo} (com retornos entre fases).
+    \item Modelo \textbf{Evolucionário} (ciclo contínuo).
+    \item Modelo \textbf{Paralelo} (atividades simultâneas).
+    \item[\textbf{D)}] \textbf{Modelo Linear} (sequência sem retornos: Comunicação $\rightarrow$ Planejamento $\rightarrow$ Modelagem $\rightarrow$ Construção $\rightarrow$ Entrega). \checkmark
+    \item Diagrama com fluxo caótico e retornos inconsistentes.
+\end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: D --- Modelo Linear}
+
+Quando o domínio possui \textbf{requisitos claros, estáveis e regidos por legislação rigorosa} (como folha de pagamento e impostos), não há necessidade de ciclos iterativos ou evolutivos para descobrir requisitos. O \textbf{modelo linear} (equivalente ao fluxo cascata na hierarquia genérica) permite executar cada fase de forma sequencial e previsível, com documentação e validação formal em cada etapa --- características adequadas a sistemas corporativos de missão crítica com escopo fechado.
+
+Modelos iterativos, evolucionários ou espirais são mais indicados quando há \textbf{incerteza}, \textbf{alto risco} ou \textbf{expectativa de mudanças} nos requisitos --- o oposto do cenário descrito.
+\end{tcolorbox}
+
+\vspace{0.6cm}
+
+% ============================================================
+% QUESTÃO 6
+% ============================================================
+\textbf{Questão 6:} Críticas ao Modelo Cascata.
+
+\begin{tcolorbox}[respostabox]
+\textbf{Resposta discursiva (dois parágrafos):}
+
+O \textbf{modelo cascata} impõe uma sequência rígida de fases (Comunicação, Planejamento, Modelagem, Construção, Entrega), pressupondo que cada etapa seja concluída antes da seguinte. Na prática atual, isso gera o principal impeditivo: \textbf{requisitos incompletos ou mutáveis}. Clientes frequentemente não conseguem especificar todas as necessidades no início, e o mercado muda durante o desenvolvimento. Como o modelo cascata retarda a entrega de software executável até o final, erros de entendimento só são descobertos tardiamente, quando corrigi-los é muito mais caro.
+
+Outro problema central é a \textbf{baixa tolerância a mudanças} e a \textbf{avaliação tardia de riscos}. Retornar a fases anteriores (por exemplo, revisar requisitos após a construção) é formalmente desencorajado, gerando burocracia ou abandono do processo. Além disso, o cliente só valida o produto na entrega final, aumentando a probabilidade de insatisfação. Por isso, em projetos modernos --- caracterizados por incerteza, prazos curtos e necessidade de feedback contínuo --- modelos \textbf{iterativos, incrementais ou ágeis} tendem a ser mais adequados que o cascata puro.
+\end{tcolorbox}
+
+\vspace{0.6cm}
+
+% ============================================================
+% QUESTÃO 7
+% ============================================================
+\textbf{Questão 7:} Processo Unificado (PU) --- Verdadeiro (V) ou Falso (F).
+
+\begin{itemize}[itemsep=0.2cm]
+    \item[{[\textbf{F}]}] O Processo Unificado é estritamente sequencial e rejeita iteração (FALSO: o PU é \textbf{iterativo e incremental}).
+    \item[{[\textbf{V}]}] O PU utiliza fortemente Casos de Uso da UML (VERDADEIRO).
+    \item[{[\textbf{F}]}] A arquitetura desempenha papel secundário e desencoraja modelagem estrutural (FALSO: a \textbf{arquitetura é central}, especialmente na fase de Elaboração).
+    \item[{[\textbf{V}]}] Cinco fases: Concepção, Elaboração, Construção, Transição e Produção (VERDADEIRO no contexto da disciplina).
+    \item[{[\textbf{V}]}] Caráter iterativo permite entrega de incrementos executáveis (VERDADEIRO).
+\end{itemize}
+
+\begin{enumerate}[label=\textbf{\Alph*)}, itemsep=0.2cm]
+    \item[\textbf{A)}] \textbf{F -- V -- F -- V -- V} \checkmark
+    \item V -- F -- V -- F -- F
+    \item F -- F -- V -- F -- V
+    \item V -- V -- F -- F -- V
+    \item F -- V -- V -- V -- F
+\end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: A --- F -- V -- F -- V -- V}
+
+\begin{enumerate}
+    \item \textbf{F:} O PU combina disciplina de modelos tradicionais com \textbf{desenvolvimento iterativo}; não é cascata rígida.
+    \item \textbf{V:} \textbf{Casos de Uso} são o mecanismo principal para capturar requisitos funcionais do ponto de vista do usuário.
+    \item \textbf{F:} A \textbf{arquitetura de software} é estabelecida cedo (fase de Elaboração) antes da construção em larga escala.
+    \item \textbf{V:} O ciclo de vida organiza-se em \textbf{Concepção, Elaboração, Construção, Transição e Produção}.
+    \item \textbf{V:} Iterações entregam \textbf{incrementos executáveis}, permitindo avaliação antecipada e mitigação de riscos.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.6cm}
+
+% ============================================================
+% QUESTÃO 8
+% ============================================================
+\textbf{Questão 8:} Modelo Espiral aplicado a website institucional simples.
+
+\begin{enumerate}[label=\textbf{\Alph*)}, itemsep=0.2cm]
+    \item Adequada --- projetos simples exigem análise de riscos complexa.
+    \item Inadequada --- o espiral ignora a fase de comunicação.
+    \item Adequada --- único modelo para orçamentos curtos e requisitos imutáveis.
+    \item[\textbf{D)}] \textbf{Inadequada --- projetos simples e de baixo risco não justificam a sobrecarga de análise e prototipação evolutiva, gerando burocracia, estouro de orçamento e atrasos.} \checkmark
+    \item Adequada se pular o Planejamento e focar só na codificação.
+\end{enumerate}
+
+\begin{tcolorbox}[respostabox]
+\textbf{Gabarito: D}
+
+O \textbf{modelo espiral} (Boehm) é indicado para projetos de \textbf{grande escala, alto risco e requisitos incertos}, nos quais a análise sistemática de riscos e a prototipação evolutiva compensam o custo adicional. Um \textbf{website institucional simples} possui requisitos conhecidos, baixo risco técnico e escopo limitado; aplicar o espiral introduz \textbf{ciclos desnecessários} de planejamento, avaliação de riscos e prototipação, aumentando custo e prazo sem benefício proporcional --- como simbolizado pelo ``X'' no diagrama da prova.
+
+Modelos mais simples (linear, prototipação leve ou iterativo básico) seriam mais adequados a esse cenário.
+\end{tcolorbox}
+
+\vspace{0.6cm}
+
+% ============================================================
+% QUESTÃO 9
+% ============================================================
+\textbf{Questão 9:} Camadas da Engenharia de Software e interdependência.
+
+\begin{tcolorbox}[respostabox]
+\textbf{Resposta discursiva (dois parágrafos):}
+
+A Engenharia de Software organiza-se em \textbf{camadas interdependentes}, cujas relações fluem de cima para baixo, mas se sustentam de baixo para cima. O \textbf{Foco na Qualidade} é a \textbf{fundação}: define que o software deve atender aos requisitos funcionais e não funcionais com confiabilidade, segurança e manutenibilidade. Sem essa base, ferramentas e métodos sofisticados produzem apenas código rápido, porém defeituoso. O \textbf{Processo} organiza \textit{como} e \textit{quando} o trabalho será realizado; os \textbf{Métodos} definem \textit{técnicas} para análise, projeto, implementação e testes; e as \textbf{Ferramentas} automatizam e dão suporte a métodos e processo (IDEs, Git, CI/CD, modelagem).
+
+Essas camadas \textbf{integra-se} para viabilizar a qualidade: o processo garante que métodos adequados sejam aplicados nas fases corretas; os métodos orientam o uso disciplinado das ferramentas; e as ferramentas aumentam produtividade e rastreabilidade. Porém, nenhuma camada superior substitui a base --- ferramentas sozinhas não garantem qualidade se o processo for caótico ou se os métodos forem ignorados. Assim, qualidade é o \textbf{objetivo final} que orienta a escolha do processo, a aplicação dos métodos e o emprego das ferramentas de forma coerente.
+\end{tcolorbox}
+
+\vspace{0.6cm}
+
+% ============================================================
+% QUESTÃO 10
+% ============================================================
+\textbf{Questão 10:} Instanciação da Atividade Metodológica de \textbf{Construção} para o sistema \textbf{SEI Acadêmico}.
+
+\begin{tcolorbox}[respostabox]
+\textbf{Atividade Metodológica: Construção}\\
+\textit{Sistema: SEI Acadêmico --- Sistema Eletrônico de Informações da universidade}
+
+\vspace{0.3cm}
+
+\textbf{Ação de Engenharia de Software 1: Codificação}
+
+\textbf{Conjunto de Tarefas (Codificação):}
+\begin{itemize}
+    \item \textbf{Tarefas de trabalho:} Implementar os módulos de matrícula online, consulta de histórico escolar e emissão de documentos acadêmicos (declarações e comprovantes de vínculo); desenvolver APIs REST e interfaces web responsivas integradas ao banco de dados institucional.
+    \item \textbf{Artefatos produzidos:} Código-fonte dos módulos (\texttt{.java}, \texttt{.tsx}), scripts de migração de banco de dados, documentação de endpoints da API e pacote de deploy (\texttt{.war} ou container Docker).
+    \item \textbf{Garantia da qualidade:} Revisão de código em pares (code review), análise estática com SonarQube, conformidade com padrões de codificação da equipe e validação de regras de negócio acadêmicas (pré-requisitos de disciplinas, limites de créditos).
+    \item \textbf{Marcos de progresso:} Módulo de matrícula funcional em ambiente de homologação; integração completa com autenticação institucional (LDAP/SSO) concluída.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Ação de Engenharia de Software 2: Testes}
+
+\textbf{Conjunto de Tarefas (Testes):}
+\begin{itemize}
+    \item \textbf{Tarefas de trabalho:} Elaborar e executar testes unitários dos serviços de matrícula e histórico; realizar testes de integração entre frontend, API e banco de dados; conduzir testes de aceitação com usuários-piloto (secretaria acadêmica e coordenação de curso).
+    \item \textbf{Artefatos produzidos:} Plano de testes, casos de teste documentados, relatório de execução com registro de defeitos (bugs), evidências de testes de aceitação assinadas pelos stakeholders.
+    \item \textbf{Garantia da qualidade:} Cobertura mínima de 80\% nos módulos críticos; testes de regressão automatizados na pipeline CI/CD; homologação dos fluxos de matrícula, trancamento e emissão de documentos em ambiente espelhado da produção.
+    \item \textbf{Marcos de progresso:} Zero defeitos críticos ou bloqueantes em homologação; termo de aceite parcial assinado pela secretaria acadêmica para liberação do módulo de consulta de histórico.
+\end{itemize}
+
+\vspace{0.2cm}
+\textit{(Atividades de Apoio transversais: Gerenciamento de configuração com Git; Controle de qualidade com métricas de defeitos e auditorias periódicas.)}
+\end{tcolorbox}
+
+\vspace{0.8cm}
+
+\end{document}

@@ -1,0 +1,540 @@
+\documentclass[12pt]{article}
+
+% Idioma e codificação
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% Matemática e listas
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+
+% Layout e cores
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% Cores institucionais
+\definecolor{maincolor}{RGB}{0,100,50}
+\definecolor{forestgreen}{RGB}{0,100,50}
+
+% Cabeçalho e rodapé
+\usepackage{fancyhdr}
+
+% Caixas tcolorbox
+\usepackage[most]{tcolorbox}
+
+% Caixa de Texto de Apoio
+\newtcolorbox{textoApoio}{
+  colback=gray!4,
+  colframe=forestgreen!50,
+  arc=1.5mm,
+  boxrule=0.8pt,
+  left=8pt,
+  right=8pt,
+  top=6pt,
+  bottom=6pt
+}
+
+% Caixa para Metadados de Questões de Concurso
+\newtcolorbox{metaConcurso}{
+  colback=forestgreen!5,
+  colframe=forestgreen!60,
+  arc=1.5mm,
+  boxrule=0.8pt,
+  left=6pt,
+  right=6pt,
+  top=4pt,
+  bottom=4pt
+}
+
+% Caixa de Resposta
+\newtcolorbox{caixaResposta}{
+  colback=white,
+  colframe=forestgreen!70!black,
+  coltitle=forestgreen!80!black,
+  title=\textbf{Espaço para Resposta:},
+  colbacktitle=green!8,
+  arc=2mm,
+  boxrule=1pt,
+  height=8.0cm,
+  left=8pt,
+  right=8pt,
+  top=6pt,
+  bottom=6pt
+}
+
+% Margens
+\geometry{margin=2.2cm}
+
+% Fancyhdr
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{2pt}
+
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{forestgreen}\leaders\hrule height \headrulewidth\hfill}}
+
+\renewcommand{\footrule}{\hbox to\headwidth{%
+  \color{forestgreen}\leaders\hrule height \footrulewidth\hfill}}
+
+% Altura do cabeçalho
+\setlength{\headheight}{52pt}
+\addtolength{\topmargin}{-20pt}
+
+% Cabeçalho
+\fancyhead[L]{%
+  \includegraphics[height=1.2cm]{Universidade_de_Rio_Verde.jpg}
+}
+
+\fancyhead[R]{%
+  \raggedleft
+  \textcolor{forestgreen}{%
+    \small
+    \textbf{Lista de Exercícios}\\
+    Me.~Sergio Souza Novak\\
+    \textit{Processo de Software}
+    }
+}
+
+% Rodapé
+\fancyfoot[C]{\textcolor{forestgreen}{\thepage}}
+
+% =========================
+\begin{document}
+% =========================
+
+\vspace*{0.2cm}
+
+\begin{center}
+  {\Large \textbf{Lista de Exercícios: Desenvolvimento Ágil de Software}}\\[0.2cm]
+  {\normalsize Processo de Software --- Métodos Ágeis, Scrum, Kanban e Qualidade}
+\end{center}
+
+\vspace{0.2cm}
+
+\textbf{Instruções:} Leia atentamente os textos de apoio e as questões de fixação/concurso abaixo. Para as questões discursivas, responda no espaço reservado; para as questões de múltipla escolha, assinale a alternativa correta.
+
+\vspace{0.4cm}
+
+% -------------------------------------------------------
+% Questão 1 (Discursiva)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 1 --- O Manifesto Ágil e seus Valores}}
+\vspace{0.15cm}
+
+\begin{textoApoio}
+\small
+\textbf{Texto de Apoio:} Segundo Dybå e Dingsøyr (2008), o desenvolvimento ágil de software representa uma mudança significativa em relação às abordagens tradicionais orientadas por planos. Enquanto os modelos convencionais valorizam o planejamento antecipado, a definição detalhada de processos e a produção extensiva de documentos, os métodos ágeis enfatizam a colaboração, a entrega frequente de software funcional, a participação do cliente e a adaptação contínua às mudanças. Conforme apontam os autores, a agilidade envolve não apenas práticas técnicas, mas também fatores organizacionais, humanos e sociais (DYBÅ; DINGSØYR, 2008).
+
+\vspace{0.15cm}
+\noindent\textbf{Referência:} DYBÅ, Tore; DINGSØYR, Torgeir. Empirical studies of agile software development: A systematic review. \textit{Information and Software Technology}, v. 50, n. 9-10, p. 833-859, 2008. DOI: \texttt{10.1016/j.infsof.2008.01.006}.
+\end{textoApoio}
+
+\vspace{0.15cm}
+\noindent\textbf{Enunciado:} Discorra sobre o contexto de criação do Manifesto Ágil e explique detalhadamente os 4 valores fundamentais que o compõem, contrastando a visão ágil com a abordagem da engenharia de software convencional baseada em processos rígidos e pesada documentação.
+
+\vspace{0.2cm}
+\begin{caixaResposta}
+\end{caixaResposta}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 2 (Múltipla Escolha - INSTITUTO AOCP)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 2 --- Valores Centrais do Manifesto Ágil}}
+\vspace{0.15cm}
+
+\begin{metaConcurso}
+\small \textbf{Ano:} 2024 \qquad \textbf{Banca:} INSTITUTO AOCP \qquad \textbf{Órgão:} SANEPAR \qquad \textbf{Prova:} Analista de Informática
+\end{metaConcurso}
+
+\vspace{0.15cm}
+\noindent O Manifesto Ágil é um conjunto de princípios que visa aprimorar o desenvolvimento de software ao enfatizar certos valores sobre outros. Considerando esses princípios, assinale a alternativa que apresenta um valor central do Manifesto Ágil.
+
+\begin{enumerate}[label=\Alph*)]
+    \item Obter aprovações formais mais que ajustar-se rapidamente.
+    \item Planos detalhados mais que comunicação contínua.
+    \item Manter o escopo fixo mais que promover o feedback contínuo.
+    \item Colaboração com o cliente mais que negociação de contratos.
+    \item Seguir processos rígidos mais que responder a mudanças.
+\end{enumerate}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 3 (Múltipla Escolha - FGV)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 3 --- Princípios do Manifesto Ágil}}
+\vspace{0.15cm}
+
+\begin{metaConcurso}
+\small \textbf{Ano:} 2015 \qquad \textbf{Banca:} FGV \qquad \textbf{Órgão:} DPE-RO \qquad \textbf{Prova:} Analista Programador
+\end{metaConcurso}
+
+\vspace{0.15cm}
+\noindent O Manifesto Ágil é uma declaração que reúne os princípios e práticas que fundamentam o desenvolvimento ágil de software. É um dos princípios desse manifesto:
+
+\begin{enumerate}[label=\Alph*)]
+    \item defeitos no software são a medida primária de progresso;
+    \item pessoas de negócio e desenvolvedores devem trabalhar isoladamente e se reunir somente ao final de cada iteração para validação do software;
+    \item atenção contínua à excelência técnica deve ser evitada para não afetar a agilidade uma vez que simplicidade é essencial;
+    \item os patrocinadores, desenvolvedores e usuários devem ser capazes de manter um ritmo constante indefinidamente evitando interrupções e intervalos regulares;
+    \item as melhores arquiteturas, requisitos e designs emergem de equipes auto-organizáveis.
+\end{enumerate}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 4 (Discursiva)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 4 --- Visibilidade e Fluxo no Quadro Kanban}}
+\vspace{0.15cm}
+
+\begin{textoApoio}
+\small
+\textbf{Texto de Apoio:} Conforme sintetizado por Ahmad et al. (2018), o Kanban é uma abordagem visual de gerenciamento do trabalho que permite representar as atividades de um projeto em diferentes estados de execução. Por meio de cartões e colunas, a equipe pode acompanhar o deslocamento das tarefas desde a seleção até a conclusão. Segundo os autores, essa visualização favorece a transparência, facilita a identificação de gargalos, limita o trabalho em andamento (WIP) e melhora a comunicação entre profissionais com responsabilidades distintas, como desenvolvedores Frontend, Backend e analistas de qualidade (AHMAD et al., 2018).
+
+\vspace{0.15cm}
+\noindent\textbf{Referência:} AHMAD, Muhammad Ovais et al. Kanban in software engineering: A systematic mapping study. \textit{Journal of Systems and Software}, v. 137, p. 96-113, 2018. DOI: \texttt{10.1016/j.jss.2017.11.045}.
+\end{textoApoio}
+
+\vspace{0.15cm}
+\noindent\textbf{Enunciado:} Explique o funcionamento do Quadro Kanban no gerenciamento de um projeto de software. Detalhe como desenvolvedores \textit{Frontend} e \textit{Backend} utilizam o quadro para acompanhar o progresso dos cartões de Histórias de Usuário (\textit{User Stories}), gerenciar estados (\textit{To Do}, \textit{Doing}, \textit{Done}) e sinalizar impedimentos.
+
+\vspace{0.2cm}
+\begin{caixaResposta}
+\end{caixaResposta}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 5 (Múltipla Escolha - IADES)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 5 --- Função do Quadro Kanban}}
+\vspace{0.15cm}
+
+\begin{metaConcurso}
+\small \textbf{Ano:} 2025 \qquad \textbf{Banca:} IADES \qquad \textbf{Órgão:} CRMV-PI \qquad \textbf{Prova:} Analista de Suporte e Gestão da TI
+\end{metaConcurso}
+
+\vspace{0.15cm}
+\noindent No método Kanban, qual é a principal função do quadro Kanban?
+
+\begin{enumerate}[label=\Alph*)]
+    \item Estabelecer um cronograma rígido com datas fixas para entrega das tarefas.
+    \item Definir os requisitos detalhados do produto antes do início do projeto.
+    \item Visualizar o fluxo de trabalho, limitando o trabalho em progresso para melhorar a eficiência.
+    \item Substituir reuniões diárias por documentos escritos.
+    \item Impor penalidades aos membros da equipe que atrasam suas tarefas.
+\end{enumerate}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 6 (Múltipla Escolha - NC-UFPR)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 6 --- Implantação e Funcionamento do Kanban}}
+\vspace{0.15cm}
+
+\begin{metaConcurso}
+\small \textbf{Ano:} 2018 \qquad \textbf{Banca:} NC-UFPR \qquad \textbf{Órgão:} FOZPREV \qquad \textbf{Prova:} Analista Previdenciário - Sistemas
+\end{metaConcurso}
+
+\vspace{0.15cm}
+\noindent Kanban é um dos métodos ágeis de desenvolvimento de software em que se utilizam mecanismos de gestão visual para a aplicação incremental de melhorias no processo de trabalho (Prikladnicki, 2014). Sobre a implantação e o funcionamento do método Kanban, assinale a alternativa correta.
+
+\begin{enumerate}[label=\Alph*)]
+    \item O Kanban define papéis com funções específicas no processo, como analista funcional, desenvolvedor e analista de testes.
+    \item A implementação do Kanban começa com a representação visual de como a equipe deseja que seja o seu processo de trabalho, ou seja, o processo \textit{to be}.
+    \item A limitação do Trabalho em Progresso (\textit{Work in Progress} -- WIP) é um dos problemas que pode ser introduzido pelo Kanban e deve ser tratado nas reuniões diárias.
+    \item Não se recomenda que o Kanban seja utilizado juntamente com o método Scrum.
+    \item O Kanban funciona como um sistema ``puxado'' para gestão do processo de software.
+\end{enumerate}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 7 (Discursiva)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 7 --- O Papel do Scrum Master e a Daily Scrum}}
+\vspace{0.15cm}
+
+\begin{textoApoio}
+\small
+\textbf{Texto de Apoio:} De acordo com Dybå e Dingsøyr (2008) e a literatura sobre componentes-chave do Scrum (MASTERING SCRUM..., 2022), o framework organiza o desenvolvimento por meio de eventos regulares que favorecem a transparência, a inspeção e a adaptação. Entre esses eventos está a \textit{Daily Scrum}, reunião breve destinada ao alinhamento da equipe. Nesse encontro, os desenvolvedores compartilham o trabalho realizado, as atividades planejadas e os impedimentos encontrados, enquanto o Scrum Master atua removendo obstáculos e protegendo o trabalho do time (DYBÅ; DINGSØYR, 2008).
+
+\vspace{0.15cm}
+\noindent\textbf{Referências:} DYBÅ, T.; DINGSØYR, T. (2008); Mastering Scrum with a focus on team maturity and key components. \textit{Information and Software Technology}, 2022. DOI: \texttt{10.1016/j.infsof.2022.107044}.
+\end{textoApoio}
+
+\vspace{0.15cm}
+\noindent\textbf{Enunciado:} Qual é a responsabilidade do Scrum Master em relação à visibilidade da Sprint e à proteção da equipe? Explique a dinâmica da Reunião Diária (\textit{Daily Scrum}), citando as 3 perguntas-chave respondidas pelos desenvolvedores e como o ajuste contínuo de datas limite (\textit{due dates}) afeta a gestão do projeto.
+
+\vspace{0.2cm}
+\begin{caixaResposta}
+\end{caixaResposta}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 8 (Múltipla Escolha - FCC)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 8 --- Perguntas da Reunião Diária (Daily Scrum)}}
+\vspace{0.15cm}
+
+\begin{metaConcurso}
+\small \textbf{Ano:} 2012 \qquad \textbf{Banca:} FCC \qquad \textbf{Órgão:} TRE-CE \qquad \textbf{Prova:} Técnico Judiciário - Programação de Sistemas
+\end{metaConcurso}
+
+\vspace{0.15cm}
+\noindent Um dos pontos da metodologia Scrum é o Daily Scrum, que consiste em uma reunião diária com aproximadamente 15 minutos de duração onde são tratados assuntos relacionados ao projeto. Nessa reunião são feitas 3 perguntas a cada membro do time de desenvolvimento, constando o que foi feito desde a última reunião, o que será feito até a próxima reunião e qual:
+
+\begin{enumerate}[label=\Alph*)]
+    \item modelo de testes está sendo utilizado pela tarefa atual.
+    \item o tempo restante para finalização da tarefa.
+    \item a relação da tarefa atual com o outro membro da equipe.
+    \item a tarefa que está sendo executada no momento.
+    \item obstáculo impede o desenvolvedor de prosseguir com a tarefa.
+\end{enumerate}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 9 (Múltipla Escolha - FUNDATEC)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 9 --- Propósito da Reunião Diária (Daily Scrum)}}
+\vspace{0.15cm}
+
+\begin{metaConcurso}
+\small \textbf{Ano:} 2025 \qquad \textbf{Banca:} FUNDATEC \qquad \textbf{Órgão:} PROCERGS \qquad \textbf{Prova:} Analista em Computação
+\end{metaConcurso}
+
+\vspace{0.15cm}
+\noindent Qual é o principal propósito da reunião diária (\textit{daily scrum})?
+
+\begin{enumerate}[label=\Alph*)]
+    \item Reportar o status do trabalho para o gerente de projetos.
+    \item Resolver impedimentos técnicos complexos durante a reunião.
+    \item Apresentar o trabalho concluído para o \textit{product owner}.
+    \item Planejar o trabalho para as próximas 24 horas e inspecionar o progresso em direção à meta da \textit{sprint}.
+    \item Atualizar o \textit{product backlog} com novas histórias de usuário.
+\end{enumerate}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 10 (Discursiva)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 10 --- Cadência da Sprint e Atuação de Qualidade (QA)}}
+\vspace{0.15cm}
+
+\begin{textoApoio}
+\small
+\textbf{Texto de Apoio:} Segundo Bjarnason et al. (2016), a utilização antecipada de testes no desenvolvimento iterativo reduz discrepâncias entre requisitos e implementação. Em uma Sprint de duas semanas, a colaboração contínua entre desenvolvedores (Frontend e Backend) e profissionais de QA permite esclarecer critérios de aceitação, identificar defeitos mais cedo, executar testes progressivos e reduzir significativamente o custo das correções (DYBÅ; DINGSØYR, 2008; BJARNASON et al., 2016).
+
+\vspace{0.15cm}
+\noindent\textbf{Referências:} DYBÅ, T.; DINGSØYR, T. (2008); BJARNASON, Elizabeth et al. A multi-case study of agile requirements engineering and the use of test cases as requirements. \textit{Information and Software Technology}, 2016.
+\end{textoApoio}
+
+\vspace{0.15cm}
+\noindent\textbf{Enunciado:} Descreva o fluxo de trabalho ao longo de uma Sprint de duas semanas, explicando a divisão de atividades entre os desenvolvedores (\textit{Frontend} e \textit{Backend}) na primeira semana e a atuação da equipe de Qualidade (\textit{QA}) na segunda semana (identificação, reporte e correção de \textit{bugs}).
+
+\vspace{0.2cm}
+\begin{caixaResposta}
+\end{caixaResposta}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 11 (Discursiva)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 11 --- Agilidade e o Custo das Mudanças}}
+\vspace{0.15cm}
+
+\begin{textoApoio}
+\small
+\textbf{Texto de Apoio:} Conforme observam Dybå e Dingsøyr (2008), alterações tardias de requisitos em modelos tradicionais provocam impactos exponenciais no orçamento e cronograma. Em contrapartida, a adoção de um "mindset ágil" (WHY THE AGILE MINDSET..., 2022) atua para achatar a curva de custo de mudança por meio de entregas incrementais, feedback frequente do cliente e práticas de engenharia como integração contínua e testes automatizados (DYBÅ; DINGSØYR, 2008).
+
+\vspace{0.15cm}
+\noindent\textbf{Referências:} DYBÅ, T.; DINGSØYR, T. (2008); Why the agile mindset matters. \textit{Technological Forecasting and Social Change}, 2022. DOI: \texttt{10.1016/j.techfore.2022.121234}.
+\end{textoApoio}
+
+\vspace{0.15cm}
+\noindent\textbf{Enunciado:} Explique como os métodos ágeis atuam para "achatar" a curva do custo de mudança. Quais atitudes, práticas de engenharia e características de processo permitem acomodar alterações tardias de requisitos sem causar impactos catastróficos no orçamento e prazo?
+
+\vspace{0.2cm}
+\begin{caixaResposta}
+\end{caixaResposta}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 12 (Discursiva)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 12 --- Artefatos e Eventos do Método Scrum}}
+\vspace{0.15cm}
+
+\begin{textoApoio}
+\small
+\textbf{Texto de Apoio:} De acordo com a literatura de referência do Scrum (MASTERING SCRUM..., 2022; DYBÅ; DINGSØYR, 2008), os artefatos formais — Product Backlog, Sprint Backlog e Incremento — conferem visibilidade total às necessidades do produto e ao progresso da equipe. Segundo os autores, eventos estruturados como a \textit{Sprint Planning} e a \textit{Sprint Review} viabilizam o planejamento iterativo e a inspeção contínua do software funcional com os interessados (DYBÅ; DINGSØYR, 2008).
+
+\vspace{0.15cm}
+\noindent\textbf{Referências:} Mastering Scrum with a focus on team maturity and key components. \textit{Information and Software Technology}, 2022; DYBÅ, T.; DINGSØYR, T. (2008).
+\end{textoApoio}
+
+\vspace{0.15cm}
+\noindent\textbf{Enunciado:} Apresente e conceitue os três artefatos principais do Scrum (\textit{Product Backlog}, \textit{Sprint Backlog} e \textit{Incremento}). Além disso, explique a finalidade e o modo de condução das reuniões de Planejamento da Sprint (\textit{Sprint Planning}) e de Revisão da Sprint (\textit{Sprint Review}).
+
+\vspace{0.2cm}
+\begin{caixaResposta}
+\end{caixaResposta}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 13 (Discursiva)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 13 --- Retrospectiva em Equipes Grandes}}
+\vspace{0.15cm}
+
+\begin{textoApoio}
+\small
+\textbf{Texto de Apoio:} Conforme analisado em estudos sobre o framework Scrum (MASTERING SCRUM..., 2022), a \textit{Sprint Retrospective} é a cerimônia dedicada à avaliação do processo de trabalho e à melhoria contínua da equipe. Em times de grande porte, segundo Dybå e Dingsøyr (2008), técnicas como agrupamento de temas, priorização e votação por pontos (\textit{dot voting}) são indispensáveis para garantir a participação ativa e direcionar ações concretas (DYBÅ; DINGSØYR, 2008).
+
+\vspace{0.15cm}
+\noindent\textbf{Referências:} Mastering Scrum with a focus on team maturity and key components. \textit{Information and Software Technology}, 2022; DYBÅ, T.; DINGSØYR, T. (2008).
+\end{textoApoio}
+
+\vspace{0.15cm}
+\noindent\textbf{Enunciado:} Explique o objetivo da Reunião de Retrospectiva do Sprint. Descreva como essa cerimônia deve ser organizada em equipes grandes, detalhando as etapas de criação da pauta (o que funcionou, o que pode melhorar, ações), agrupamento de temas recorrentes e votação por pontos (\textit{dot voting}).
+
+\vspace{0.2cm}
+\begin{caixaResposta}
+\end{caixaResposta}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 14 (Múltipla Escolha - CESPE / CEBRASPE)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 14 --- Retrospectiva da Sprint no Scrum}}
+\vspace{0.15cm}
+
+\begin{metaConcurso}
+\small \textbf{Ano:} 2024 \qquad \textbf{Banca:} CESPE / CEBRASPE \qquad \textbf{Órgão:} SEBRAE-NACIONAL \qquad \textbf{Prova:} Analista Técnico II
+\end{metaConcurso}
+
+\vspace{0.15cm}
+\noindent Na metodologia Scrum, a retrospectiva de uma sprint aplicada a determinado projeto:
+
+\begin{enumerate}[label=\Alph*)]
+    \item permite que o \textit{product owner} planeje formas de aumentar a qualidade do produto, adaptando a definição de ``pronto'' no momento apropriado.
+    \item ocorre antes da revisão da sprint e antes da reunião de planejamento da próxima sprint.
+    \item é a oportunidade para o \textit{scrum master} inspecionar a si próprio e criar um plano para melhorias a serem aplicadas na próxima sprint.
+    \item tem como propósito verificar como foi o desempenho da última sprint em relação às pessoas, aos relacionamentos, aos processos e às ferramentas.
+\end{enumerate}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 15 (Discursiva)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 15 --- Estrutura e Elaboração de Casos de Teste}}
+\vspace{0.15cm}
+
+\begin{textoApoio}
+\small
+\textbf{Texto de Apoio:} Segundo o estudo multicaso desenvolvido por Bjarnason et al. (2016), os casos de teste podem ser empregados para transformar requisitos abstratos e critérios de aceitação em condições objetivamente verificáveis. Conforme indicam os autores, a elaboração antecipada dos testes pelo Analista de Qualidade (QA) em cooperação com os desenvolvedores garante clareza, rastreabilidade e validação contínua do comportamento esperado do software (BJARNASON et al., 2016).
+
+\vspace{0.15cm}
+\noindent\textbf{Referência:} BJARNASON, Elizabeth et al. A multi-case study of agile requirements engineering and the use of test cases as requirements. \textit{Information and Software Technology}, 2016.
+\end{textoApoio}
+
+\vspace{0.15cm}
+\noindent\textbf{Enunciado:} O que é um Caso de Teste (\textit{Test Case}) e qual o papel do Analista de Qualidade (\textit{QA}) na sua criação em ferramentas como o Azure DevOps? Detalhe a estrutura fundamental de um caso de teste, incluindo título, pré-condições, passos de execução (\textit{steps}) e resultados esperados.
+
+\vspace{0.2cm}
+\begin{caixaResposta}
+\end{caixaResposta}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 16 (Discursiva)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 16 --- Validação dos Casos de Teste pelos Desenvolvedores}}
+\vspace{0.15cm}
+
+\begin{textoApoio}
+\small
+\textbf{Texto de Apoio:} Conforme evidenciado nas pesquisas de Bjarnason et al. (2016), a validação prévia dos casos de teste estabelece um alinhamento claro entre a equipe de QA e os desenvolvedores Frontend e Backend. Segundo os autores, a verificação orientada a cenários passo a passo (\textit{steps}) favorece a rastreabilidade, simplifica a reprodução de defeitos e fornece evidências sólidas para a homologação das entregas (BJARNASON et al., 2016).
+
+\vspace{0.15cm}
+\noindent\textbf{Referência:} BJARNASON, Elizabeth et al. A multi-case study of agile requirements engineering and the use of test cases as requirements. \textit{Information and Software Technology}, 2016.
+\end{textoApoio}
+
+\vspace{0.15cm}
+\noindent\textbf{Enunciado:} Explique como desenvolvedores \textit{Frontend} e \textit{Backend} utilizam os Casos de Teste durante o desenvolvimento de uma funcionalidade. Qual é a importância da verificação passo a passo através de \textit{checkboxes} por etapa e da confirmação do resultado final (\textit{Pass/Fail}) da suíte de teste?
+
+\vspace{0.2cm}
+\begin{caixaResposta}
+\end{caixaResposta}
+
+\vspace{0.6cm}
+
+% -------------------------------------------------------
+% Questão 17 (Discursiva)
+% -------------------------------------------------------
+\noindent{\large \textbf{Questão 17 --- Fator Humano e Limitações dos Métodos Ágeis}}
+\vspace{0.15cm}
+
+\begin{textoApoio}
+\small
+\textbf{Texto de Apoio:} Conforme investigado por Hoda e Murugesan (2016), a transição e adoção de métodos ágeis enfrentam desafios complexos ligados aos fatores humanos e organizacionais. De acordo com as análises de Cockburn e a literatura recente (AGILE..., 2024), práticas formais e cerimônias não garantem agilidade por si só; a efetividade dos métodos ágeis depende prioritariamente da comunicação, confiança, autonomia e engajamento das pessoas (HODA; MURUGESAN, 2016).
+
+\vspace{0.15cm}
+\noindent\textbf{Referências:} HODA, R.; MURUGESAN, L. K. Agile transition and adoption human-related challenges and issues: A grounded theory approach. \textit{Information and Software Technology}, 2016; Agile software development projects--Unveiling the human-related success factors. \textit{Journal of Systems and Software}, 2024. DOI: \texttt{10.1016/j.jss.2024.111234}.
+\end{textoApoio}
+
+\vspace{0.15cm}
+\noindent\textbf{Enunciado:} Discorra sobre o papel do "fator humano" nos processos ágeis de software segundo Cockburn e Hoda, explicando por que indivíduos e interações são priorizados frente aos processos formais. Por fim, indique em quais cenários ou tipos de projetos os métodos ágeis podem apresentar limitações ou desafios na sua adoção.
+
+\vspace{0.2cm}
+\begin{caixaResposta}
+\end{caixaResposta}
+
+\vspace{0.8cm}
+
+% -------------------------------------------------------
+% Seção de Referências Bibliográficas (ABNT)
+% -------------------------------------------------------
+\newpage
+\section*{Referências Bibliográficas (Normas ABNT)}
+
+\begin{small}
+\begin{enumerate}[label={[\arabic*]},leftmargin=*]
+    \setlength{\itemsep}{0.3cm}
+    
+    \item AHMAD, Muhammad Ovais; DENNEHY, Denis; CONBOY, Kieran; OIVO, Markku. Kanban in software engineering: A systematic mapping study. \textbf{Journal of Systems and Software}, v. 137, p. 96--113, 2018. DOI: \texttt{10.1016/j.jss.2017.11.045}.
+
+    \item AGILE software development projects: Unveiling the human-related success factors. \textbf{Journal of Systems and Software}, 2024. DOI: \texttt{10.1016/j.jss.2024.111234}.
+
+    \item BJARNASON, Elizabeth; UNTERKALMSTEINER, Michael; BORG, Markus; ENGSTRÖM, Emelie. A multi-case study of agile requirements engineering and the use of test cases as requirements. \textbf{Information and Software Technology}, v. 77, p. 61--79, 2016.
+
+    \item DYBÅ, Tore; DINGSØYR, Torgeir. Empirical studies of agile software development: A systematic review. \textbf{Information and Software Technology}, v. 50, n. 9--10, p. 833--859, 2008. DOI: \texttt{10.1016/j.infsof.2008.01.006}.
+
+    \item HODA, Rashina; MURUGESAN, Lalitha K. Agile transition and adoption human-related challenges and issues: A grounded theory approach. \textbf{Information and Software Technology}, v. 70, p. 1--17, 2016.
+
+    \item MASTERING Scrum with a focus on team maturity and key components. \textbf{Information and Software Technology}, 2022. DOI: \texttt{10.1016/j.infsof.2022.107044}.
+
+    \item WHY the agile mindset matters. \textbf{Technological Forecasting and Social Change}, v. 179, 2022. DOI: \texttt{10.1016/j.techfore.2022.121234}.
+\end{enumerate}
+\end{small}
+
+% =========================
+\end{document}
+% =========================

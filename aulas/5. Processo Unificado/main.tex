@@ -1,0 +1,673 @@
+\documentclass[9pt]{beamer}
+\mode<presentation>
+
+% Theme choice:
+\usetheme{Madrid}%Darmstadt 
+\usepackage{xcolor}
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mRed}{rgb}{0.6,0,0}
+\usecolortheme[RGB={0,100,50}]{structure}
+ \usefonttheme{structurebold} 
+\setbeamercovered{invisible}
+%\setbeamertemplate{navigation symbols}{}
+\usepackage{dynblocks}
+\usepackage{textpos}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{
+  arrows.meta,
+  positioning,
+  calc,
+  fit,
+  shapes.geometric,
+  shapes.misc
+}
+\newtheorem{teorema}{Teorema}\usepackage{mathtools}
+\renewcommand{\proofname}{Prova}
+\usepackage[portuguese]{babel}
+
+\uselanguage{Portuguese}
+\languagepath{Portuguese}
+
+\deftranslation[to=Portuguese]{Theorem}{Teorema}
+\deftranslation[to=Portuguese]{Lemma}{Lema}
+\deftranslation[to=Portuguese]{Corollary}{Corolário}
+\deftranslation[to=Portuguese]{Proof}{Prova}
+
+\usepackage{dutchcal}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage[affil-it]{authblk} 
+\usepackage{etoolbox}
+\usepackage{lmodern}
+\usepackage[pscoord]{eso-pic}
+\usepackage{hyperref}
+
+\makeatletter
+\patchcmd{\@maketitle}{\LARGE \@title}{\fontsize{18}{19.2}\selectfont\@title}{}{}
+\makeatother
+
+\renewcommand\Authfont{\fontsize{12}{14.4}\selectfont}
+\renewcommand\Affilfont{\fontsize{9}{10.8}\itshape}
+
+% Estilos TikZ reutilizáveis (tema verde da apresentação)
+\tikzset{
+  softbox/.style={
+    draw=structure.fg,
+    fill=structure.fg!12,
+    rounded corners=3pt,
+    align=center,
+    font=\small,
+    minimum height=0.9cm,
+    inner sep=4pt
+  },
+  softboxalert/.style={
+    draw=mRed,
+    fill=mRed!10,
+    rounded corners=3pt,
+    align=center,
+    font=\small,
+    minimum height=0.9cm,
+    inner sep=4pt
+  },
+  softcore/.style={
+    draw=structure.fg,
+    fill=structure.fg!25,
+    circle,
+    align=center,
+    font=\bfseries\small,
+    minimum size=1.55cm,
+    inner sep=2pt
+  },
+  softarrow/.style={
+    -{Latex[length=2.2mm]},
+    thick,
+    structure.fg
+  },
+  softarrowalert/.style={
+    -{Latex[length=2.2mm]},
+    thick,
+    mRed
+  },
+  softlabel/.style={font=\scriptsize\bfseries, text=structure.fg},
+  % Mockups de interface gráfica
+  guiwin/.style={
+    draw=#1!70!black,
+    fill=white,
+    rounded corners=2pt,
+    inner sep=0pt,
+    thick
+  },
+  guibar/.style={
+    draw=none,
+    fill=#1,
+    minimum height=0.32cm,
+    inner sep=1pt,
+    font=\tiny\bfseries,
+    text=white,
+    anchor=north west
+  },
+  guibtn/.style={
+    circle,
+    fill=#1,
+    minimum size=0.14cm,
+    inner sep=0pt
+  },
+  guiphone/.style={
+    draw=#1!80!black,
+    fill=black!85,
+    rounded corners=6pt, 
+    thick,
+    inner sep=2pt
+  },
+  qcard/.style={
+    draw=structure.fg!70!black,
+    fill=structure.fg!5,
+    rounded corners=4pt,
+    thick,
+    text width=4.8cm,
+    minimum height=1.5cm,
+    align=left,
+    inner sep=6pt
+  }
+}
+
+% Title page details: 
+\title[Presentation]{Processo Unificado} %add title
+
+\institute[UniRV]{\large PROCESSO DE SOFTWARE --- Professor: Me. Sergio Souza Novak --- Faculdade de Engenharia de Software}
+% \titlegraphic{\includegraphics[width=5cm]{msu.eps}}
+\titlegraphic{\includegraphics[width=5cm]{Universidade_de_Rio_Verde.jpg}}
+\date{}
+ 
+% Logo only on title page
+%\logo{\includegraphics[width=1cm,keepaspectratio]{Logo.png}}
+
+
+\begin{document}
+
+% Title page frame
+\frame[plain]{\titlepage}
+%logo
+\AddToShipoutPictureFG{
+    \put(\LenToUnit{.92\paperwidth},
+    \LenToUnit{.185\paperheight})
+    {\vtop{{\null}
+    \makebox{\includegraphics[width=.8cm,keepaspectratio]{Universidade_de_Rio_Verde.jpg}}}}}
+
+\begin{frame}{Sumário}
+  \tableofcontents
+\end{frame}
+
+\section{Modelo de Processo Unificado}
+
+\begin{frame}{Modelo de Processo Unificado (PU)}
+  \begin{itemize}
+    \item \textbf{Fusão de Modelos:} Tentativa de aproveitar os melhores recursos dos modelos tradicionais de processo de software.
+    \item \textbf{Princípios Ágeis:} Implementa muitos dos melhores princípios do desenvolvimento ágil de software.
+    \item \textbf{Foco no Cliente:} Reconhece a importância da comunicação contínua e efetiva com o cliente.
+    \item \textbf{Casos de Uso:} Utiliza métodos racionalizados (casos de uso) para descrever a visão do cliente sobre o sistema.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Modelo de Processo Unificado (PU)}
+  \begin{itemize}
+    \item \textbf{Papel da Arquitetura:} Enfatiza fortemente o papel central da arquitetura de software no desenvolvimento.
+    \item \textbf{Metas Arquiteturais:} Ajuda o arquiteto a focar em:
+      \begin{itemize}
+        \item Compreensibilidade do sistema
+        \item Confiança em mudanças futuras
+        \item Reutilização de componentes
+      \end{itemize}
+    \item \textbf{Fluxo Iterativo e Incremental:} Sugere um fluxo de processo que proporciona uma evolução contínua.
+    \item \textbf{Sensação Evolucionária:} Essencial no contexto do desenvolvimento de software moderno.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Casos de Uso}
+  \begin{columns}
+    \column{0.5\textwidth}
+      \textbf{O que é um Caso de Uso?}
+      \begin{itemize}
+        \item Descreve a interação entre o sistema e o usuário (ou outro sistema).
+        \item Define \textbf{o que} o sistema deve fazer (requisitos), a partir da perspectiva do usuário.
+        \item Representa um resultado de valor para um \textbf{Ator}.
+      \end{itemize}
+      
+      \vspace{0.4cm}
+      \textbf{Exemplo:}
+      Um \textit{Cliente} (Ator) interagindo com um Sistema de E-commerce para realizar uma compra.
+      
+    \column{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}
+        % Ator
+        \node[circle, draw, minimum size=0.4cm, inner sep=0pt] (head) at (0, 1.5) {};
+        \draw (head.south) -- (0, 0.5); % corpo
+        \draw (-0.5, 1) -- (0.5, 1); % braços
+        \draw (0, 0.5) -- (-0.5, 0); % perna esq
+        \draw (0, 0.5) -- (0.5, 0); % perna dir
+        \node[font=\footnotesize] at (0, -0.3) {Cliente};
+        \node[font=\scriptsize, text=gray] at (0, -0.6) {<<Ator>>};
+        
+        % Fronteira do Sistema
+        \draw[thick, fill=blue!5] (1.5, -0.2) rectangle (5, 2.8);
+        \node[font=\footnotesize, anchor=north] at (3.25, 2.8) {Sistema de E-commerce};
+        
+        % Caso de Uso
+        \draw[fill=white] (3.25, 1.2) ellipse (1.3cm and 0.6cm);
+        \node[align=center, font=\footnotesize] (uc) at (3.25, 1.2) {Realizar \\ Compra};
+        
+        % Ligação
+        \draw[->, thick] (0.6, 1) -- (1.95, 1.2);
+      \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{UML: Unified Modeling Language}
+  \begin{columns}
+    \column{0.5\textwidth}
+      \begin{itemize}
+        \item \textbf{Linguagem de Modelagem Unificada:} Desenvolvida para apoiar o trabalho de engenharia de software.
+        \item \textbf{Notação Robusta:} Focada na modelagem e desenvolvimento de sistemas orientados a objetos.
+        \item \textbf{Padrão da Indústria:} Utilizada globalmente para o desenvolvimento de software de todos os tipos.
+      \end{itemize}
+    \column{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[
+        box/.style={draw, rounded corners, thick, fill=blue!10, text width=2.2cm, align=center, font=\scriptsize},
+        centerbox/.style={draw, circle, thick, fill=blue!30, align=center, font=\bfseries}
+      ]
+        \node[centerbox] (uml) at (0,0) {UML};
+        \node[box] (oo) at (-1.5, 1.5) {Sistemas Orientados a Objetos};
+        \node[box] (padrao) at (1.5, 1.5) {Padrão da Indústria};
+        \node[box] (notacao) at (0, -1.8) {Notação Robusta};
+        
+        \draw[->, thick, shorten >=2pt] (uml) -- (oo);
+        \draw[->, thick, shorten >=2pt] (uml) -- (padrao);
+        \draw[->, thick, shorten >=2pt] (uml) -- (notacao);
+      \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Exemplos de Diagramas UML}
+  \vspace{-0.2cm}
+  \begin{columns}
+    % Coluna 1: Diagrama de Classes e Casos de Uso
+    \column{0.5\textwidth}
+      \centering
+      \textbf{\footnotesize 1. Diagrama de Classes} \\
+      \vspace{0.1cm}
+      \begin{tikzpicture}[
+        class/.style={draw, thick, fill=yellow!10, text width=2.2cm, align=center, font=\tiny},
+        line/.style={draw, thick, -stealth}
+      ]
+        \node[class] (pessoa) at (0, 1.6) {\textbf{Pessoa} \\ \hrule \vspace{0.05cm} + nome: String \\ + idade: int \\ \hrule \vspace{0.05cm} + andar()};
+        \node[class] (cliente) at (0, 0) {\textbf{Cliente} \\ \hrule \vspace{0.05cm} + id: int \\ \hrule \vspace{0.05cm} + comprar()};
+        
+        % Herança (Triângulo vazado)
+        \draw[thick] (cliente.north) -- (0, 1.0) -- (-0.15, 1.0) -- (0, 1.2) -- (0.15, 1.0) -- (0, 1.0);
+        \draw[thick] (0, 1.2) -- (pessoa.south);
+      \end{tikzpicture}
+      
+      \vspace{0.5cm}
+      \textbf{\footnotesize 2. Diagrama de Casos de Uso} \\
+      \vspace{0.1cm}
+      \begin{tikzpicture}[scale=0.9, transform shape]
+        % Ator
+        \node[circle, draw, minimum size=0.3cm, inner sep=0pt] (head) at (0, 1) {};
+        \draw (head.south) -- (0, 0.3); % corpo
+        \draw (-0.3, 0.7) -- (0.3, 0.7); % braços
+        \draw (0, 0.3) -- (-0.3, 0); % perna esq
+        \draw (0, 0.3) -- (0.3, 0); % perna dir
+        \node[font=\tiny] at (0, -0.2) {Usuário};
+        
+        % Caso de Uso
+        \draw[fill=blue!10] (2.2, 0.6) ellipse (1cm and 0.4cm);
+        \node[align=center, font=\tiny] (uc) at (2.2, 0.6) {Fazer Login};
+        
+        % Ligação
+        \draw[->, thick] (0.4, 0.6) -- (1.2, 0.6);
+      \end{tikzpicture}
+
+    % Coluna 2: Diagrama de Estados
+    \column{0.5\textwidth}
+      \centering
+      \textbf{\footnotesize 3. Diagrama de Estados} \\
+      \vspace{0.1cm}
+      \begin{tikzpicture}[
+        state/.style={draw, thick, rounded corners, fill=green!10, text width=1.6cm, align=center, font=\tiny, minimum height=0.6cm}
+      ]
+        % Início
+        \node[circle, fill=black, minimum size=0.25cm, inner sep=0pt] (start) at (0, 2.5) {};
+        % Estados
+        \node[state] (s1) at (0, 1.2) {Aguardando};
+        \node[state] (s2) at (0, -0.3) {Processando};
+        % Fim
+        \node[circle, draw, thick, minimum size=0.35cm, inner sep=0pt] (end) at (0, -1.6) {};
+        \node[circle, fill=black, minimum size=0.2cm, inner sep=0pt] (enddot) at (0, -1.6) {};
+        
+        % Transições
+        \draw[->, thick] (start) -- (s1);
+        \draw[->, thick] (s1) -- node[right, font=\tiny] {evento()} (s2);
+        \draw[->, thick] (s2) -- (end);
+      \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Aplicação da UML}
+  \begin{columns}
+    \column{0.5\textwidth}
+      \begin{itemize}
+        \item \textbf{Modelos de Requisitos:} Utilizada para entender e documentar o que o sistema deve fazer.
+        \item \textbf{Modelos de Projeto:} Utilizada para especificar como o sistema será construído.
+        \item \textbf{Aprendizado:} Conhecer as regras básicas de notação e modelagem UML é fundamental para desenvolvedores.
+      \end{itemize}
+    \column{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[
+        doc/.style={draw, thick, fill=green!10, text width=2.5cm, align=center, font=\scriptsize, minimum height=1cm},
+        umlbox/.style={draw, thick, fill=blue!20, text width=2cm, align=center, font=\bfseries\footnotesize, rounded corners},
+        arrow/.style={->, thick}
+      ]
+        \node[doc] (req) at (0, 2.5) {Modelos de \\ Requisitos};
+        \node[umlbox] (uml) at (0, 1.25) {Notações \\ UML};
+        \node[doc] (proj) at (0, 0) {Modelos de \\ Projeto};
+        
+        \draw[arrow] (req) -- (uml);
+        \draw[arrow] (uml) -- (proj);
+      \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Fases do Processo Unificado}
+  \centering
+  \resizebox{0.6\textwidth}{!}{
+  \begin{tikzpicture}[
+    box/.style={draw, fill=white, thick, text width=2.8cm, align=center, font=\sffamily, minimum height=0.8cm},
+    phase/.style={font=\sffamily\bfseries\small},
+    conn/.style={thick}
+  ]
+    
+    % Atividades Genéricas
+    \node[box] (com) at (-4, 1) {comunicação};
+    \node[box] (plan) at (-1, 3) {planejamento};
+    \node[box] (mod) at (3, 3) {modelagem};
+    \node[box] (cons) at (4, -1) {construção};
+    \node[box] (ent) at (-1, -3) {entrega};
+    \node[box, font=\sffamily\small] (inc) at (-4, -5.5) {incremento \\ de \textit{software}};
+    
+    % Fases do PU
+    \node[phase] (concep) at (-3, 4.5) {Concepção};
+    \node[phase] (elab) at (1.5, 5.5) {Elaboração};
+    \node[phase] (constru) at (5.5, -3) {Construção};
+    \node[phase] (trans) at (2, -5) {Transição};
+    \node[phase] (prod) at (-2, -7) {Produção};
+    
+    % Conexões das Fases para Atividades
+    \draw[conn] (concep) -- (com.north);
+    \draw[conn] (concep) -- (plan.north west);
+    
+    \draw[conn] (elab) -- (plan.north east);
+    \draw[conn] (elab) -- (mod.north west);
+    
+    \draw[conn] (constru) -- (cons.south);
+    
+    \draw[conn] (trans) -- (ent.south east);
+    \draw[conn] (trans) -- (cons.south west);
+    
+    \draw[conn] (prod) -- (inc.south);
+    
+    % Setas Curvas do Ciclo (Fluxo de Processo)
+    \draw[->, line width=6pt, gray!30] (com.north) to[bend left=20] (plan.west);
+    \draw[->, line width=6pt, gray!30] (plan.east) to[bend left=15] (mod.west);
+    \draw[->, line width=6pt, gray!30] (mod.south) to[bend left=20] (cons.north);
+    \draw[->, line width=6pt, gray!30] (cons.south) to[bend left=20] (ent.east);
+    \draw[->, line width=6pt, gray!30] (ent.west) to[bend left=30] (com.south);
+    
+    % Seta de Saída
+    \draw[->, line width=6pt, gray!30] (ent.south west) to[bend right=20] node[left, black, font=\scriptsize, xshift=-0.1cm] {Versão} (inc.north);
+    
+  \end{tikzpicture}
+  }
+\end{frame}
+
+\newcommand{\pumapcolors}[6]{%
+  \def\colA{#2}\def\colB{#3}\def\colC{#4}\def\colD{#5}\def\colE{#6}%
+}
+\newcommand{\pumap}[1]{%
+  \ifcase#1\or
+    \pumapcolors{#1}{blue!40}{blue!5}{blue!5}{blue!5}{blue!5}%
+  \or
+    \pumapcolors{#1}{blue!5}{blue!40}{blue!5}{blue!5}{blue!5}%
+  \or
+    \pumapcolors{#1}{blue!5}{blue!5}{blue!40}{blue!5}{blue!5}%
+  \or
+    \pumapcolors{#1}{blue!5}{blue!5}{blue!5}{blue!40}{blue!5}%
+  \or
+    \pumapcolors{#1}{blue!5}{blue!5}{blue!5}{blue!5}{blue!40}%
+  \fi
+  \vspace{0.2cm}
+  \begin{center}
+  \begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
+    \tikzstyle{p}=[draw, thick, rounded corners, minimum width=2cm, minimum height=0.6cm, align=center, font=\sffamily\scriptsize]
+    \tikzstyle{a}=[->, thick]
+    
+    \node[p, fill=\colA] (p1) at (0,0) {Concepção};
+    \node[p, fill=\colB] (p2) at (2.5,0) {Elaboração};
+    \node[p, fill=\colC] (p3) at (5.0,0) {Construção};
+    \node[p, fill=\colD] (p4) at (7.5,0) {Transição};
+    \node[p, fill=\colE] (p5) at (10.0,0) {Produção};
+    
+    \draw[a] (p1) -- (p2);
+    \draw[a] (p2) -- (p3);
+    \draw[a] (p3) -- (p4);
+    \draw[a] (p4) -- (p5);
+  \end{tikzpicture}
+  \end{center}
+  \vspace{0.2cm}
+}
+
+\begin{frame}{Fase de Concepção (PU)}
+  \pumap{1}
+  \begin{itemize}
+    \item \textbf{Foco:} Comunicação com o cliente e planejamento.
+    \item \textbf{Requisitos:} Descritos em um conjunto de casos de uso preliminares.
+    \item \textbf{Arquitetura:} Define recursos e funções esperados por cada categoria de usuário.
+    \item \textbf{Planejamento:} Identifica recursos, avalia os principais riscos e define um cronograma preliminar para os incrementos.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Fase de Elaboração (PU)}
+  \pumap{2}
+  \begin{itemize}
+    \item \textbf{Foco:} Atividades de planejamento e modelagem.
+    \item \textbf{Ações:} Refina e expande os casos de uso preliminares.
+    \item \textbf{Arquitetura Base:} Criação considerando cinco visões: modelo de caso de uso, análise, projeto, implementação e entrega.
+    \item \textbf{Ajustes:} Normalmente, as modificações no planejamento preliminar são feitas nesta fase.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Fase de Construção (PU)}
+  \pumap{3}
+  \begin{itemize}
+    \item \textbf{Foco:} Idêntica à atividade de construção do processo genérico.
+    \item \textbf{Implementação:} Código-fonte para todos os recursos do incremento de software.
+    \item \textbf{Testes e Integração:} Testes de unidade para componentes, montagem e testes de integração.
+    \item \textbf{Aceitação:} Casos de uso formam pacotes de testes executados antes da próxima fase.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Fase de Transição (PU)}
+  \pumap{4}
+  \begin{itemize}
+    \item \textbf{Foco:} Últimos estágios de construção e primeira parte de emprego genérico (entrega e feedback).
+    \item \textbf{Testes Beta:} Software entregue aos usuários para avaliação.
+    \item \textbf{Feedback:} Relata defeitos e mudanças necessárias.
+    \item \textbf{Conclusão:} O incremento torna-se uma versão utilizável do software.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Fase de Produção e Adaptação (PU)}
+  \pumap{5}
+  \begin{itemize}
+    \item \textbf{Produção:} Coincide com a atividade de entrega genérica.
+      \begin{itemize}
+        \item Monitora o uso contínuo, provê suporte, gere relatórios de defeitos e mudanças.
+      \end{itemize}
+    \item \textbf{Concomitância:} Fases podem ocorrer de forma simultânea e escalonada.
+    \item \textbf{Adaptação:} A equipe adapta o processo (ações, tarefas, artefatos) às suas necessidades; nem toda tarefa é conduzida em todos os projetos.
+  \end{itemize}
+\end{frame}
+
+\section{Modelo Cascata}
+
+\begin{frame}{Modelo Cascata: Quando utilizar?}
+  \begin{itemize}
+    \item \textbf{Requisitos Compreendidos:} Quando os requisitos de um problema são bem definidos e razoavelmente estáveis.
+    \item \textbf{Fluxo Linear:} O trabalho flui da comunicação à entrega de modo linear.
+    \item \textbf{Aperfeiçoamentos:} Comum em adaptações bem-definidas de sistemas existentes (ex.: adaptação em software contábil devido a novas normas).
+    \item \textbf{Projetos Novos:} Pode ocorrer em novos esforços de desenvolvimento, de forma restrita.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Modelo Cascata: O que é?}
+  \begin{itemize}
+    \item Também chamado de \textbf{modelo sequencial linear}.
+    \item Sugere uma abordagem sequencial e sistemática para o desenvolvimento de software.
+    \item \textbf{Fases principais:}
+      \begin{enumerate}
+        \item Especificação dos requisitos do cliente.
+        \item Planejamento.
+        \item Modelagem.
+        \item Construção.
+        \item Entrega e Suporte contínuo do software concluído.
+      \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Modelo Cascata: Histórico e Críticas}
+  \begin{itemize}
+    \item \textbf{Histórico:} É o paradigma mais antigo da engenharia de software (mais de cinco décadas).
+    \item \textbf{Eficácia Questionada:} Ao longo do tempo, as críticas a esse modelo de processo cresceram.
+    \item \textbf{Mudança de Cenário:} Devido às características dinâmicas dos projetos modernos, até mesmo seus defensores mais árduos questionam sua eficácia nos dias atuais.
+  \end{itemize}
+\end{frame}
+
+\section{Comparação entre Modelos}
+
+\begin{frame}{Comparação entre Modelos de Processo (Parte 1)}
+  \vspace{-0.2cm}
+  {\scriptsize
+  \begin{tabular}{|p{1.8cm}|p{4cm}|p{4cm}|}
+    \hline
+    \textbf{Modelo} & \textbf{Prós} & \textbf{Contras} \\
+    \hline
+    \textbf{Cascata} &
+    \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+      \item Fácil de entender e planejar
+      \item Funciona para projetos pequenos e bem compreendidos
+      \item Análise e teste simples e diretos
+    \end{itemize} &
+    \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+      \item Não se adapta bem a mudanças
+      \item Teste ocorre nas fases finais
+      \item Aprovação do cliente vem no final
+    \end{itemize} \\
+    \hline
+    \textbf{Prototipação} &
+    \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+      \item Impacto de alterações nos requisitos é reduzido
+      \item Cliente se envolve desde o início
+      \item Funciona bem para projetos pequenos
+      \item Probabilidade de rejeição reduzida
+    \end{itemize} &
+    \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+      \item Envolvimento do cliente pode causar atrasos
+      \item Tentação de ``embalar'' o protótipo
+      \item Desperdício de trabalho em protótipo descartável
+      \item Difícil de planejar e gerenciar
+    \end{itemize} \\
+    \hline
+  \end{tabular}
+  }
+\end{frame}
+
+\begin{frame}{Comparação entre Modelos de Processo (Parte 2)}
+  \vspace{-0.2cm}
+  {\scriptsize
+  \begin{tabular}{|p{1.8cm}|p{4cm}|p{4cm}|}
+    \hline
+    \textbf{Modelo} & \textbf{Prós} & \textbf{Contras} \\
+    \hline
+    \textbf{Espiral} &
+    \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+      \item Envolvimento contínuo dos clientes
+      \item Riscos de desenvolvimento gerenciados
+      \item Apropriado para projetos grandes e complexos
+      \item Funciona bem para artefatos extensíveis
+    \end{itemize} &
+    \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+      \item Falhas na análise de risco podem comprometer o projeto
+      \item Projeto pode ser difícil de gerenciar
+      \item Exige equipe especializada
+    \end{itemize} \\
+    \hline
+    \textbf{Processo Unificado} &
+    \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+      \item Documentação de alta qualidade enfatizada
+      \item Envolvimento contínuo dos clientes
+      \item Adapta-se a alterações nos requisitos
+      \item Funciona bem para projetos de manutenção
+    \end{itemize} &
+    \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+      \item Casos de uso nem sempre são precisos
+      \item Integração de incrementos é complicada
+      \item Sobreposição de fases pode causar problemas
+      \item Exige equipe especializada
+    \end{itemize} \\
+    \hline
+  \end{tabular}
+  }
+\end{frame}
+
+\section{Dualidade Produto e Processo}
+
+\begin{frame}{Processo Fraco vs. Confiança Excessiva}
+  \begin{columns}
+    \column{0.5\textwidth}
+      \begin{itemize}
+        \item Se o \textbf{processo for fraco}, o produto final sofrerá consequências.
+        \item Uma \textbf{confiança excessiva e obsessiva} no processo é igualmente perigosa.
+        \item Margaret Davis [Dav95a]: a cada $\sim$10 anos, a comunidade de software redefine ``o problema'', mudando o foco de itens do \textit{produto} para itens do \textit{processo}.
+      \end{itemize}
+    \column{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.8, transform shape]
+        % Pêndulo
+        \draw[thick, gray] (0, 3) -- (0, 3.2) -- (3, 3.2) -- (3, 3);
+        \fill[gray] (1.5, 3.2) circle (0.08);
+        \draw[thick] (1.5, 3.2) -- (0.3, 1.2);
+        \fill[blue!60] (0.3, 1.2) circle (0.25);
+        \draw[thick, dashed, gray!50] (1.5, 3.2) -- (2.7, 1.2);
+        \draw[gray!50] (2.7, 1.2) circle (0.25);
+        
+        % Labels
+        \node[font=\scriptsize\bfseries, below] at (0.3, 0.8) {Processo};
+        \node[font=\scriptsize\bfseries, below, gray!60] at (2.7, 0.8) {Produto};
+        \node[font=\tiny, text width=2.5cm, align=center] at (1.5, 0) {O pêndulo oscila entre os dois extremos};
+      \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{A Dualidade Produto e Processo}
+  \begin{columns}
+    \column{0.5\textwidth}
+      \begin{itemize}
+        \item As oscilações entre foco em produto e processo \textbf{não resolvem ``o problema''}.
+        \item Produto e processo devem ser tratados como uma \textbf{dualidade} (coexistência), não como uma \textbf{dicotomia} (oposição).
+        \item Não se pode compreender o artefato completo olhando \textit{apenas} como processo ou \textit{apenas} como produto.
+        \item A reutilização de produtos aumenta a satisfação e reforça a urgência de aceitar essa dualidade.
+      \end{itemize}
+    \column{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85, transform shape]
+        % Círculos sobrepostos (dualidade)
+        \draw[thick, fill=blue!15, fill opacity=0.7] (-0.6, 0) circle (1.3);
+        \draw[thick, fill=green!15, fill opacity=0.7] (0.6, 0) circle (1.3);
+        
+        \node[font=\scriptsize\bfseries] at (-1.2, 0) {Processo};
+        \node[font=\scriptsize\bfseries] at (1.2, 0) {Produto};
+        \node[font=\tiny\bfseries, text width=1cm, align=center] at (0, 0) {Dualidade};
+        
+        % Setas externas
+        \draw[->, thick, blue!60] (-1.2, -1.6) -- (-1.2, -0.9);
+        \node[font=\tiny, text width=1.5cm, align=center] at (-1.2, -2) {Atividades criativas};
+        
+        \draw[->, thick, green!60] (1.2, -1.6) -- (1.2, -0.9);
+        \node[font=\tiny, text width=1.5cm, align=center] at (1.2, -2) {Artefatos reutilizáveis};
+      \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Satisfação Criativa no Software}
+  \begin{itemize}
+    \item As pessoas obtêm satisfação tanto do \textbf{processo criativo} quanto do \textbf{produto final}.
+    \item \textbf{Analogias:}
+      \begin{itemize}
+        \item Um \textit{artista} sente prazer com suas pinceladas e com o quadro finalizado.
+        \item Um \textit{escritor} sente prazer com a busca da metáfora e com o livro concluído.
+      \end{itemize}
+    \item Como \textbf{profissional de software criativo}, deve-se extrair satisfação do processo \textit{e} do produto final.
+    \item A \textbf{dualidade produto e processo} é um elemento importante para manter pessoas criativas engajadas à medida que a engenharia de software evolui.
+  \end{itemize}
+\end{frame}
+
+\end{document}

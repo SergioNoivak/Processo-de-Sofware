@@ -1,0 +1,1626 @@
+\documentclass[9pt]{beamer}
+\mode<presentation>
+
+% Theme choice:
+\usetheme{Madrid}%Darmstadt 
+\usepackage{xcolor}
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mRed}{rgb}{0.6,0,0}
+\usecolortheme[RGB={0,100,50}]{structure}
+ \usefonttheme{structurebold} 
+\setbeamercovered{invisible}
+%\setbeamertemplate{navigation symbols}{}
+\usepackage{dynblocks}
+\usepackage{textpos}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{
+  arrows.meta,
+  positioning,
+  calc,
+  fit,
+  shapes.geometric,
+  shapes.misc
+}
+\newtheorem{teorema}{Teorema}\usepackage{mathtools}
+\renewcommand{\proofname}{Prova}
+\usepackage[portuguese]{babel}
+
+\uselanguage{Portuguese}
+\languagepath{Portuguese}
+
+\deftranslation[to=Portuguese]{Theorem}{Teorema}
+\deftranslation[to=Portuguese]{Lemma}{Lema}
+\deftranslation[to=Portuguese]{Corollary}{Corolário}
+\deftranslation[to=Portuguese]{Proof}{Prova}
+
+\usepackage{dutchcal}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage[affil-it]{authblk} 
+\usepackage{etoolbox}
+\usepackage{lmodern}
+\usepackage[pscoord]{eso-pic}
+\usepackage{hyperref}
+
+\makeatletter
+\patchcmd{\@maketitle}{\LARGE \@title}{\fontsize{18}{19.2}\selectfont\@title}{}{}
+\makeatother
+
+\renewcommand\Authfont{\fontsize{12}{14.4}\selectfont}
+\renewcommand\Affilfont{\fontsize{9}{10.8}\itshape}
+
+% Estilos TikZ reutilizáveis (tema verde da apresentação)
+\tikzset{
+  softbox/.style={
+    draw=structure.fg,
+    fill=structure.fg!12,
+    rounded corners=3pt,
+    align=center,
+    font=\small,
+    minimum height=0.9cm,
+    inner sep=4pt
+  },
+  softboxalert/.style={
+    draw=mRed,
+    fill=mRed!10,
+    rounded corners=3pt,
+    align=center,
+    font=\small,
+    minimum height=0.9cm,
+    inner sep=4pt
+  },
+  softcore/.style={
+    draw=structure.fg,
+    fill=structure.fg!25,
+    circle,
+    align=center,
+    font=\bfseries\small,
+    minimum size=1.55cm,
+    inner sep=2pt
+  },
+  softarrow/.style={
+    -{Latex[length=2.2mm]},
+    thick,
+    structure.fg
+  },
+  softarrowalert/.style={
+    -{Latex[length=2.2mm]},
+    thick,
+    mRed
+  },
+  softlabel/.style={font=\scriptsize\bfseries, text=structure.fg},
+  % Mockups de interface gráfica
+  guiwin/.style={
+    draw=#1!70!black,
+    fill=white,
+    rounded corners=2pt,
+    inner sep=0pt,
+    thick
+  },
+  guibar/.style={
+    draw=none,
+    fill=#1,
+    minimum height=0.32cm,
+    inner sep=1pt,
+    font=\tiny\bfseries,
+    text=white,
+    anchor=north west
+  },
+  guibtn/.style={
+    circle,
+    fill=#1,
+    minimum size=0.14cm,
+    inner sep=0pt
+  },
+  guiphone/.style={
+    draw=#1!80!black,
+    fill=black!85,
+    rounded corners=6pt, 
+    thick,
+    inner sep=2pt
+  },
+  qcard/.style={
+    draw=structure.fg!70!black,
+    fill=structure.fg!5,
+    rounded corners=4pt,
+    thick,
+    text width=4.8cm,
+    minimum height=1.5cm,
+    align=left,
+    inner sep=6pt
+  }
+}
+
+% Title page details: 
+\title[Presentation]{Processo de Registro de Software} %add title
+
+\institute[UniRV]{\large PROCESSO DE SOFTWARE --- Professor: Me. Sergio Souza Novak --- Faculdade de Engenharia de Software}
+% \titlegraphic{\includegraphics[width=5cm]{msu.eps}}
+\titlegraphic{\includegraphics[width=5cm]{Universidade_de_Rio_Verde.jpg}}
+\date{}
+ 
+% Logo only on title page
+%\logo{\includegraphics[width=1cm,keepaspectratio]{Logo.png}}
+
+
+\begin{document}
+
+% Title page frame
+\frame[plain]{\titlepage}
+%logo
+\AddToShipoutPictureFG{
+    \put(\LenToUnit{.92\paperwidth},
+    \LenToUnit{.185\paperheight})
+    {\vtop{{\null}
+    \makebox{\includegraphics[width=.8cm,keepaspectratio]{Universidade_de_Rio_Verde.jpg}}}}}
+
+\begin{frame}{Sumário}
+  \tableofcontents
+\end{frame}
+
+\section{Introdução: Um Caso Prático}
+
+\begin{frame}{O Dilema da Autoria de Software}
+  \begin{center}
+    \textbf{Imagine a seguinte situação real:}\\[0.2cm]
+    \large\color{structure.fg}
+    ``Você desenvolveu um sistema inovador durante seis meses. \\
+    Amanhã outra empresa lança um sistema aparentemente idêntico. \\
+    Como você provaria que o código original já existia e é seu?''
+  \end{center}
+  
+  \vspace{0.3cm}
+  
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+      % Left Side: Seu Sistema
+      \begin{scope}[shift={(-3,0.5)}]
+        \node[guiwin=structure.fg, minimum width=3.4cm, minimum height=2.2cm] (winA) {};
+        \node[guibar=structure.fg, minimum width=3.4cm] (barA) at (winA.north west) {\; meu\_sistema.exe};
+        \node[guibtn=red!80!black] at ($(barA.north west) + (0.2,-0.16)$) {};
+        \node[guibtn=yellow!80!black] at ($(barA.north west) + (0.45,-0.16)$) {};
+        \node[guibtn=mGreen!80!black] at ($(barA.north west) + (0.7,-0.16)$) {};
+        \node[align=center, font=\tiny\ttfamily] at ($(winA.center) - (0,0.1)$) {
+          int main() \{\\
+          \quad // 6 meses\\
+          \quad // de trabalho...\\
+          \}
+        };
+        \node[softbox, below=0.1cm of winA, text width=3.2cm, font=\scriptsize] {
+          \textbf{Seu Código (Original)}\\
+          6 meses de dedicação
+        };
+      \end{scope}
+
+      % Right Side: Concorrente
+      \begin{scope}[shift={(3,0.5)}]
+        \node[guiwin=mRed, minimum width=3.4cm, minimum height=2.2cm] (winB) {};
+        \node[guibar=mRed, minimum width=3.4cm] (barB) at (winB.north west) {\; sistema\_clone.exe};
+        \node[guibtn=red!80!black] at ($(barB.north west) + (0.2,-0.16)$) {};
+        \node[guibtn=yellow!80!black] at ($(barB.north west) + (0.45,-0.16)$) {};
+        \node[guibtn=mGreen!80!black] at ($(barB.north west) + (0.7,-0.16)$) {};
+        \node[align=center, font=\tiny\ttfamily] at ($(winB.center) - (0,0.1)$) {
+          int main() \{\\
+          \quad // Cópia idêntica?\\
+          \quad // Lançado amanhã\\
+          \}
+        };
+        \node[softboxalert, below=0.1cm of winB, text width=3.2cm, font=\scriptsize] {
+          \textbf{Outra Empresa (Clone)}\\
+          Lançamento: Amanhã!
+        };
+      \end{scope}
+
+      % Center Clash / Question
+      \node[circle, draw=mRed, fill=mRed!10, thick, align=center, font=\bfseries\small, inner sep=3pt] (clash) at (0, 0.4) {
+        Conflito!\\
+        Como\\
+        Provar?
+      };
+      
+      % Arrows
+      \draw[softarrowalert, dashed] (winA.east) -- (clash.west);
+      \draw[softarrowalert, dashed] (winB.west) -- (clash.east);
+
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Perguntas para Reflexão (Debate com a Turma)}
+  \begin{center}
+    \small\bfseries Antes de começarmos, o que você acha sobre estas questões?
+  \end{center}
+  \vspace{0.1cm}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+      
+      % Card 1: Propriedade Intelectual
+      \begin{scope}[shift={(0,3.6)}]
+        \node[qcard] (c1) {
+          \hspace{0.7cm}\parbox{3.7cm}{\raggedright
+            \textbf{1. Código é PI?}\\
+            \scriptsize O código fonte é considerado propriedade intelectual?
+          }
+        };
+        % Icon: Document
+        \draw[thick, structure.fg] ($(c1.west)+(0.25,0.2)$) -- ($(c1.west)+(0.25,-0.2)$) -- ($(c1.west)+(0.55,-0.2)$) -- ($(c1.west)+(0.55,0.1)$) -- ($(c1.west)+(0.45,0.2)$) -- cycle;
+        \draw[thick, structure.fg] ($(c1.west)+(0.45,0.2)$) -- ($(c1.west)+(0.45,0.1)$) -- ($(c1.west)+(0.55,0.1)$);
+      \end{scope}
+
+      % Card 2: Registro de Software
+      \begin{scope}[shift={(5.6,3.6)}]
+        \node[qcard] (c2) {
+          \hspace{0.7cm}\parbox{3.7cm}{\raggedright
+            \textbf{2. Registro Necessário?}\\
+            \scriptsize É preciso registrar o software para estar protegido por lei?
+          }
+        };
+        % Icon: Shield
+        \draw[thick, structure.fg, fill=structure.fg!10] ($(c2.west)+(0.4,0.18)$) -- ($(c2.west)+(0.2,0.05)$) -- ($(c2.west)+(0.2,-0.1)$) 
+          to[out=-90,in=-180] ($(c2.west)+(0.4,-0.25)$) 
+          to[out=0,in=-90] ($(c2.west)+(0.6,-0.1)$) -- ($(c2.west)+(0.6,0.05)$) -- cycle;
+      \end{scope}
+
+      % Card 3: Git como Prova
+      \begin{scope}[shift={(0,1.8)}]
+        \node[qcard] (c3) {
+          \hspace{0.7cm}\parbox{3.7cm}{\raggedright
+            \textbf{3. Git serve de Prova?}\\
+            \scriptsize O histórico de commits do Git/GitHub serve em tribunal?
+          }
+        };
+        % Icon: Git Branch
+        \draw[thick, structure.fg] ($(c3.west)+(0.3,-0.2)$) -- ($(c3.west)+(0.3,0.2)$);
+        \draw[thick, structure.fg] ($(c3.west)+(0.3,0.0)$) to[out=45,in=180] ($(c3.west)+(0.5,0.2)$);
+        \draw[fill=structure.fg] ($(c3.west)+(0.3,-0.2)$) circle (2pt);
+        \draw[fill=structure.fg] ($(c3.west)+(0.3,0.2)$) circle (2pt);
+        \draw[fill=structure.fg] ($(c3.west)+(0.5,0.2)$) circle (2pt);
+      \end{scope}
+
+      % Card 4: Identificação por Hash
+      \begin{scope}[shift={(5.6,1.8)}]
+        \node[qcard] (c4) {
+          \hspace{0.7cm}\parbox{3.7cm}{\raggedright
+            \textbf{4. Identificação por Hash?}\\
+            \scriptsize Como um hash SHA-256 garante a identidade do arquivo?
+          }
+        };
+        % Icon: Hash
+        \node[font=\large\bfseries, structure.fg] at ($(c4.west)+(0.4,0)$) {\#};
+      \end{scope}
+
+      % Card 5: Registro no INPI
+      \begin{scope}[shift={(0,0)}]
+        \node[qcard] (c5) {
+          \hspace{0.7cm}\parbox{3.7cm}{\raggedright
+            \textbf{5. INPI é Obrigatório?}\\
+            \scriptsize Registrar no INPI é obrigatório ou apenas recomendado?
+          }
+        };
+        % Icon: Seal
+        \draw[thick, structure.fg, fill=structure.fg!10] ($(c5.west)+(0.4,0)$) circle (0.18);
+        \draw[thick, structure.fg] ($(c5.west)+(0.4,0)$) circle (0.13);
+        \draw[thick, structure.fg] ($(c5.west)+(0.4,-0.18)$) -- ($(c5.west)+(0.35,-0.3)$) -- ($(c5.west)+(0.45,-0.3)$) -- cycle;
+      \end{scope}
+
+      % Card 6: Desenvolvimento na Empresa
+      \begin{scope}[shift={(5.6,0)}]
+        \node[qcard] (c6) {
+          \hspace{0.7cm}\parbox{3.7cm}{\raggedright
+            \textbf{6. Feito na Empresa?}\\
+            \scriptsize De quem são os direitos do código feito sob contrato de trabalho?
+          }
+        };
+        % Icon: Company Building
+        \draw[thick, structure.fg] ($(c6.west)+(0.25,-0.2)$) rectangle ($(c6.west)+(0.55,0.2)$);
+        \draw[thick, structure.fg, fill=structure.fg] ($(c6.west)+(0.35,-0.2)$) rectangle ($(c6.west)+(0.45,-0.05)$);
+        \draw[fill=structure.fg] ($(c6.west)+(0.3,0.05)$) rectangle ($(c6.west)+(0.35,0.12)$);
+        \draw[fill=structure.fg] ($(c6.west)+(0.45,0.05)$) rectangle ($(c6.west)+(0.5,0.12)$);
+      \end{scope}
+
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+\section{O que é Propriedade Intelectual? — 20 min}
+
+% =========================================================
+% SLIDE 1 — CONCEITO
+% =========================================================
+\begin{frame}{O que é Propriedade Intelectual?}
+
+  \begin{center}
+    \Large
+    \textbf{Propriedade Intelectual (PI)}
+  \end{center}
+
+  \vspace{0.4cm}
+
+  \begin{center}
+    \normalsize
+    É o conjunto de mecanismos jurídicos destinados a
+    \textbf{proteger criações intelectuais},
+    invenções e outros ativos resultantes da atividade humana.
+  \end{center}
+
+  \vspace{0.5cm}
+
+  \begin{columns}[T]
+
+    \column{0.31\textwidth}
+    \begin{block}{O que pode ser protegido?}
+      \small
+      \begin{itemize}
+        \item Invenções
+        \item Marcas
+        \item Obras artísticas
+        \item Textos e músicas
+        \item Programas de computador
+        \item Conhecimento estratégico
+      \end{itemize}
+    \end{block}
+
+    \column{0.31\textwidth}
+    \begin{block}{O que a proteção permite?}
+      \small
+      \begin{itemize}
+        \item Reconhecer a autoria
+        \item Controlar determinados usos
+        \item Impedir certas utilizações não autorizadas
+        \item Explorar economicamente o ativo
+      \end{itemize}
+    \end{block}
+
+    \column{0.31\textwidth}
+    \begin{block}{Qual é a ideia central?}
+      \small
+      A PI busca criar um equilíbrio entre:
+
+      \vspace{0.15cm}
+
+      \centering
+      \textbf{incentivar a criação}\\
+      $\Downarrow$\\
+      \textbf{proteger o criador}\\
+      $\Downarrow$\\
+      \textbf{beneficiar a sociedade}
+    \end{block}
+
+  \end{columns}
+
+\end{frame}
+
+
+% =========================================================
+% SLIDE 2 — FINALIDADE
+% =========================================================
+\begin{frame}{Para que serve a Propriedade Intelectual?}
+
+  \begin{center}
+    \normalsize
+    A proteção jurídica dos ativos intelectuais possui
+    \textbf{funções econômicas, sociais e culturais}.
+  \end{center}
+
+  \vspace{0.35cm}
+
+  \begin{columns}[T]
+
+    \column{0.48\textwidth}
+
+    \begin{block}{1. Incentivar a inovação}
+      \small
+      A possibilidade de obter proteção jurídica pode
+      estimular pessoas e empresas a investir tempo,
+      recursos e conhecimento no desenvolvimento de
+      novas soluções.
+    \end{block}
+
+    \vspace{0.2cm}
+
+    \begin{block}{2. Proteger o investimento}
+      \small
+      A criação de uma tecnologia, marca ou obra pode
+      exigir investimentos significativos. A PI oferece
+      instrumentos para proteger determinados resultados
+      desse investimento.
+    \end{block}
+
+    \column{0.48\textwidth}
+
+    \begin{block}{3. Permitir exploração econômica}
+      \small
+      Os direitos de PI podem ser utilizados para
+      comercializar, licenciar, transferir ou explorar
+      economicamente determinados ativos intelectuais.
+    \end{block}
+
+    \vspace{0.2cm}
+
+    \begin{block}{4. Promover conhecimento e cultura}
+      \small
+      A proteção também faz parte de um sistema que
+      busca estimular a produção científica, tecnológica,
+      artística e cultural.
+    \end{block}
+
+  \end{columns}
+
+  \vspace{0.35cm}
+
+  \begin{alertblock}{Ponto importante}
+    \small
+    \textbf{Propriedade Intelectual não significa simplesmente
+    ``ser dono de uma ideia''.} Cada modalidade possui
+    requisitos, limites, duração e formas de proteção próprios.
+  \end{alertblock}
+
+\end{frame}
+
+
+% =========================================================
+% SLIDE 3 — ORGANIZAÇÃO
+% =========================================================
+\begin{frame}{Como a Propriedade Intelectual se organiza?}
+
+  \begin{center}
+    \small
+    A PI não é um único direito. Ela reúne diferentes
+    \textbf{regimes jurídicos}, cada um voltado para determinados
+    tipos de criação ou ativo intelectual.
+  \end{center}
+
+  \vspace{0.35cm}
+
+  \begin{center}
+    \begin{tikzpicture}[
+      scale=0.85,
+      every node/.style={transform shape}
+    ]
+
+      % Centro
+      \node[
+        softcore,
+        minimum width=3.0cm,
+        minimum height=1.1cm,
+        fill=structure.fg!30
+      ] (pi) at (0,3.5) {
+        \textbf{Propriedade}\\
+        \textbf{Intelectual}
+      };
+
+      % Industrial
+      \node[
+        softbox,
+        text width=3.6cm,
+        minimum height=1.0cm,
+        align=center
+      ] (ind) at (-4,1.7) {
+        \textbf{Propriedade Industrial}\\
+        \scriptsize
+        Inovação, mercado e atividade empresarial
+      };
+
+      % Autoral
+      \node[
+        softbox,
+        text width=3.6cm,
+        minimum height=1.0cm,
+        align=center
+      ] (aut) at (0,1.7) {
+        \textbf{Direito Autoral}\\
+        \scriptsize
+        Obras intelectuais e criações artísticas
+      };
+
+      % Outros
+      \node[
+        softbox,
+        text width=3.6cm,
+        minimum height=1.0cm,
+        align=center
+      ] (out) at (4,1.7) {
+        \textbf{Outros regimes}\\
+        \scriptsize
+        Segredos, cultivares e outros ativos
+      };
+
+      % Setas
+      \draw[softarrow]
+        (pi.south) to[out=-150,in=90] (ind.north);
+
+      \draw[softarrow]
+        (pi.south) -- (aut.north);
+
+      \draw[softarrow]
+        (pi.south) to[out=-30,in=90] (out.north);
+
+      % Exemplos
+      \node[
+        draw=structure.fg!30,
+        fill=white,
+        rounded corners=3pt,
+        text width=3.6cm,
+        align=left,
+        font=\scriptsize,
+        inner sep=6pt
+      ] at (-4,0) {
+        \textbf{Exemplos}\\
+        $\bullet$ Patentes\\
+        $\bullet$ Marcas\\
+        $\bullet$ Desenhos industriais\\
+        $\bullet$ Indicações geográficas
+      };
+
+      \node[
+        draw=structure.fg!30,
+        fill=white,
+        rounded corners=3pt,
+        text width=3.6cm,
+        align=left,
+        font=\scriptsize,
+        inner sep=6pt
+      ] at (0,0) {
+        \textbf{Exemplos}\\
+        $\bullet$ Livros e textos\\
+        $\bullet$ Músicas\\
+        $\bullet$ Filmes e imagens\\
+        $\bullet$ Programas de computador
+      };
+
+      \node[
+        draw=structure.fg!30,
+        fill=white,
+        rounded corners=3pt,
+        text width=3.6cm,
+        align=left,
+        font=\scriptsize,
+        inner sep=6pt
+      ] at (4,0) {
+        \textbf{Exemplos}\\
+        $\bullet$ Segredo empresarial\\
+        $\bullet$ Informações confidenciais\\
+        $\bullet$ Know-how\\
+        $\bullet$ Cultivares
+      };
+
+    \end{tikzpicture}
+  \end{center}
+
+\end{frame}
+
+
+% =========================================================
+% SLIDE 4 — PROPRIEDADE INDUSTRIAL
+% =========================================================
+\begin{frame}{Propriedade Industrial}
+
+  \begin{center}
+    \small
+    A \textbf{Propriedade Industrial} está especialmente relacionada
+    à inovação, à atividade empresarial e à identificação de produtos
+    e serviços no mercado.
+  \end{center}
+
+  \vspace{0.1cm}
+
+  \begin{columns}[T]
+
+    \column{0.48\textwidth}
+
+    \begin{block}{Patentes}
+      \small
+      Protegem determinadas soluções técnicas que atendam
+      aos requisitos legais.
+
+      \vspace{0.1cm}
+
+      \textbf{Exemplos:}
+      novas máquinas, processos, produtos ou melhorias
+      tecnológicas.
+    \end{block}
+
+    \begin{block}{Marcas}
+      \small
+      Identificam e distinguem produtos ou serviços
+      de uma empresa em relação aos seus concorrentes.
+
+      \vspace{0.1cm}
+
+      \textbf{Exemplos:}
+      nomes, sinais e elementos distintivos utilizados
+      no mercado.
+    \end{block}
+
+    \column{0.48\textwidth}
+
+    \begin{block}{Desenho Industrial}
+      \small
+      Relaciona-se aos aspectos ornamentais ou visuais
+      de um produto.
+
+      \vspace{0.1cm}
+
+      \textbf{Exemplos:}
+      forma, configuração ou composição visual.
+    \end{block}
+
+    \begin{block}{Indicação Geográfica}
+      \small
+      Relaciona determinado produto ou serviço a uma
+      origem geográfica, observados os requisitos legais.
+
+      \vspace{0.1cm}
+
+      \textbf{Exemplo:}
+      produtos reconhecidos por características
+      associadas à sua região de origem.
+    \end{block}
+
+  \end{columns}
+
+  \vspace{0.05cm}
+
+  \begin{alertblock}{Pergunta para a turma}
+    \small
+    \textbf{Qual é a diferença entre proteger uma invenção,
+    proteger uma marca e proteger a aparência de um produto?}
+  \end{alertblock}
+
+\end{frame}
+
+
+% =========================================================
+% SLIDE 5 — DIREITO AUTORAL E OUTROS
+% =========================================================
+\begin{frame}{Direito Autoral e outros mecanismos de proteção}
+
+  \begin{columns}[T]
+
+    \column{0.48\textwidth}
+
+    \begin{block}{Direito Autoral}
+      \small
+      Protege obras intelectuais resultantes da criação
+      humana, observados os requisitos e limites previstos
+      na legislação.
+
+      \vspace{0.15cm}
+
+      \textbf{Exemplos:}
+      \begin{itemize}
+        \item Livros e artigos;
+        \item Músicas;
+        \item Fotografias e imagens;
+        \item Filmes e outras obras audiovisuais;
+        \item Obras artísticas;
+        \item Programas de computador.
+      \end{itemize}
+    \end{block}
+
+    \column{0.48\textwidth}
+
+    \begin{block}{Outros mecanismos}
+      \small
+      Nem todo ativo intelectual se encaixa exclusivamente
+      em patente, marca ou direito autoral.
+
+      \vspace{0.15cm}
+
+      \begin{itemize}
+        \item \textbf{Segredo empresarial:} informações estratégicas
+        mantidas em sigilo;
+        \item \textbf{Know-how:} conhecimentos e experiências
+        relevantes para determinada atividade;
+        \item \textbf{Informações confidenciais:} dados cujo acesso
+        deve ser controlado;
+        \item \textbf{Cultivares:} proteção específica relacionada
+        a variedades vegetais.
+      \end{itemize}
+    \end{block}
+
+  \end{columns}
+
+  \vspace{0.25cm}
+
+  \begin{block}{Uma mesma inovação pode envolver diferentes direitos}
+    \small
+    Um produto tecnológico, por exemplo, pode envolver
+    \textbf{patente} para uma solução técnica,
+    \textbf{marca} para sua identificação,
+    \textbf{desenho industrial} para seu aspecto visual
+    e \textbf{direito autoral} para determinados elementos de software.
+  \end{block}
+
+\end{frame}
+\section{O que é Propriedade Intelectual? — 20 min}
+
+\begin{frame}{O que é Propriedade Intelectual?}
+  \begin{center}
+    \small
+    A \textbf{Propriedade Intelectual (PI)} é o conjunto de mecanismos jurídicos \\
+    destinados a proteger as criações do espírito humano.
+  \end{center}
+  \vspace{0.2cm}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+      % Central Root
+      \node[softcore, minimum size=2.0cm, fill=structure.fg!30, text width=2.4cm] (root) at (0,3.6) {
+        \centering\textbf{Propriedade\\Intelectual}
+      };
+
+      % Three Branches
+      % Branch 1: Industrial
+      \node[softbox, text width=3.3cm, minimum height=0.7cm] (industrial) at (-4,2.0) {
+        \textbf{Propriedade Industrial}
+      };
+      % Branch 2: Autoral
+      \node[softbox, text width=3.3cm, minimum height=0.7cm] (autoral) at (0,1.8) {
+        \textbf{Direito Autoral}
+      };
+      % Branch 3: Outros
+      \node[softbox, text width=3.3cm, minimum height=0.7cm] (outros) at (4,2.0) {
+        \textbf{Outros Mecanismos}
+      };
+
+      % Arrows from root
+      \draw[softarrow] (root.south) -- (autoral.north);
+      \draw[softarrow] (root.south) to[out=-150,in=90] (industrial.north);
+      \draw[softarrow] (root.south) to[out=-30,in=90] (outros.north);
+
+      % Details boxes below
+      \node[draw=structure.fg!40, fill=white, rounded corners=3pt, text width=3.3cm, align=left, font=\scriptsize, inner sep=6pt] (det_ind) at (-4, 0.0) {
+        $\bullet$ Patentes\\
+        $\bullet$ Marcas\\
+        $\bullet$ Desenhos industriais\\
+        $\bullet$ Indicações geográficas
+      };
+      
+      \node[draw=structure.fg!40, fill=white, rounded corners=3pt, text width=3.3cm, align=left, font=\scriptsize, inner sep=6pt] (det_aut) at (0, -0.3) {
+        $\bullet$ Textos, músicas e imagens\\
+        $\bullet$ Obras audiovisuais\\
+        $\bullet$ \textbf{Programas de}\\
+        \quad\textbf{computador} (Software)
+      };
+      
+      \node[draw=structure.fg!40, fill=white, rounded corners=3pt, text width=3.3cm, align=left, font=\scriptsize, inner sep=6pt] (det_out) at (4, 0.0) {
+        $\bullet$ Segredo comercial/industrial\\
+        $\bullet$ Informações confidenciais\\
+        $\bullet$ Cultivares (regime específico)
+      };
+
+      % Connecting lines
+      \draw[thick, structure.fg!50] (industrial.south) -- (det_ind.north);
+      \draw[thick, structure.fg!50] (autoral.south) -- (det_aut.north);
+      \draw[thick, structure.fg!50] (outros.south) -- (det_out.north);
+
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Qual desses mecanismos protege um aplicativo?}
+  \begin{center}
+    \textbf{Pergunta para a turma: ``Qual mecanismo protege um aplicativo?''}\\[0.2cm]
+    \small A resposta não é única! Um produto de software é protegido por múltiplos mecanismos simultâneos:
+  \end{center}
+  
+  \vspace{0.1cm}
+  
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+      % Smartphone
+      \node[guiphone=structure.fg, minimum width=2.2cm, minimum height=3.8cm] (phone) at (0,-0.4) {};
+      
+      % Screen
+      \node[draw=none, fill=white, minimum width=1.9cm, minimum height=3.2cm, rounded corners=2pt] (screen) at (phone.center) {};
+      
+      % App Header
+      \fill[structure.fg!20] ($(screen.north west)$) rectangle ($(screen.north east) - (0,0.5)$);
+      \node[font=\tiny\bfseries, structure.fg] at ($(screen.north) - (0,0.25)$) {Meu App};
+      
+      % App Logo
+      \draw[draw=structure.fg!70, fill=structure.fg!5, rounded corners=2pt, thick] ($(screen.center)+(-0.3,0.5)$) rectangle ($(screen.center)+(0.3,1.1)$);
+      \node[font=\small\bfseries, structure.fg] (logo) at ($(screen.center)+(0,0.8)$) {$\mathcal{A}$};
+      
+      % App Layout / UI
+      \draw[draw=black!20, fill=black!5, rounded corners=1pt] ($(screen.center)+(-0.7,-0.1)$) rectangle ($(screen.center)+(0.7,0.2)$);
+      \node[font=\tiny\bfseries, scale=0.7] (ui) at ($(screen.center)+(0,0.05)$) {[Comprar]};
+      
+      % Code block on screen
+      \node[align=left, font=\tiny\ttfamily, scale=0.6, text=black!70] (code) at ($(screen.center)-(0.0,0.8)$) {
+        if (pay) \{\\
+        \quad sha256(pwd);\\
+        \}
+      };
+
+      % Callouts
+      % 1. Marca (Trademark)
+      \node[softbox, text width=3.3cm, font=\scriptsize] (call_marca) at (-3.8, 1.2) {
+        \textbf{Marca e Logo}\\
+        Protege o nome e logotipo\\
+        \color{structure.fg}\textbf{Mecanismo: Marca}
+      };
+      \draw[softarrow, dashed] (call_marca.east) -- (logo.west);
+
+      % 2. Desenho Industrial
+      \node[softbox, text width=3.3cm, font=\scriptsize] (call_ui) at (3.8, 1.2) {
+        \textbf{Interface Gráfica (UI)}\\
+        Protege o design visual\\
+        \color{structure.fg}\textbf{Mecanismo: Desenho Ind.}
+      };
+      \draw[softarrow, dashed] (call_ui.west) -- (ui.east);
+
+      % 3. Direito Autoral (Source Code)
+      \node[softbox, text width=3.3cm, font=\scriptsize] (call_code) at (-3.8, -0.8) {
+        \textbf{Código-Fonte}\\
+        Protege a expressão do código\\
+        \color{structure.fg}\textbf{Mecanismo: Dir. Autoral}
+      };
+      \draw[softarrow, dashed] (call_code.east) -- (code.west);
+
+      % 4. Patente ou Segredo
+      \node[softbox, text width=3.3cm, font=\scriptsize] (call_patent) at (3.8, -0.8) {
+        \textbf{Algoritmo ou Processo}\\
+        Mecanismo interno secreto\\
+        \color{structure.fg}\textbf{Segredo ou Patente}
+      };
+      \draw[softarrow, dashed] (call_patent.west) -- (phone.east);
+
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Tabela Comparativa: Ramos e Aplicações}
+  \begin{center}
+    \small
+    \textbf{Tabela Comparativa dos Tipos de Propriedade Intelectual}
+  \end{center}
+  \vspace{0.2cm}
+  \begin{center}
+    \renewcommand{\arraystretch}{1.2}
+    \footnotesize
+    \begin{tabular}{lp{3.8cm}p{4.2cm}}
+      \toprule
+      \textbf{\color{structure.fg}Tipo} & \textbf{\color{structure.fg}O que protege?} & \textbf{\color{structure.fg}Exemplo em tecnologia} \\
+      \midrule
+      \textbf{Direito Autoral} & Obra/expressão & Código-fonte \\
+      \textbf{Marca} & Sinal distintivo & Nome e logotipo de um aplicativo \\
+      \textbf{Patente} & Invenção/solução técnica & Solução técnica patenteável \\
+      \textbf{Desenho Industrial} & Aspecto ornamental & Design industrial de um produto \\
+      \textbf{Segredo Comercial} & Informação confidencial & Algoritmo/estratégia mantida em segredo \\
+      \textbf{Registro de Software} & Programa de computador & Código/documentação do software \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Direito Autoral aplicado ao Software}
+  \begin{columns}[T]
+    \begin{column}{0.6\textwidth}
+      \begin{block}{Regras do Direito Autoral}
+        \small
+        \begin{itemize}
+          \item \textbf{Expressão vs. Ideia}: Protege o texto escrito do código, não a ideia ou a função do sistema.
+          \item \textbf{Aquisição de Direito}: A proteção nasce no momento da criação do código, independente de registro.
+          \item \textbf{Territorialidade}: Proteção internacional automática em mais de 170 países (Convenção de Berna).
+        \end{itemize}
+      \end{block}
+      \begin{block}{O papel do Registro}
+        \small
+        O registro do software no INPI é declaratório. Serve principalmente como \textbf{segurança jurídica} (prova de autoria e anterioridade).
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.38\textwidth}
+      \vspace{0.5cm}
+      \begin{center}
+        \begin{tikzpicture}[scale=0.8, every node/.style={transform shape}]
+          % Ideia
+          \node[draw=orange, fill=orange!10, rounded corners=3pt, text width=3.0cm, align=center, minimum height=1.0cm] (ideia) at (0,2.5) {
+            \textbf{\color{orange!80!black}Ideia ou Conceito}\\
+            \scriptsize Não protegida pelo Direito Autoral
+          };
+          
+          % Expressão
+          \node[softbox, text width=3.0cm, align=center, minimum height=1.0cm] (expressao) at (0,0) {
+            \textbf{Código Escrito}\\
+            \scriptsize Protegido automaticamente!
+          };
+          
+          \draw[softarrowalert, dashed] (ideia) -- (expressao) node[midway, right, text=mRed, font=\tiny\bfseries] {Codificação};
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Registro de Software vs. Patente}
+  \begin{center}
+    \large\color{mRed}\textbf{Diferença Fundamental!}\\
+    \small Registro de software \textbf{não é a mesma coisa} que patente de software.
+  \end{center}
+  
+  \vspace{0.2cm}
+  
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Registro de Software}
+        \small
+        \textbf{Ramo:} Direito Autoral\\
+        \textbf{O que protege:} A literalidade do código-fonte (texto escrito).\\
+        \textbf{Requisitos:} Originalidade na escrita.\\
+        \textbf{Processo:} Rápido, automático e declaratório no INPI.\\
+        \textbf{Duração:} 50 anos a partir do ano seguinte à criação.
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Patente de Software}
+        \small
+        \textbf{Ramo:} Propriedade Industrial\\
+        \textbf{O que protege:} A invenção/processo técnico (algoritmo associado a hardware).\\
+        \textbf{Requisitos:} Novidade, atividade inventiva e aplicação industrial.\\
+        \textbf{Processo:} Longo, com análise de mérito rigorosa pelo INPI.\\
+        \textbf{Duração:} 20 anos a partir do depósito.
+      \end{block}
+    \end{column}
+  \end{columns}
+  
+  \vspace{0.15cm}
+  \begin{center}
+    \scriptsize\color{structure.fg}\bfseries No Brasil, softwares em si (só o código) não são patenteáveis. Patenteia-se apenas invenções implementadas por computador.
+  \end{center}
+\end{frame}
+
+\begin{frame}{Marcas em Tecnologia}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{O que é uma Marca?}
+        \small
+        É o sinal visualmente perceptível que identifica e distingue os produtos ou serviços de uma empresa no mercado.
+      \end{block}
+      \begin{block}{Aplicação em Tecnologia}
+        \small
+        \begin{itemize}
+          \item Nome do aplicativo (ex: WhatsApp, Uber).
+          \item Logotipo ou ícone (ex: a maçã da Apple).
+          \item Slogans e elementos de identidade de marca.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.43\textwidth}
+      \vspace{0.3cm}
+      \begin{center}
+        \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+          % A mockup of brand logo box
+          \node[draw=structure.fg, fill=white, rounded corners=6pt, minimum width=2.8cm, minimum height=2.8cm, thick] (brand) at (0,0) {};
+          
+          % Draw an abstract nice logo inside
+          \draw[draw=structure.fg, fill=structure.fg!10, thick, rounded corners=3pt] ($(brand.center)-(0.6,0.3)$) rectangle ($(brand.center)+(0.6,0.9)$);
+          \node[font=\Large\bfseries, structure.fg] at ($(brand.center)+(0,0.3)$) {\textregistered};
+          
+          \node[font=\small\bfseries, text=structure.fg] at ($(brand.south)+(0,0.4)$) {Nome do App};
+          
+          \node[softbox, below=0.2cm of brand, text width=3.0cm, font=\scriptsize] {
+            \centering\textbf{Exclusividade Comercial}\\
+            Proteção pelo INPI
+          };
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Patentes de Soluções Técnicas}
+  \begin{columns}[T]
+    \begin{column}{0.58\textwidth}
+      \begin{block}{Conceito de Patente}
+        \small
+        É um título de propriedade temporária sobre uma invenção ou modelo de utilidade, outorgado pelo Estado.
+      \end{block}
+      \begin{block}{Requisitos de Patenteabilidade}
+        \small
+        \begin{itemize}
+          \item \textbf{Novidade}: Não existir no estado da técnica.
+          \item \textbf{Atividade Inventiva}: Não ser óbvio para um técnico no assunto.
+          \item \textbf{Aplicação Industrial}: Ser passível de fabricação.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.4\textwidth}
+      \vspace{0.5cm}
+      \begin{center}
+        \begin{tikzpicture}[scale=0.8, every node/.style={transform shape}]
+          % Gear icon or simple system
+          \draw[thick, structure.fg, fill=structure.fg!10] (0,1.8) circle (0.5cm);
+          \draw[thick, structure.fg, fill=white] (0,1.8) circle (0.2cm);
+          \foreach \a in {0, 45, 90, 135, 180, 225, 270, 315} {
+            \draw[thick, structure.fg] ($(0,1.8) + (\a:0.45)$) -- ($(0,1.8) + (\a:0.6)$);
+          }
+          
+          \node[softbox, text width=3.2cm, font=\scriptsize] (patent_box) at (0,0) {
+            \centering\textbf{Invenção Técnica}\\
+            Monopólio temporário de exploração (20 anos)
+          };
+          
+          \draw[softarrow] (0,1.2) -- (patent_box.north);
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Desenho Industrial e Design Visual}
+  \begin{columns}[T]
+    \begin{column}{0.58\textwidth}
+      \begin{block}{O que é o Desenho Industrial?}
+        \small
+        Protege o aspecto ornamental ou estético de um objeto tridimensional ou padrão bidimensional.
+      \end{block}
+      \begin{block}{Destaques Importantes}
+        \small
+        \begin{itemize}
+          \item Não protege a funcionalidade (esta é área de patentes).
+          \item Foca no design, linhas, contornos e cores do produto.
+          \item Em software, pode proteger layouts de telas, design de ícones ou interfaces gráficas originais (em alguns países).
+        \end{itemize}
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.4\textwidth}
+      \vspace{0.5cm}
+      \begin{center}
+        \begin{tikzpicture}[scale=0.8, every node/.style={transform shape}]
+          % Screen with interface design
+          \node[guiwin=structure.fg, minimum width=2.8cm, minimum height=1.8cm] (design) at (0,1.5) {};
+          \node[guibar=structure.fg, minimum width=2.8cm] at (design.north west) {\; UI Design};
+          
+          % Graphical curves inside screen
+          \draw[thick, structure.fg!50] ($(design.center)-(0.8,0.4)$) to[out=30,in=150] ($(design.center)+(0.8,0.4)$);
+          \draw[thick, structure.fg!80] ($(design.center)-(0.8,0.1)$) to[out=-20,in=200] ($(design.center)+(0.8,-0.1)$);
+          
+          \node[softbox, text width=3.2cm, font=\scriptsize] (desc) at (0,-0.2) {
+            \centering\textbf{Forma Estética}\\
+            Protege o visual e o design
+          };
+          
+          \draw[softarrow] (design.south) -- (desc.north);
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Segredo Comercial / Industrial}
+  \begin{columns}[T]
+    \begin{column}{0.58\textwidth}
+      \begin{block}{O que é o Segredo Comercial?}
+        \small
+        Qualquer informação de negócios confidencial que forneça a uma empresa uma vantagem competitiva sobre os concorrentes.
+      \end{block}
+      \begin{block}{Aplicações em Tecnologia}
+        \small
+        \begin{itemize}
+          \item Algoritmos internos de busca ou recomendação.
+          \item Estrutura de dados confidenciais de banco de dados.
+          \item Código backend proprietário não distribuído ao usuário.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.4\textwidth}
+      \vspace{0.5cm}
+      \begin{center}
+        \begin{tikzpicture}[scale=0.8, every node/.style={transform shape}]
+          % Lock shackle (handle)
+          \draw[ultra thick, structure.fg!80!black] (-0.3,1.5) -- (-0.3,2.0) arc(180:0:0.3) -- (0.3,1.5);
+          % Lock body
+          \draw[thick, fill=structure.fg!10, draw=structure.fg!80!black, rounded corners=2pt] (-0.5,0.7) rectangle (0.5,1.5);
+          % Keyhole
+          \draw[fill=structure.fg!80!black] (0,1.1) circle (0.08);
+          \draw[fill=structure.fg!80!black] (-0.04,1.1) -- (-0.08,0.85) -- (0.08,0.85) -- (0.04,1.1) -- cycle;
+          
+          \node[softbox, text width=3.2cm, font=\scriptsize] (desc) at (0,-0.4) {
+            \centering\textbf{Sem Registro Estatal}\\
+            Protegido por NDAs e segurança cibernética
+          };
+          
+          \draw[softarrow] (0,0.7) -- (desc.north);
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{O Mito da Patente de Algoritmo}
+  \begin{center}
+    \large\color{mRed}\textbf{Desconstruindo um erro comum:}\\
+    \large\color{structure.fg}``Posso patentear meu código porque inventei um algoritmo.''
+  \end{center}
+  
+  \vspace{0.2cm}
+  
+  \begin{block}{Por que essa afirmação está conceitualmente incorreta?}
+    \small
+    \begin{itemize}
+      \item \textbf{Algoritmos puros são abstrações}: Métodos matemáticos, métodos de jogo, regras de negócio ou lógica computacional pura são descobertas ou representações lógicas, e a lei de propriedade industrial brasileira (LPI Art. 10) os exclui explicitamente de patenteabilidade.
+      \item \textbf{Código-fonte puro é expressão}: A escrita do código é protegida por Direito Autoral (como uma obra literária), e não por patente.
+      \item \textbf{Patente protege a aplicação técnica}: A patente é voltada para a solução de um problema técnico no mundo físico, não para ideias matemáticas puras.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Código-Fonte vs. Algoritmo vs. Invenção}
+  \begin{center}
+    \small\bfseries Para entender o que pode ser patenteado, precisamos distinguir três conceitos:
+  \end{center}
+  \vspace{0.1cm}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+      % 1. Código-fonte
+      \node[softbox, text width=3.3cm, minimum height=1.3cm] (code) at (-4, 1.2) {
+        \textbf{Código-Fonte}\\
+        \scriptsize Expressão do programa\\
+        \color{structure.fg}\textbf{Direito Autoral}
+      };
+      
+      % 2. Algoritmo
+      \node[draw=orange!80!black, fill=orange!5, rounded corners=3pt, text width=3.3cm, minimum height=1.3cm, align=center] (algo) at (0, 1.2) {
+        \textbf{\color{orange!80!black}Algoritmo / Método}\\
+        \scriptsize Lógica ou procedimento\\
+        \color{orange!80!black}\textbf{Não Patenteável Só}
+      };
+      
+      % 3. Invenção
+      \node[softboxalert, text width=3.4cm, minimum height=1.3cm] (inv) at (4, 1.2) {
+        \textbf{Invenção (IIC)}\\
+        \scriptsize Solução técnica em hardware\\
+        \color{mRed}\textbf{Patenteável*}
+      };
+
+      % Descriptions below each
+      \node[text width=3.3cm, align=center, font=\tiny\color{black!70}] at (-4, -0.6) {
+        A forma como o código é escrito. Protege contra cópias literais.
+      };
+      
+      \node[text width=3.3cm, align=center, font=\tiny\color{black!70}] at (0, -0.6) {
+        Os passos lógicos ou matemáticos. Considerado ideia abstrata pura.
+      };
+      
+      \node[text width=3.4cm, align=center, font=\tiny\color{black!70}] at (4, -0.6) {
+        *Softwares integrados a equipamentos que causam efeitos técnicos novos e físicos.
+      };
+      
+      % Connections
+      \draw[softarrow, dashed] (algo) -- (code);
+      \draw[softarrowalert, dashed] (algo) -- (inv);
+
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Os Requisitos para Patenteabilidade}
+  \begin{columns}[T]
+    \begin{column}{0.65\textwidth}
+      \begin{block}{Requisitos Gerais (LPI Art. 8)}
+        \small
+        \begin{itemize}
+          \item \textbf{Novidade}: Não existir nada igual no mundo acessível ao público antes do depósito da patente (Estado da Técnica).
+          \item \textbf{Atividade Inventiva}: A solução não pode ser óbvia ou decorrência comum para um especialista na área.
+          \item \textbf{Aplicação Industrial}: A invenção deve poder ser fabricada ou utilizada industrialmente.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.33\textwidth}
+      \begin{block}{Regra para IIC}
+        \small
+        Para softwares, exige-se o \textbf{efeito técnico adicional}: o software deve atuar controlando um processo físico ou modificando o estado de um dispositivo real, gerando utilidade palpável.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Estudo de Caso: Controle Industrial}
+  \begin{block}{Cenário Prático}
+    \small
+    Uma empresa desenvolve um software que utiliza uma \textbf{nova técnica matemática/lógica} para controlar as válvulas e a temperatura de um reator químico industrial, reduzindo o consumo de energia em 30\% e gerando um efeito técnico específico.
+  \end{block}
+  
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \vspace{0.4cm}
+      \textbf{Pergunta para Reflexão:}\\
+      \medskip
+      \small\color{mRed}
+      ``Estamos falando apenas de código (direito autoral) ou existe uma solução técnica patenteável?''
+    \end{column}
+    
+    \begin{column}{0.48\textwidth}
+      \begin{center}
+        \begin{tikzpicture}[scale=0.75, every node/.style={transform shape}]
+          % Computer / Controller
+          \node[guiwin=structure.fg, minimum width=2.4cm, minimum height=1.6cm] (comp) at (-2.2, 0.5) {};
+          \node[guibar=structure.fg, minimum width=2.4cm] at (comp.north west) {\; Controller.exe};
+          \node[font=\tiny\ttfamily, align=left] at ($(comp.center)-(0,0.1)$) {
+            \color{structure.fg!80}
+            // Algoritmo Novo\\
+            ajustar\_reator();\\
+            controlar\_temp();
+          };
+          
+          % Robotic Arm/Machine Base
+          \fill[black!60] (1.5,-0.4) rectangle (2.5,-0.2);
+          % Joint 1
+          \draw[line width=5pt, black!50] (2.0,-0.2) -- (2.0,0.6);
+          \draw[fill=structure.fg, draw=structure.fg!80!black] (2.0,0.6) circle (0.15);
+          % Joint 2
+          \draw[line width=4pt, black!50] (2.0,0.6) -- (3.0,1.1);
+          \draw[fill=structure.fg, draw=structure.fg!80!black] (3.0,1.1) circle (0.12);
+          % Tool / Gripper
+          \draw[line width=3pt, black!70] (3.0,1.1) -- (3.3,1.3);
+          \draw[thick, black!80] (3.3,1.3) -- (3.5,1.5);
+          \draw[thick, black!80] (3.3,1.3) -- (3.6,1.2);
+          
+          % Industrial Object
+          \draw[draw=orange!80!black, fill=orange!15, thick] (3.4,0.4) circle (0.25);
+          % Heat/Efeito Técnico symbols
+          \draw[red, thick, ->] (3.4, 0.7) to[out=45,in=135] (3.7, 0.7);
+          \node[red, font=\tiny\bfseries] at (3.8, 0.9) {Efeito Físico};
+          
+          % Control arrow
+          \draw[softarrow, dashed] (comp.east) -- (2.0, 0.6) node[midway, above, font=\tiny\bfseries] {Sinal};
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+  \end{columns}
+  
+  \vspace{0.1cm}
+  \begin{center}
+    \scriptsize\color{structure.fg}\bfseries Resposta: O código em si é direito autoral, mas a solução de engenharia integrada que controla o hardware e gera o efeito físico pode ser patenteada!
+  \end{center}
+\end{frame}
+
+\section{Hash Criptográfico e Integridade — 25 min}
+
+\begin{frame}{Como identificar se um arquivo foi alterado?}
+  \begin{center}
+    \textbf{Pergunta de Transição:}\\[0.2cm]
+    \large\color{structure.fg}
+    ``Como podemos identificar se um arquivo ou código-fonte foi alterado?''
+  \end{center}
+
+  \vspace{0.3cm}
+
+  \begin{block}{O que é um Hash Criptográfico?}
+    \small
+    Um \textbf{hash} é o resultado de uma função matemática determinística que transforma uma entrada de qualquer tamanho em uma sequência de caracteres de \textbf{tamanho fixo} (uma \textit{impressão digital} do arquivo).
+  \end{block}
+
+  \vspace{0.2cm}
+
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+      \node[draw=structure.fg, fill=structure.fg!10, rounded corners=3pt, text width=2.8cm, align=center, font=\scriptsize] (file) at (-4,0) {
+        \textbf{Arquivo}\\
+        (Tamanho Arbitrário)
+      };
+
+      \node[softcore, minimum size=1.5cm, fill=structure.fg!30, font=\bfseries\tiny] (func) at (0,0) {
+        Função\\Hash
+      };
+
+      \node[draw=mGreen!80!black, fill=mGreen!10, rounded corners=3pt, text width=3.2cm, align=center, font=\ttfamily\tiny] (hash) at (4,0) {
+        \textbf{Hash (Digest)}\\
+        3A7BD3E2360A3D...\\
+        (Tamanho Fixo)
+      };
+
+      \draw[softarrow] (file) -- (func);
+      \draw[softarrow] (func) -- (hash);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{O Efeito Avalanche e a Integridade}
+  \begin{center}
+    \small\bfseries Mesmo a menor alteração no arquivo altera completamente seu Hash!
+  \end{center}
+
+  \vspace{0.2cm}
+
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+      % Upper path (Original)
+      \node[draw=structure.fg, fill=structure.fg!5, rounded corners=3pt, text width=2.8cm, align=left, font=\tiny\ttfamily] (file1) at (-3.8,1.0) {
+        \textbf{codigo.txt (Original)}\\
+        int main() \{\\
+        \quad return 0;\\
+        \}
+      };
+      \node[softbox, font=\tiny\bfseries] (algo1) at (0,1.0) {SHA-256};
+      \node[draw=mGreen!80!black, fill=mGreen!10, rounded corners=3pt, font=\tiny\ttfamily, text width=3.5cm, align=center] (hash1) at (4.0,1.0) {
+        \textbf{A1B2C3D4...}
+      };
+
+      \draw[softarrow] (file1) -- (algo1);
+      \draw[softarrow] (algo1) -- (hash1);
+
+      % Lower path (Alterado)
+      \node[draw=mRed, fill=mRed!5, rounded corners=3pt, text width=2.8cm, align=left, font=\tiny\ttfamily] (file2) at (-3.8,-1.0) {
+        \textbf{codigo.txt (Alterado)}\\
+        int main() \{\\
+        \quad return 1; \color{mRed}// 1 char!\\
+        \}
+      };
+      \node[softboxalert, font=\tiny\bfseries] (algo2) at (0,-1.0) {SHA-256};
+      \node[draw=mRed, fill=mRed!10, rounded corners=3pt, font=\tiny\ttfamily, text width=3.5cm, align=center] (hash2) at (4.0,-1.0) {
+        \textbf{9F72AB81...}
+      };
+
+      \draw[softarrowalert] (file2) -- (algo2);
+      \draw[softarrowalert] (algo2) -- (hash2);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{0.2cm}
+
+  \begin{alertblock}{Propriedade Fundamental}
+    \small
+    Não é possível prever o novo hash ao alterar o arquivo. Essa mudança drástica é conhecida como \textbf{Efeito Avalanche}, garantindo a verificação de integridade.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Principais Algoritmos de Hash}
+  \begin{columns}[T]
+    \begin{column}{0.31\textwidth}
+      \begin{block}{MD5}
+        \small
+        \textbf{Saída:} 128 bits.\\
+        \textbf{Status:} \color{mRed}\textbf{Obsoleto}.\\
+        \vspace{0.1cm}
+        \scriptsize Vulnerável a colisões conhecidas. Não deve ser usado para segurança.
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.31\textwidth}
+      \begin{block}{SHA-1}
+        \small
+        \textbf{Saída:} 160 bits.\\
+        \textbf{Status:} \color{orange!80!black}\textbf{Descontinuado}.\\
+        \vspace{0.1cm}
+        \scriptsize Desaconselhado para novos usos criptográficos devido a ataque de colisão.
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.34\textwidth}
+      \begin{block}{SHA-256}
+        \small
+        \textbf{Saída:} 256 bits.\\
+        \textbf{Status:} \color{mGreen!80!black}\textbf{Recomendado}.\\
+        \vspace{0.1cm}
+        \scriptsize Padrão atual seguro para verificação de integridade, assinaturas e Git.
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.4cm}
+
+  \begin{center}
+    \small\color{structure.fg}\bfseries O que é uma colisão? É quando duas entradas diferentes geram exatamente o mesmo hash!
+  \end{center}
+\end{frame}
+
+\section{Prática: Gerando um Hash — 20 min}
+
+\begin{frame}[fragile]{Prática: Gerando Hashes no Terminal}
+  \begin{block}{Comandos por Sistema Operacional}
+    \scriptsize
+    \textbf{Windows (PowerShell):}
+    \begin{verbatim}
+Get-FileHash .\software.zip -Algorithm SHA256
+    \end{verbatim}
+
+    \textbf{Linux:}
+    \begin{verbatim}
+sha256sum software.zip
+    \end{verbatim}
+
+    \textbf{macOS:}
+    \begin{verbatim}
+shasum -a 256 software.zip
+    \end{verbatim}
+  \end{block}
+
+  \begin{block}{Experimento Prático Passo a Passo}
+    \small
+    \begin{enumerate}
+      \item Crie o arquivo \texttt{codigo.txt} contendo uma frase.
+      \item Gere o SHA-256 do arquivo e anote o resultado.
+      \item Altere uma única letra ou espaço no arquivo.
+      \item Gere o SHA-256 novamente e compare os valores.
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Desmistificando o Hash (Debate com a Turma)}
+  \begin{center}
+    \large\color{structure.fg}\textbf{Entendendo a Natureza do Hash}
+  \end{center}
+
+  \vspace{0.2cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Pergunta 1}
+        \small
+        \textbf{“O hash permite recuperar o conteúdo original do arquivo?”}
+      \end{alertblock}
+      \vspace{0.1cm}
+      \begin{block}{Resposta: NÃO}
+        \small
+        O hash é uma \textbf{função unidirecional (one-way)}. Não há algoritmo inverso para reconstruir os dados originais a partir da sequência de hash.
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Pergunta 2}
+        \small
+        \textbf{“Hash é a mesma coisa que Criptografia?”}
+      \end{alertblock}
+      \vspace{0.1cm}
+      \begin{block}{Resposta: NÃO}
+        \small
+        Criptografia visa ocultar dados de forma \textbf{reversível} (com chave). Hash é um \textbf{resumo/digest} irreversível para verificação de integridade.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Hash e Propriedade Intelectual — 15 min}
+
+\begin{frame}{Hash e Identidade do Conteúdo no Tempo}
+  \begin{center}
+    \small\bfseries Conectando a teoria do Hash à Proteção da Propriedade Intelectual
+  \end{center}
+
+  \vspace{0.2cm}
+
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+      % Time 1: Dia 1
+      \node[draw=structure.fg, fill=white, rounded corners=3pt, text width=3.0cm, align=center, font=\scriptsize] (f1) at (-4, 1.2) {
+        \textbf{software\_v1.zip}\\
+        (Calculado no Dia 1)
+      };
+      \node[softbox, font=\tiny\bfseries] (h1) at (-4, -0.4) {SHA-256};
+      \node[draw=mGreen!80!black, fill=mGreen!10, rounded corners=3pt, font=\tiny\ttfamily] (res1) at (-4, -1.5) {HASH A};
+
+      \draw[softarrow] (f1) -- (h1);
+      \draw[softarrow] (h1) -- (res1);
+
+      % Equals sign
+      \node[font=\Huge\bfseries, text=structure.fg] at (0, -0.2) {=};
+      \node[font=\scriptsize\bfseries, text=structure.fg!80] at (0, 0.4) {Conteúdo Idêntico};
+
+      % Time 2: Meses Depois
+      \node[draw=structure.fg, fill=white, rounded corners=3pt, text width=3.0cm, align=center, font=\scriptsize] (f2) at (4, 1.2) {
+        \textbf{software\_v1.zip}\\
+        (Calculado Meses Depois)
+      };
+      \node[softbox, font=\tiny\bfseries] (h2) at (4, -0.4) {SHA-256};
+      \node[draw=mGreen!80!black, fill=mGreen!10, rounded corners=3pt, font=\tiny\ttfamily] (res2) at (4, -1.5) {HASH A};
+
+      \draw[softarrow] (f2) -- (h2);
+      \draw[softarrow] (h2) -- (res2);
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{0.1cm}
+
+  \begin{block}{O que essa igualdade prova?}
+    \small
+    Indica com absoluta certeza matemática que o arquivo apresentado posteriormente possui \textbf{exatamente o mesmo conteúdo} do arquivo original.
+  \end{block}
+\end{frame}
+
+\begin{frame}{O Limite do Hash: Os 4 Pilares da Prova Jurídica}
+  \begin{center}
+    \large\color{mRed}\textbf{Atenção para uma questão fundamental:}\\
+    \small Um hash sozinho \textbf{NÃO} prova quem criou o arquivo nem necessariamente \textbf{quando} ele foi criado!
+  \end{center}
+
+  \vspace{0.2cm}
+
+  \begin{center}
+    \renewcommand{\arraystretch}{1.2}
+    \footnotesize
+    \begin{tabular}{lp{5.2cm}c}
+      \toprule
+      \textbf{\color{structure.fg}Pilar Legal} & \textbf{\color{structure.fg}Significado} & \textbf{\color{structure.fg}Garantido só pelo Hash?} \\
+      \midrule
+      \textbf{Integridade} & O conteúdo não foi alterado ou corrompido & \color{mGreen}\textbf{SIM} ($\checkmark$) \\
+      \textbf{Autoria} & Quem efetivamente escreveu o código/obra & \color{mRed}\textbf{NÃO} ($\boldsymbol{\times}$) \\
+      \textbf{Titularidade} & Quem detém os direitos patrimoniais legais & \color{mRed}\textbf{NÃO} ($\boldsymbol{\times}$) \\
+      \textbf{Anterioridade} & Quem criou primeiro no tempo & \color{mRed}\textbf{NÃO} ($\boldsymbol{\times}$) \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Ferramentas e Mecanismos Complementares}
+  \begin{center}
+    \small\bfseries Como transformar o Hash em evidência jurídica robusta?
+  \end{center}
+
+  \vspace{0.1cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Git \& Commits}
+        \small
+        Histórico encadeado de hashes de commits que registram a evolução temporal do projeto.
+      \end{block}
+
+      \begin{block}{Timestamps / Carimbo do Tempo}
+        \small
+        Registrar o hash em uma Autoridade Certificadora de Tempo (TSA) ou blockchain comprova existência na data.
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Assinatura Digital \& Certificados}
+        \small
+        Vincular o hash à chave privada do autor (ex: ICP-Brasil) garante a \textbf{autoria} do documento.
+      \end{block}
+
+      \begin{block}{Registro de Software (INPI)}
+        \small
+        Fornece a presunção \textbf{legal} oficial de autoria e anterioridade perante o Estado.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Debate com a Turma: Prova de Anterioridade?}
+  \begin{alertblock}{Pergunta para a turma}
+    \large
+    \textbf{“Se eu publicar hoje o hash do meu código-fonte na internet, isso prova que fui o primeiro a criar esse código?”}
+  \end{alertblock}
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Resposta: NÃO necessariamente!}
+        \small
+        \begin{itemize}
+          \item Publicar hoje prova apenas que você \textbf{possuía o código hoje}.
+          \item Não prova que outra pessoa não tenha criado o mesmo código \textbf{ontem}.
+        \end{itemize}
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Conclusão Pedagógica}
+        \small
+        \begin{itemize}
+          \item \textbf{Hash} = Prova de \textbf{Integridade}.
+          \item \textbf{Carimbo do Tempo} = Prova de \textbf{Anterioridade de Posse}.
+          \item \textbf{Registro/Contrato} = Prova de \textbf{Autoria e Titularidade}.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\end{document}

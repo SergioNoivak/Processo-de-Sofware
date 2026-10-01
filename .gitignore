@@ -1,0 +1,31 @@
+# Pasta de notas e avaliações sensíveis
+notas/
+notas/*
+
+# Arquivos temporários e de compilação do LaTeX
+*.aux
+*.log
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.nav
+*.snm
+*.toc
+*.vrb
+*.out
+*.bbl
+*.blg
+*.run.xml
+*.bcf
+
+# Arquivos temporários do Sistema Operacional e IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Arquivos temporários do Microsoft Office
+~$*.docx
+~$*.xlsx

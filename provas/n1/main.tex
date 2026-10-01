@@ -1,0 +1,561 @@
+\documentclass[12pt,a4paper]{article}
+
+% ------------------------------------------------
+% Pacotes
+% ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{mathptmx} % Times New Roman
+\usepackage{courier} % Adiciona suporte a negrito na fonte monospace
+\usepackage{enumitem}\usepackage{amsfonts}
+\usepackage{amsmath} % Recomendado para o comando \text{}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta}
+\usepackage{listings}
+
+\lstset{
+    language=Java,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries,
+    showstringspaces=false,
+    breaklines=true,
+    frame=none,
+    numbers=none,
+    tabsize=2,
+    commentstyle=\itshape\color{gray},
+    morekeywords={this, class, private, public, String, System, out, println, Solo, Caminhao, Patio, Termometro},
+    extendedchars=true,
+    inputencoding=utf8
+}
+
+% TikZ Styles for ER Diagrams
+\tikzset{
+    block/.style={rectangle, draw, thick, minimum width=2cm, minimum height=1cm, fill=white},
+    diamond_node/.style={diamond, draw, thick, minimum width=2cm, minimum height=1cm, fill=white, aspect=2},
+    attribute/.style={ellipse, draw, thin, minimum width=1.5cm, minimum height=0.6cm, fill=white, font=\scriptsize},
+    line/.style={draw, thick}, 
+}
+% ------------------------------------------------ 
+% Configuração de página
+% ------------------------------------------------
+\geometry{
+    a4paper,
+    left=2cm,
+    right=2cm,
+    top=2cm,
+    bottom=2cm,
+    headheight=15pt % Adicione isso
+}% Caixa para resposta discursiva
+\newcommand{\resposta}[1]{
+\noindent
+\framebox[\textwidth]{
+\begin{minipage}{0.98\textwidth}
+\vspace*{#1}\null
+\end{minipage}
+}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\setlength{\parindent}{0pt}
+
+% ------------------------------------------------
+% Comandos auxiliares
+% ------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ------------------------------------------------
+% Documento
+% ------------------------------------------------
+\begin{document}
+
+% ------------------------------------------------
+% Cabeçalho - Corrigido para evitar aninhamento problemático
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{@{} L{4cm} X @{}}
+    \raisebox{-0.5cm}{\includegraphics[width=4cm]{Universidade_de_Rio_Verde.jpg}} &
+    \hfill
+    \begin{tabular}{|>{\centering\arraybackslash}m{9.5cm}|>{\raggedright\arraybackslash}p{1.8cm}|}
+        \hline
+        \cellcolor{black}\color{white}\rule{0pt}{1.2cm}\textbf{AVALIAÇÃO 1} 
+        & 
+        \scriptsize Nota \tabularnewline
+        \hline
+    \end{tabular} 
+\end{tabularx}
+\vspace{0.3cm}
+
+% ------------------------------------------------  
+% Tabela principal - Estrutura limpa
+% ------------------------------------------------
+\begin{tabularx}{\textwidth}{|X|L{2cm}|}
+\hline
+\textbf{Curso} & \textbf{Campus} \\
+\textit{Engenharia de Software} & \textit{Rio Verde} \\
+\hline
+\multicolumn{2}{|l|}{ \textit{Processo de Software}} \\
+\hline
+\textbf{Nome do(a) acadêmico(a)} & \textbf{Valor} \\
+& 7,0 \\ 
+\hline
+\textbf{Professor} & \textbf{Turma} \\
+\textit{ Sergio Souza Novak} & \textit{} \\
+\hline
+\textbf{Data da Avaliação} & \textbf{Código} \\
+\textit{03/10/2026} & \textit{ESW413} \\
+\hline
+\end{tabularx}
+ 
+% ------------------------------------------------
+% Barra de Atenção
+% ------------------------------------------------
+\vspace{0.2cm}
+
+\begin{tabularx}{\textwidth}{|X|}
+\hline
+\cellcolor{black}\color{white}
+\centering \textbf{ATENÇÃO:} Somente serão passíveis de \textbf{REVISÃO} avaliações resolvidas à \textbf{TINTA}. \tabularnewline
+\hline
+\end{tabularx}
+
+\vspace{0.3cm}
+
+\textbf{ORIENTAÇÕES PARA A RESOLUÇÃO}  
+
+\begin{itemize}
+    \item A avaliação é individual, sem consulta;
+    \item A interpretação de texto faz parte da avaliação;
+\end{itemize}
+
+\vspace{0.5cm}
+
+\begin{center}
+    \rule{\textwidth}{0.4pt}
+    \textbf{QUESTÕES}
+\end{center}
+
+\vspace{0.5cm} 
+
+\textbf{Questão 1:} Considere os gráficos a seguir que representam as taxas de defeitos e o comportamento do hardware e do software ao longo de seu ciclo de vida.
+
+\vspace{0.3cm}
+\noindent\textbf{A Curva da Banheira (Hardware)}
+
+\noindent\begin{center}
+\begin{tikzpicture}[scale=1, >=Latex]
+\draw[->,thick] (0,0)--(6.5,0) node[right]{\footnotesize Tempo};
+\draw[->,thick] (0,0)--(0,4.5) node[above,rotate=90]{\footnotesize Taxa de defeitos};
+\draw[very thick] plot[smooth] coordinates{ (0.5,4) (1.0,2.3) (2.0,0.8) (3.6,0.55) (5.1,0.75) (5.8,1.6) (6.2,4) };
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.5cm}
+\noindent\textbf{As Três Fases da Vida do Hardware}
+
+\begin{center}
+\begin{tikzpicture}[scale=1, >=Latex]
+% Eixos
+\draw[->,thick] (0,0)--(10.5,0) node[right]{\footnotesize Tempo};
+\draw[->,thick] (0,0)--(0,5) node[above,rotate=90]{\footnotesize Taxa de defeitos};
+% Curva
+\draw[very thick] plot[smooth] coordinates{ (0.7,4.4) (1.6,2.2) (3.0,0.8) (7.2,0.8) (8.5,1.0) (9.2,2.2) (10.0,4.5) };
+% divisões
+\draw[dashed] (3,0)--(3,5);
+\draw[dashed] (8.3,0)--(8.3,5);
+% rótulos
+\node[align=center] at (1.4,4.2) {\scriptsize Mortalidade\\ \scriptsize Infantil};
+\node at (5.6,4.2) {\scriptsize Vida útil};
+\node at (9.2,4.2) {\scriptsize Desgaste};
+\end{tikzpicture}
+\end{center}
+
+
+
+\vspace{0.5cm}
+\noindent\textbf{Curva Real de Defeitos do Software}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.7, >=Latex]
+% eixos
+\draw[->,thick] (0,0)--(11,0) node[right]{\footnotesize Tempo};
+\draw[->,thick] (0,0)--(0,5) node[above,rotate=90]{\footnotesize Taxa de defeitos};
+% curva ideal
+\draw[very thick] plot[smooth] coordinates{ (0.8,4.2) (1.7,2.1) (2.8,0.7) (10,0.7) };
+\node[right] at (10.1,0.7) {\footnotesize Idealizada};
+% curva real
+\draw[thick] plot[smooth] coordinates{ (0.8,4.2) (1.7,2.1) (2.8,1.1) };
+\fill (2.8,1.1) circle (2.5pt);
+\node[below] at (2.8,1.0) {\scriptsize Mudança};
+\draw[thick] (2.8,1.1)--(2.8,3.7);
+\draw[thick] plot[smooth] coordinates{ (2.8,3.7) (3.8,2.2) (4.8,1.5) };
+\draw[thick] (4.8,1.5)--(4.8,3.6);
+\draw[thick] plot[smooth] coordinates{ (4.8,3.6) (5.8,2.3) (6.8,1.8) };
+\draw[thick] (6.8,1.8)--(6.8,3.8);
+\draw[thick] plot[smooth] coordinates{ (6.8,3.8) (7.8,2.6) (9.8,2.2) };
+\node[right] at (9.9,2.2) {\footnotesize Curva real};
+% seta
+\draw[->] (7.2,4.4)--(6.9,3.9);
+\node[align=center] at (6.4,4.7) {\scriptsize Aumento da taxa\\ \scriptsize de defeitos devido\\ \scriptsize às modificações};
+\end{tikzpicture}
+\end{center}
+
+
+
+\vspace{0.4cm}
+Com base nos dados apresentados, explique em \textbf{dois parágrafos} como ocorre a evolução do hardware e do software ao longo do tempo, e justifique por que o hardware apresenta falhas por desgaste (obedecendo à curva da banheira), enquanto o software tende a se deteriorar de forma progressiva.
+
+\vspace{0.2cm}
+\resposta{8cm}
+
+\vspace{0.8cm}
+\textbf{Questão 2.} A Propriedade Intelectual visa garantir a inventores e criadores os direitos sobre suas obras e criações. Assinale a alternativa que relaciona corretamente os diferentes mecanismos de proteção (patente, registro de software, desenho industrial e registro de marca) com suas respectivas definições:
+
+\begin{enumerate}[label=\textbf{\Alph*)}, itemsep=0.3cm]
+    \item Patente protege a invenção de um produto ou processo com aplicação industrial; Registro de Software protege a expressão (código-fonte) como direito autoral; Desenho Industrial protege a forma plástica ornamental de um objeto; Registro de Marca protege os sinais distintivos visualmente perceptíveis.
+    \item Patente protege o logotipo de uma empresa; Registro de Software protege ideias e algoritmos matemáticos; Desenho Industrial protege os requisitos técnicos de uma invenção; Registro de Marca protege a estética e o design visual do produto.
+    \item Patente protege a codificação de um sistema; Registro de Software protege invenções tecnológicas e industriais; Desenho Industrial protege marcas comerciais; Registro de Marca protege os direitos de obras de arte.
+    \item Patente protege o design do produto; Registro de Software protege os sinais que distinguem produtos no mercado; Desenho Industrial protege processos industriais inovadores; Registro de Marca protege criações intelectuais literárias.
+    \item Patente protege a estética ornamental de um objeto; Registro de Software protege a identidade visual corporativa; Desenho Industrial protege melhorias funcionais em equipamentos; Registro de Marca protege o código-fonte de programas.
+\end{enumerate}
+
+\vspace{0.8cm}
+\textbf{Questão 3:} Na Engenharia de Software, o trabalho a ser realizado é organizado por meio da Hierarquia do Processo de Software. Assinale a alternativa que apresenta corretamente a definição e a diferença entre as camadas de \textbf{Processo} e \textbf{Atividades Metodológicas}:
+
+\begin{enumerate}[label=\textbf{\Alph*)}, itemsep=0.3cm]
+    \item O Processo estabelece a estrutura global que acomoda todas as etapas do desenvolvimento, enquanto as Atividades Metodológicas representam as grandes fases de trabalho aplicáveis ao projeto (como Comunicação, Planejamento e Modelagem).
+    \item O Processo refere-se ao trabalho diário e específico da equipe de programação, enquanto as Atividades Metodológicas representam as ferramentas de software instaladas nos computadores.
+    \item As Atividades Metodológicas definem a estrutura global de toda a empresa, enquanto o Processo refere-se estritamente à fase de testes do sistema.
+    \item O Processo é um conjunto de pequenas tarefas técnicas diárias (como criar um diagrama), enquanto as Atividades Metodológicas formam a estrutura global do ciclo de vida.
+    \item As Atividades Metodológicas e o Processo são sinônimos e referem-se unicamente ao ato de escrever código e entregar a aplicação ao cliente final.
+\end{enumerate}
+
+\vspace{0.8cm}
+\textbf{Questão 4:} O diagrama a seguir ilustra o modelo de processo de Prototipação.
+
+\begin{center}
+\begin{tikzpicture}[
+      >=stealth,
+      scale=0.8,
+      every node/.style={transform shape},
+      etapa/.style={draw=black, fill=gray!10, rounded corners=3pt,
+                    minimum width=2cm, minimum height=0.6cm,
+                    align=center, font=\scriptsize\bfseries},
+      seta/.style={->, thick, black}
+  ]
+      % Ciclo de prototipação
+      \node[etapa] (com)   at ({90:2.6cm})  {Comunicação};
+      \node[etapa] (plan)  at ({162:2.6cm}) {Plano Rápido};
+      \node[etapa] (mod)   at ({234:2.6cm}) {Modelagem\\(Projeto Rápido)};
+      \node[etapa] (const) at ({306:2.6cm}) {Construção\\do Protótipo};
+      \node[etapa] (entr)  at ({18:2.6cm})  {Entrega e\\Feedback};
+
+      % Setas do ciclo
+      \draw[seta] (com)   -- (plan);
+      \draw[seta] (plan)  -- (mod);
+      \draw[seta] (mod)   -- (const);
+      \draw[seta] (const) -- (entr);
+      \draw[seta] (entr)  -- (com);
+
+      % Rótulo central
+      \node[font=\footnotesize\bfseries, black, align=center] at (0,0) {Ciclo de\\Prototipação};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.4cm}
+Descreva com suas palavras o modelo de processo de prototipação e como a repetição desse ciclo auxilia desenvolvedor e cliente na identificação e no refinamento dos requisitos necessários para o software.
+
+\vspace{0.2cm}
+\resposta{8cm}
+
+\vspace{0.8cm}
+\textbf{Questão 5} Um sistema corporativo de folha de pagamento e arrecadação de impostos precisa ser desenvolvido. Este é um domínio de negócio no qual as regras são regidas por uma legislação rigorosa e os requisitos são muito claros, amplamente compreendidos e extremamente estáveis, não havendo expectativa de mudanças ao longo do projeto. Assinale a alternativa que apresenta o diagrama do fluxo de processo mais adequado para este cenário:
+
+\tikzset{
+  etp/.style={draw=black, fill=gray!10, rounded corners=2pt, minimum width=1.5cm, minimum height=0.5cm, align=center, font=\tiny\bfseries},
+  st/.style={->, >=stealth, thick, black},
+  stret/.style={->, >=stealth, thick, gray, dashed}
+}
+
+\begin{enumerate}[label=\textbf{\Alph*)}, itemsep=0.5cm]
+
+    \item % Iterativo
+    \begin{tikzpicture}[node distance=0.2cm, scale=1.3, every node/.style={transform shape}]
+      \node [etp] (com) {Comunicação};
+      \node [etp, right=of com] (plan) {Planejamento};
+      \node [etp, right=of plan] (mod) {Modelagem};
+      \node [etp, right=of mod] (const) {Construção};
+      \node [etp, right=of const] (entr) {Entrega};
+      
+      \draw [st] (com) -- (plan);
+      \draw [st] (plan) -- (mod);
+      \draw [st] (mod) -- (const);
+      \draw [st] (const) -- (entr);
+      
+      \draw [stret] (plan.south) .. controls +(0,-0.4) and +(0,-0.4) .. (com.south);
+      \draw [stret] (mod.south) .. controls +(0.2,-0.4) and +(-0.2,-0.4) .. (mod.south);
+      \draw [stret] (const.south) .. controls +(0,-0.8) and +(0,-0.8) .. (com.south);
+    \end{tikzpicture}
+
+    \item % Evolucionario
+    \begin{tikzpicture}[node distance=0.2cm, scale=1.3, every node/.style={transform shape}]
+      \node[etp] (com) at ({180:1.8cm}) {Comunicação};
+      \node[etp] (plan) at ({120:1.8cm}) {Planejamento};
+      \node[etp] (mod) at ({40:1.8cm}) {Modelagem};
+      \node[etp] (const) at ({320:1.8cm}) {Construção};
+      \node[etp] (entr) at ({240:1.8cm}) {Entrega};
+
+      \draw[st] (com) to[bend left=20] (plan);
+      \draw[st] (plan) to[bend left=20] (mod);
+      \draw[st] (mod) to[bend left=30] (const);
+      \draw[st] (const) to[bend left=20] (entr);
+      \draw[st] (entr) to[bend left=20] (com);
+    \end{tikzpicture}
+
+    \item % Paralelo
+    \begin{tikzpicture}[node distance=0.2cm, scale=1.3, every node/.style={transform shape}]
+      \node[etp] (com) at (0, 1.5) {Comunicação};
+      \node[etp] (plan) at (2.5, 1.5) {Planejamento};
+      \node[etp] (mod) at (1.25, 0.6) {Modelagem};
+      \node[etp] (const) at (3, -0.3) {Construção};
+      \node[etp] (entr) at (5, -0.3) {Entrega};
+
+      \draw[st] (com) -- (plan);
+      \draw[st] (com.south) -- ++(0,-0.4) -| (mod.west);
+      \draw[st] (plan.south) -- ++(0,-0.4) -| (mod.east);
+      \draw[st] (mod.south) -- ++(0,-0.4) -| (const.west);
+      \draw[st] (const) -- (entr);
+    \end{tikzpicture}
+    \item % Linear
+    \begin{tikzpicture}[node distance=0.2cm, scale=1.3, every node/.style={transform shape}]
+      \node [etp] (com) {Comunicação};
+      \node [etp, right=of com] (plan) {Planejamento};
+      \node [etp, right=of plan] (mod) {Modelagem};
+      \node [etp, right=of mod] (const) {Construção};
+      \node [etp, right=of const] (entr) {Entrega};
+      
+      \draw [st] (com) -- (plan);
+      \draw [st] (plan) -- (mod);
+      \draw [st] (mod) -- (const);
+      \draw [st] (const) -- (entr);
+    \end{tikzpicture}
+
+    \item % Nada a ver
+    \begin{tikzpicture}[node distance=0.2cm, scale=1.3, every node/.style={transform shape}]
+      \node[etp] (com) at (0, 0) {Comunicação};
+      \node[etp] (plan) at (1.5, 2) {Planejamento};
+      \node[etp] (mod) at (3, 0) {Modelagem};
+      \node[etp] (const) at (4.5, -2) {Construção};
+      \node[etp] (entr) at (6, 0) {Entrega};
+
+      \draw[st] (com) to[bend left=45] (plan);
+      \draw[st] (plan) to[bend left=45] (mod);
+      \draw[st] (mod) -- (com);
+      \draw[st] (mod) to[bend right=45] (const);
+      \draw[st] (const) to[bend right=45] (entr);
+      \draw[stret] (entr) -- (plan);
+    \end{tikzpicture}
+\end{enumerate}
+
+\vspace{0.8cm}
+\textbf{Questão 6:} O diagrama abaixo ilustra o \textbf{Modelo Cascata}, o paradigma mais antigo e sistemático da engenharia de software para o fluxo de processo. 
+
+\begin{center}
+\begin{tikzpicture}[
+      >=stealth,
+      scale=1.5,
+      every node/.style={transform shape},
+      fase/.style={draw=black, fill=gray!10, rounded corners=3pt,
+                   minimum width=2cm, minimum height=0.65cm,
+                   align=center, font=\scriptsize\bfseries},
+      seta/.style={->, thick, black}
+  ]
+      \node[fase] (com)   at (0,    4)   {Comunicação};
+      \node[fase] (plan)  at (2.4,  3)   {Planejamento};
+      \node[fase] (mod)   at (4.8,  2)   {Modelagem};
+      \node[fase] (const) at (7.2,  1)   {Construção};
+      \node[fase] (entr)  at (9.6,  0)   {Entrega};
+
+      \draw[seta] (com.south east)   -- (plan.north west);
+      \draw[seta] (plan.south east)  -- (mod.north west);
+      \draw[seta] (mod.south east)   -- (const.north west);
+      \draw[seta] (const.south east) -- (entr.north west);
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.4cm}
+Apesar de sua abordagem estruturada, o modelo cascata é frequentemente alvo de críticas e considerado inadequado para a maioria dos projetos modernos. Discorra, em \textbf{dois parágrafos}, sobre os principais impeditivos e problemas enfrentados na adoção do modelo cascata na realidade do desenvolvimento de software atual.
+
+\vspace{0.2cm}
+\resposta{8cm}
+
+\vspace{0.8cm}
+\textbf{Questão 7:} O Modelo de Processo Unificado (PU) propõe a união das melhores características dos modelos de processos tradicionais com os princípios do desenvolvimento iterativo e ágil. Avalie as afirmações a seguir sobre o Processo Unificado como Verdadeiras (V) ou Falsas (F):
+
+\begin{itemize}[itemsep=0.3cm]
+    \item[{[ \ \ ]}] O Processo Unificado é um modelo estritamente sequencial e rejeita qualquer iteração ou incremento, assemelhando-se diretamente à abordagem rígida do Modelo Cascata clássico.
+    \item[{[ \ \ ]}] O PU utiliza fortemente o conceito de Casos de Uso (da UML) para capturar, modelar e descrever os requisitos funcionais do sistema a partir da perspectiva do usuário.
+    \item[{[ \ \ ]}] No Processo Unificado, a arquitetura de software desempenha um papel secundário, pois o modelo desencoraja a modelagem estrutural antes de a equipe começar a escrever código.
+    \item[{[ \ \ ]}] O ciclo de vida do PU é organizado temporalmente em cinco grandes fases: Concepção, Elaboração, Construção, Transição e Produção.
+    \item[{[ \ \ ]}] O caráter iterativo e incremental do Processo Unificado permite a entrega de pequenos incrementos executáveis de software para avaliação periódica do cliente, mitigando grandes riscos do projeto mais cedo.
+\end{itemize}
+
+Assinale a alternativa que apresenta a sequência correta, de cima para baixo:
+
+\begin{enumerate}[label=\textbf{\Alph*)}, itemsep=0.2cm]
+    \item F -- V -- F -- V -- V
+    \item V -- F -- V -- F -- F
+    \item F -- F -- V -- F -- V
+    \item V -- V -- F -- F -- V
+    \item F -- V -- V -- V -- F
+\end{enumerate}
+
+\vspace{0.8cm}
+\textbf{Questão 8:} O diagrama a seguir ilustra a tentativa de aplicação do \textbf{Modelo Espiral} no desenvolvimento de um \textit{Website Institucional Simples}.
+
+\begin{center}
+\begin{tikzpicture}[
+      >=stealth,
+      scale=1.5,
+      every node/.style={transform shape},
+      desc/.style={draw=gray!80, fill=gray!10, rounded corners=2pt,
+                   text width=3.5cm, minimum height=1.1cm, align=center,
+                   font=\fontsize{7}{8}\selectfont, inner sep=3pt}
+  ]
+      % Espiral travada
+      \draw[thick, gray!50] (0,0) -- (165:3.5cm);
+      \draw[thick, gray!50] (0,0) -- (95:3.5cm);
+      \draw[thick, gray!50] (0,0) -- (30:3.5cm);
+      \draw[thick, gray!50] (0,0) -- (-45:3.5cm);
+      \draw[thick, gray!50] (0,0) -- (250:3.5cm);
+      
+      \draw[thick, black, domain=0:1.3*360, variable=\t, samples=150] 
+          plot ({- \t + 250}: {0.1 + 0.0022*\t});
+          
+      \node[font=\bfseries, black] at (1.2, -1.2) {\Huge \textbf{X}};
+
+      % Descrições
+      \node[desc] at (130:4.8cm) {
+          \textbf{Planejamento}\\
+      };
+      \node[desc] at (60:4.6cm) {
+          \textbf{Modelagem}\\
+      };
+      \node[desc] at (-10:4.8cm) {
+          \textbf{Construção}\\
+      };
+      \node[desc] at (-75:4.6cm) {
+          \textbf{Entrega}\\
+      };
+      \node[desc] at (210:4.8cm) {
+          \textbf{Comunicação}\\
+      };
+\end{tikzpicture}
+\end{center}
+
+Com base na ilustração e nas características do projeto, assinale a alternativa correta em relação ao uso deste modelo de processo de software para o cenário apresentado:
+
+\begin{enumerate}[label=\textbf{\Alph*)}, itemsep=0.3cm]
+    \item A aplicação do modelo espiral foi \textbf{adequada}, pois mesmo projetos simples exigem uma forte análise de riscos complexa para garantir a segurança dos dados.
+    \item A aplicação do modelo espiral foi \textbf{inadequada}, pois o modelo espiral ignora a fase de comunicação, sendo este o principal motivo para a frustração do cliente mostrada no diagrama.
+    \item A aplicação do modelo espiral foi \textbf{adequada}, uma vez que ele é o único modelo recomendado para projetos com orçamentos curtos e requisitos imutáveis, forçando o refinamento contínuo.
+    \item A aplicação do modelo espiral foi \textbf{inadequada}, pois projetos simples e de baixo risco não justificam a sobrecarga de análise e prototipação evolutiva, o que acaba gerando burocracia, estouro de orçamento e atrasos desnecessários.
+    \item A aplicação do modelo espiral seria considerada \textbf{adequada} se a equipe de desenvolvimento pulasse a fase de Planejamento e focasse unicamente na codificação, eliminando os custos citados.
+\end{enumerate}
+
+\vspace{0.8cm}
+\textbf{Questão 9:} A Engenharia de Software é frequentemente descrita como uma tecnologia estruturada em camadas. O diagrama a seguir ilustra a fundação e as diferentes camadas que compõem a base dessa disciplina.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+  \fill[gray!25, rounded corners=3pt] (0,3.2) rectangle (10.2,4.0);
+  \node[font=\footnotesize\bfseries, anchor=west] at (0.2,3.6) {Ferramentas --- automatizam (IDE, Git, CI/CD, modelagem)};
+
+  \fill[gray!20, rounded corners=3pt] (0,2.2) rectangle (10.2,3.05);
+  \node[font=\footnotesize\bfseries, anchor=west] at (0.2,2.625) {Métodos --- técnicas de análise, projeto, implementação e testes};
+
+  \fill[gray!15, rounded corners=3pt] (0,1.2) rectangle (10.2,2.05);
+  \node[font=\footnotesize\bfseries, anchor=west] at (0.2,1.625) {Processo --- organiza e controla as etapas do desenvolvimento};
+
+  \fill[gray!10, rounded corners=3pt] (0,0.15) rectangle (10.2,1.05);
+  \node[font=\footnotesize\bfseries, anchor=west] at (0.2,0.6) {Foco na Qualidade --- atender requisitos com confiabilidade};
+
+  \draw[->, thick, black] (10.5,3.6) -- (10.5,0.6);
+  \node[font=\scriptsize, rotate=90] at (10.85,2.1) {depende de};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.4cm}
+Com base na ilustração acima, discorra em até \textbf{dois parágrafos} sobre a interdependência entre essas camadas. Explique por que a base de qualquer projeto de Engenharia de Software deve ser o "Foco na Qualidade" e como as ferramentas, métodos e processos se integram para viabilizar e sustentar esse objetivo final.
+
+\vspace{0.2cm}
+\resposta{8cm}
+
+\vspace{0.8cm}
+\textbf{Questão 10:} O diagrama a seguir ilustra um exemplo genérico de como instanciar a hierarquia do processo de software para a Atividade Metodológica de \textbf{Construção}, detalhando suas Ações e Conjuntos de Tarefas.
+
+\begin{center}
+\begin{tikzpicture}[
+      >=stealth,
+      scale=1.2,
+      every node/.style={transform shape},
+      apoio/.style={draw=gray!60, fill=gray!10, rounded corners=3pt, thick},
+      moldura/.style={draw=black, fill=gray!5, rounded corners=3pt, thick},
+      acao/.style={draw=black, fill=white, rounded corners=3pt, thick, text width=6.2cm, inner sep=6pt},
+      conjunto/.style={draw=gray!50, fill=gray!8, rounded corners=2pt, text width=5.8cm, font=\fontsize{7}{8}\selectfont, inner sep=4pt}
+  ]
+      % Atividades de Apoio (Fundo overlapping)
+      \node[apoio, minimum width=7.2cm, minimum height=6.6cm] (apoio2) at (0.12, -0.12) {};
+      \node[apoio, minimum width=7.2cm, minimum height=6.6cm, label={[shift={(0.2,-0.45)}]north west:\scriptsize\textbf{Atividades de Apoio (Gerenciamento, Qualidade)}}] (apoio1) at (0, 0) {};
+
+      % Atividade Metodológica (Frente)
+      \node[moldura, minimum width=7.0cm, minimum height=6.0cm, below=0.35cm of apoio1.north, anchor=north] (ativ) {};
+      \node[anchor=north west, font=\scriptsize\bfseries, text=black] at (ativ.north west) {Atividade Metodológica: Construção};
+
+      % Ação 1: Codificação
+      \node[acao, below=0.45cm of ativ.north, anchor=north] (acao1) {
+          \scriptsize \textbf{Ação de Eng. de Software: Codificação}\\[1mm]
+          \begin{tikzpicture}[every node/.style={transform shape}]
+              \node[conjunto] {
+                  \textbf{Conjunto de Tarefas (Codificação):}\\
+                  • \textbf{Tarefas de trabalho:} Codificar a estrutura (HTML) e estilo (CSS)\\
+                  • \textbf{Artefatos produzidos:} Arquivos \texttt{.html}, \texttt{.css} e scripts\\
+                  • \textbf{Garantia da qualidade:} Validação de padrões W3C e linting\\
+                  • \textbf{Marcos de progresso:} Protótipo visual responsivo concluído
+              };
+          \end{tikzpicture}
+      };
+
+      % Ação 2: Testes
+      \node[acao, below=0.3cm of acao1.south, anchor=north] (acao2) {
+          \scriptsize \textbf{Ação de Eng. de Software: Testes}\\[1mm]
+          \begin{tikzpicture}[every node/.style={transform shape}]
+              \node[conjunto] {
+                  \textbf{Conjunto de Tarefas (Testes):}\\
+                  • \textbf{Tarefas de trabalho:} Executar testes de navegabilidade e links\\
+                  • \textbf{Artefatos produzidos:} Relatório de testes e registro de erros\\
+                  • \textbf{Garantia da qualidade:} Cobertura de testes em múltiplos navegadores\\
+                  • \textbf{Marcos de progresso:} Código homologado e pronto para entrega
+              };
+          \end{tikzpicture}
+      };
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+Com base na estrutura apresentada, instancie (desenhe ou descreva em formato de tópicos) a atividade metodológica de \textbf{Construção} voltada para o desenvolvimento do sistema \textbf{SEI Acadêmico} (Sistema Eletrônico de Informações da universidade). Defina pelo menos \textbf{duas Ações de Engenharia de Software} e, para cada ação, preencha as quatro métricas obrigatórias do conjunto de tarefas (Tarefas de trabalho, Artefatos produzidos, Garantia da qualidade e Marcos de progresso) contextualizadas para a realidade desse sistema.
+
+\vspace{0.2cm}
+\resposta{16cm}
+
+\end{document}

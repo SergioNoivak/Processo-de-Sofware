@@ -1,0 +1,2076 @@
+\documentclass[aspectratio=169, 9pt]{beamer}
+\mode<presentation>
+
+% Theme choice:
+\usetheme{Madrid}%Darmstadt 
+\usepackage{xcolor}
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mRed}{rgb}{0.6,0,0}
+\usecolortheme[RGB={0,100,50}]{structure}
+ \usefonttheme{structurebold} 
+\setbeamercovered{invisible}
+%\setbeamertemplate{navigation symbols}{}
+\usepackage{dynblocks}
+\usepackage{textpos}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{
+  arrows.meta,
+  positioning,
+  calc,
+  fit,
+  shadows,
+  shapes.geometric,
+  shapes.misc
+}
+\newtheorem{teorema}{Teorema}\usepackage{mathtools}
+\renewcommand{\proofname}{Prova}
+\usepackage[portuguese]{babel}
+
+\uselanguage{Portuguese}
+\languagepath{Portuguese}
+
+\deftranslation[to=Portuguese]{Theorem}{Teorema}
+\deftranslation[to=Portuguese]{Lemma}{Lema}
+\deftranslation[to=Portuguese]{Corollary}{Corolário}
+\deftranslation[to=Portuguese]{Proof}{Prova}
+
+\usepackage{dutchcal}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage[affil-it]{authblk} 
+\usepackage{etoolbox}
+\usepackage{lmodern}
+\usepackage[pscoord]{eso-pic}
+\usepackage{hyperref}
+
+\makeatletter
+\patchcmd{\@maketitle}{\LARGE \@title}{\fontsize{18}{19.2}\selectfont\@title}{}{}
+\makeatother
+
+\renewcommand\Authfont{\fontsize{12}{14.4}\selectfont}
+\renewcommand\Affilfont{\fontsize{9}{10.8}\itshape}
+
+% Estilos TikZ reutilizáveis (tema verde da apresentação)
+\tikzset{
+  softbox/.style={
+    draw=structure.fg,
+    fill=structure.fg!12,
+    rounded corners=3pt,
+    align=center,
+    font=\small,
+    minimum height=0.9cm,
+    inner sep=4pt
+  },
+  softboxalert/.style={
+    draw=mRed,
+    fill=mRed!10,
+    rounded corners=3pt,
+    align=center,
+    font=\small,
+    minimum height=0.9cm,
+    inner sep=4pt
+  },
+  softcore/.style={
+    draw=structure.fg,
+    fill=structure.fg!25,
+    circle,
+    align=center,
+    font=\bfseries\small,
+    minimum size=1.55cm,
+    inner sep=2pt
+  },
+  softarrow/.style={
+    -{Latex[length=2.2mm]},
+    thick,
+    structure.fg
+  },
+  softarrowalert/.style={
+    -{Latex[length=2.2mm]},
+    thick,
+    mRed
+  },
+  softlabel/.style={font=\scriptsize\bfseries, text=structure.fg},
+  % Mockups de interface gráfica
+  guiwin/.style={
+    draw=#1!70!black,
+    fill=white,
+    rounded corners=2pt,
+    inner sep=0pt,
+    thick
+  },
+  guibar/.style={
+    draw=none,
+    fill=#1,
+    minimum height=0.32cm,
+    inner sep=1pt,
+    font=\tiny\bfseries,
+    text=white,
+    anchor=north west
+  },
+  guibtn/.style={
+    circle,
+    fill=#1,
+    minimum size=0.14cm,
+    inner sep=0pt
+  },
+  guiphone/.style={
+    draw=#1!80!black,
+    fill=black!85,
+    rounded corners=6pt, 
+    thick,
+    inner sep=2pt
+  },
+  qcard/.style={
+    draw=structure.fg!70!black,
+    fill=structure.fg!5,
+    rounded corners=4pt,
+    thick,
+    text width=4.8cm,
+    minimum height=1.5cm,
+    align=left,
+    inner sep=6pt
+  }
+}
+
+% Fundo artístico estilizado para os slides de conteúdo
+\makeatletter
+\setbeamertemplate{background}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \ifnum\c@framenumber>1
+      % Fundo com tonalidade off-white/cinza suave
+      \fill[gray!3] (current page.south west) rectangle (current page.north east);
+
+      % Barra decorativa no topo (Verde UniRV)
+      \fill[structure.fg] (current page.north west) rectangle ($(current page.north east)+(0,-0.10cm)$);
+      \fill[mGreen!70!black] ($(current page.north west)+(0,-0.10cm)$) rectangle ($(current page.north east)+(0,-0.13cm)$);
+
+      % Curvas orgânicas sutis no canto inferior direito (Marca d'água de processo ágil)
+      \path[fill=structure.fg!6, opacity=0.75]
+        ($(current page.south east)+(-6.8cm, 0)$)
+        to[out=25, in=195] ($(current page.south east)+(0, 3.4cm)$)
+        -- (current page.south east) -- cycle;
+
+      \path[fill=mGreen!10, opacity=0.5]
+        ($(current page.south east)+(-4.5cm, 0)$)
+        to[out=35, in=185] ($(current page.south east)+(0, 2.1cm)$)
+        -- (current page.south east) -- cycle;
+
+      % Detalhes sutis de grade tech no canto superior direito
+      \foreach \x in {14.4, 14.8, 15.2, 15.6} {
+        \foreach \y in {7.8, 8.1, 8.4} {
+          \fill[structure.fg!15] (\x, \y) circle (0.6pt);
+        }
+      }
+    \fi
+  \end{tikzpicture}
+}
+\makeatother
+
+% Title page details: 
+\title[Agilidade e Processo]{Agilidade e Processo de Software}
+
+\institute[UniRV]{\large PROCESSO DE SOFTWARE --- Professor: Me. Sergio Souza Novak --- Faculdade de Engenharia de Software}
+\titlegraphic{\includegraphics[width=5cm]{Universidade_de_Rio_Verde.jpg}}
+\date{}
+
+\begin{document}
+
+% Title page frame with artistic summary background diagram
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture, overlay]
+    % Canvas background tint
+    \fill[gray!4] (current page.south west) rectangle (current page.north east);
+    
+    % Artistic background waves
+    \path[fill=structure.fg!8, opacity=0.7] 
+      (current page.north west) 
+      to[out=-20, in=180] ($(current page.north east)!0.5!(current page.south east)$)
+      to[out=0, in=120] (current page.south east)
+      -- (current page.north east) -- cycle;
+      
+    \path[fill=structure.fg!15, opacity=0.4] 
+      ($(current page.north east)!0.15!(current page.north west)$)
+      to[out=-60, in=190] ($(current page.south east)!0.75!(current page.south west)$)
+      to[out=10, in=-100] (current page.north east) -- cycle;
+
+    % RIGHT SIDE: Artistic Agile Summary Diagram
+    \begin{scope}[shift={($(current page.center)+(4.3, 0.0)$)}, scale=0.68]
+      
+      % Circular Loop Arrows
+      \draw[ultra thick, structure.fg!40, dashed, ->, >=Latex] (0, 2.7) arc (90:-230:2.7);
+      \draw[ultra thick, mGreen, ->, >=Latex] (2.7, 0) arc (0:280:2.7);
+
+      % Core Center Circle
+      \node[circle, draw=structure.fg, fill=white, ultra thick, minimum size=2.5cm, align=center] (core) at (0,0) {
+        \color{structure.fg}\textbf{\Large AGILE}\\[-2pt]
+        \color{gray!70!black}\tiny CICLO CONTÍNUO
+      };
+
+      % Orbiting Process Nodes (Artistic Summary of the Presentation)
+      % 1. Manifesto (Top)
+      \node[draw=structure.fg, fill=structure.fg!15, rounded corners=5pt, thick, align=center, font=\tiny\bfseries, inner sep=5pt, text=structure.fg] (node_manif) at (0, 3.0) {
+        MANIFESTO ÁGIL\\[-1pt]
+        \color{gray!70!black}\tiny 4 Valores | 12 Princípios
+      };
+
+      % 2. Scrum (Right)
+      \node[draw=mGreen!80!black, fill=mGreen!15, rounded corners=5pt, thick, align=center, font=\tiny\bfseries, inner sep=5pt, text=mGreen!80!black] (node_scrum) at (3.1, 0.9) {
+        SCRUM FRAMEWORK\\[-1pt]
+        \color{gray!70!black}\tiny Sprints | Daily | Artefatos
+      };
+
+      % 3. Kanban (Bottom Right)
+      \node[draw=orange!80!black, fill=orange!12, rounded corners=5pt, thick, align=center, font=\tiny\bfseries, inner sep=5pt, text=orange!90!black] (node_kanban) at (2.5, -2.4) {
+        MÉTODO KANBAN\\[-1pt]
+        \color{gray!70!black}\tiny Fluxo Visual | WIP
+      };
+
+      % 4. XP & TDD (Bottom Left)
+      \node[draw=purple!80!black, fill=purple!12, rounded corners=5pt, thick, align=center, font=\tiny\bfseries, inner sep=5pt, text=purple!90!black] (node_eng) at (-2.5, -2.4) {
+        ENGENHARIA ÁGIL\\[-1pt]
+        \color{gray!70!black}\tiny XP | TDD | CI/CD | QA
+      };
+
+      % 5. Entrega de Valor (Left)
+      \node[draw=blue!80!black, fill=blue!12, rounded corners=5pt, thick, align=center, font=\tiny\bfseries, inner sep=5pt, text=blue!90!black] (node_valor) at (-3.1, 0.9) {
+        ENTREGA DE VALOR\\[-1pt]
+        \color{gray!70!black}\tiny Software Operacional
+      };
+
+      % Flow Arrows connecting nodes
+      \draw[softarrow, structure.fg!70] (node_manif) -- (node_scrum);
+      \draw[softarrow, mGreen] (node_scrum) -- (node_kanban);
+      \draw[softarrow, orange!80!black] (node_kanban) -- (node_eng);
+      \draw[softarrow, purple!80!black] (node_eng) -- (node_valor);
+      \draw[softarrow, blue!80!black] (node_valor) -- (node_manif);
+
+      % Continuous Feedback Badge
+      \node[draw=structure.fg!60, fill=white, rounded corners=3pt, font=\fontsize{5.5}{6.5}\selectfont\bfseries, text=structure.fg, inner sep=3pt] at (0, -3.5) {INSPEÇÃO \& ADAPTAÇÃO CONTÍNUA};
+    \end{scope}
+
+    % LEFT SIDE: Title & Metadata Card
+    \node[anchor=west, align=left, inner sep=0pt] at ($(current page.west)+(0.8cm, 0.1cm)$) {
+      \begin{minipage}{6.8cm}
+        % Logo UniRV
+        \includegraphics[width=3.6cm, keepaspectratio]{Universidade_de_Rio_Verde.jpg}\\[0.2cm]
+
+        % Course Badge
+        \colorbox{structure.fg}{\strut\color{white}\bfseries\scriptsize ~PROCESSO DE SOFTWARE~}\\[0.2cm]
+
+        % Main Title
+        {\fontsize{19}{22}\selectfont \textbf{\color{structure.fg}Agilidade e Processo}\\[0.05cm]
+        \textbf{\color{structure.fg}de Software}}\\[0.2cm]
+
+        % Subtitle
+        {\scriptsize \color{gray!80!black}\textbf{Metodologias Ágeis, Scrum, Kanban e Práticas de Engenharia}}\\[0.2cm]
+
+        % Accent line (terminates well before diagram)
+        {\color{structure.fg}\rule{6.2cm}{1.4pt}}\\[0.2cm]
+
+        % Professor & Faculty Info
+        {\small \textbf{\color{black}Prof. Me. Sergio Souza Novak}}\\[0.02cm]
+        {\tiny \color{gray!70!black}Faculdade de Engenharia de Software --- UniRV}\\[0.25cm]
+
+        % Pillar Badges (fits neatly inside minipage bottom height)
+        \begin{tikzpicture}[x=1cm, y=1cm, baseline]
+          \node[draw=structure.fg!50, fill=white, rounded corners=3pt, font=\fontsize{5.5}{6.5}\selectfont\bfseries, text=structure.fg, inner sep=2.5pt] at (0,0) {Manifesto Ágil};
+          \node[draw=mGreen!60, fill=white, rounded corners=3pt, font=\fontsize{5.5}{6.5}\selectfont\bfseries, text=mGreen!80!black, inner sep=2.5pt] at (1.5,0) {Scrum};
+          \node[draw=orange!60, fill=white, rounded corners=3pt, font=\fontsize{5.5}{6.5}\selectfont\bfseries, text=orange!80!black, inner sep=2.5pt] at (2.55,0) {Kanban};
+          \node[draw=purple!60, fill=white, rounded corners=3pt, font=\fontsize{5.5}{6.5}\selectfont\bfseries, text=purple!80!black, inner sep=2.5pt] at (3.8,0) {XP \& TDD};
+        \end{tikzpicture}
+      \end{minipage}
+    };
+  \end{tikzpicture}
+\end{frame}
+
+% Logo nos slides seguintes
+\AddToShipoutPictureFG{
+    \put(\LenToUnit{.92\paperwidth},
+    \LenToUnit{.185\paperheight})
+    {\vtop{{\null}
+    \makebox{\includegraphics[width=.8cm,keepaspectratio]{Universidade_de_Rio_Verde.jpg}}}}}
+
+\begin{frame}{Sumário da Apresentação}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{\small 1. Fundamentos \& Filosofia Ágil}
+        \tableofcontents[sections={1-2}]
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{\small 2. Frameworks, Métodos \& Qualidade}
+        \tableofcontents[sections={3-9}]
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{O Manifesto Ágil}
+
+\subsection{Origem e Propósito}
+\begin{frame}{Origem do Manifesto Ágil (2001)}
+  \begin{block}{O Marco Histórico}
+    Em \textbf{2001}, um grupo composto por 17 desenvolvedores de software, autores e consultores de renome [Beck et al., 2001] assinou o \textit{“Manifesto para o Desenvolvimento Ágil de Software”}.
+  \end{block}
+
+  \vspace{0.3cm}
+  \begin{alertblock}{Propósito}
+    Propor uma alternativa inovadora aos modelos de processo prescritivos e rígidos, sanando fraquezas da engenharia de software convencional.
+  \end{alertblock}
+
+  \vspace{0.3cm}
+  \begin{itemize}
+    \item \textbf{Contexto:} Ambientes acelerados demandavam maior flexibilidade.
+    \item \textbf{Foco:} Valorizar as pessoas, a entrega contínua de valor e a adaptação a mudanças.
+  \end{itemize}
+\end{frame}
+
+\def\drawpillar#1#2#3#4{
+  \begin{scope}[shift={(#1,#2)}]
+    % Base
+    \draw[pillar_base] (-1.3, 0) rectangle (1.3, 0.3);
+    \draw[pillar_base] (-1.1, 0.3) rectangle (1.1, 0.6);
+    % Corpo
+    \draw[pillar_body] (-0.9, 0.6) rectangle (0.9, 5.0);
+    % Ranhuras
+    \draw[gray!30] (-0.45, 0.6) -- (-0.45, 5.0);
+    \draw[gray!30] (0, 0.6) -- (0, 5.0);
+    \draw[gray!30] (0.45, 0.6) -- (0.45, 5.0);
+    % Topo
+    \draw[pillar_top] (-1.1, 5.0) rectangle (1.1, 5.3);
+    \draw[pillar_top] (-1.3, 5.3) rectangle (1.3, 5.6);
+    
+    % Background para o texto (para ficar legível sobre as ranhuras)
+    \node[fill=gray!5, text width=1.65cm, align=center, inner sep=1pt] at (0, 2.8) {
+      \textbf{\textcolor{structure.fg}{\footnotesize #3}}\\[0.2cm]
+      \tiny #4
+    };
+  \end{scope}
+}
+
+\subsection{Valores e Princípios}
+\begin{frame}{Os Quatro Valores do Manifesto Ágil}
+  O Manifesto Ágil defende quatro pilares fundamentais:
+
+  \vspace{0.1cm}
+  \centering
+  \begin{tikzpicture}[scale=0.75, every node/.style={transform shape}]
+    \tikzstyle{pillar_base} = [fill=gray!20, draw=gray!60, thick, rounded corners=1pt]
+    \tikzstyle{pillar_body} = [fill=gray!5, draw=gray!60, thick]
+    \tikzstyle{pillar_top} = [fill=gray!20, draw=gray!60, thick, rounded corners=1pt]
+    
+    % Desenhando o piso
+    \draw[pillar_base] (-1.8, -0.4) rectangle (10.2, 0);
+
+    % Pilares
+    \drawpillar{0}{0}{Indivíduos e\\interações}{acima de\\processos e\\ferramentas}
+    \drawpillar{2.8}{0}{Software\\operacional}{acima de\\documentação\\completa}
+    \drawpillar{5.6}{0}{Colaboração\\do cliente}{acima de\\negociação\\contratual}
+    \drawpillar{8.4}{0}{Resposta a\\mudanças}{acima de\\seguir\\um plano}
+
+    % Desenhando o teto (Templo)
+    \draw[pillar_base, fill=gray!30] (-1.8, 5.6) -- (10.2, 5.6) -- (4.2, 7.8) -- cycle;
+    % Detalhe interno do teto
+    \draw[gray!60, thick, fill=gray!10] (-1.1, 5.8) -- (9.5, 5.8) -- (4.2, 7.3) -- cycle;
+    \node at (4.2, 6.3) {\large \textbf{\textcolor{structure.fg}{Manifesto Ágil}}};
+
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \small
+  \textit{Nota:} Embora haja valor nos itens à direita, valoriza-se mais os itens à esquerda.
+\end{frame}
+
+
+\section{O que é Agilidade? (Seção 3.1)}
+
+\begin{frame}{O que é Agilidade no Contexto de Software?}
+  \begin{block}{O Condutor da Agilidade (Jacobson)}
+    Ivar Jacobson [Jac02a] argumenta que a \textbf{difusão da mudança} é o principal condutor para a agilidade.
+    \begin{itemize}
+      \item Engenheiros de software devem ser rápidos para assimilar rápidas mudanças no ambiente.
+    \end{itemize}
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{alertblock}{Além da Simples Resposta à Mudança}
+    Agilidade abrange uma \textbf{filosofia e cultura} de trabalho estruturada em diversos pilares, que serão detalhados a seguir: comunicação, foco em entrega, redução de artefatos intermediários e planejamento flexível.
+  \end{alertblock}
+\end{frame}
+
+\subsection{Cultura e Colaboração}
+\begin{frame}{A Cultura Ágil de Trabalho}
+  \centering
+  \vspace{0.3cm}
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Center Concept
+    \node[draw=structure.fg, ultra thick, circle, text width=2.5cm, align=center, fill=structure.fg!10, minimum size=3cm] (center) at (0,0) {\textbf{Cultura}\\\textbf{Ágil}};
+    
+    % Nodes ao redor
+    \node[softbox, text width=2.8cm, fill=blue!10] (com) at (0, 3) {Comunicação\\Facilitada};
+    \node[softbox, text width=2.8cm, fill=green!10] (soft) at (4, 1.2) {Entrega Rápida\\de Software};
+    \node[softbox, text width=2.8cm, fill=orange!10] (art) at (2.5, -2.5) {Menos\\Artefatos};
+    \node[softbox, text width=2.8cm, fill=red!10] (cli) at (-2.5, -2.5) {Cliente na\\Equipe};
+    \node[softbox, text width=2.8cm, fill=purple!10] (plan) at (-4, 1.2) {Planejamento\\Flexível};
+
+    % Arrows
+    \draw[-{Latex[length=3mm]}, thick, structure.fg] (center) -- (com);
+    \draw[-{Latex[length=3mm]}, thick, structure.fg] (center) -- (soft);
+    \draw[-{Latex[length=3mm]}, thick, structure.fg] (center) -- (art);
+    \draw[-{Latex[length=3mm]}, thick, structure.fg] (center) -- (cli);
+    \draw[-{Latex[length=3mm]}, thick, structure.fg] (center) -- (plan);
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Facilitação da Comunicação e Colaboração}
+  A agilidade \textbf{quebra barreiras} e aproxima todos os envolvidos no projeto, substituindo a atitude \textit{“nós e eles”} pelo \textit{“somos uma equipe”}.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    
+    % Grupos Separados
+    \node[draw, fill=gray!20, thick, text width=2.8cm, align=center, rounded corners, minimum height=1.5cm] (dev) at (0, 2.2) {
+      \textbf{Equipe Técnica}\\
+      \scriptsize Engenheiros, Programadores
+    };
+    \node[draw, fill=gray!20, thick, text width=2.8cm, align=center, rounded corners, minimum height=1.5cm] (bus) at (0, -0.7) {
+      \textbf{Negócios}\\
+      \scriptsize Gerentes, Comercial
+    };
+    
+    \node[draw, fill=structure.fg!20, thick, text width=2.8cm, align=center, rounded corners, minimum height=1.5cm] (cli) at (9, 0.75) {
+      \textbf{O Cliente}\\
+      \scriptsize Visão de Valor, Necessidades
+    };
+
+    % Muro de tijolos com racha
+    \begin{scope}[shift={(4, -1)}]
+      \fill[red!70!black] (0,0) rectangle (1, 3.8);
+      % Desenhando tijolos básicos
+      \foreach \y in {0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5} {
+        \draw[white, thick] (0, \y) -- (1, \y);
+      }
+      \foreach \y in {0, 1.0, 2.0, 3.0} {
+        \draw[white, thick] (0.5, \y) -- (0.5, \y+0.5);
+      }
+      \foreach \y in {0.5, 1.5, 2.5, 3.5} {
+        \draw[white, thick] (0.2, \y) -- (0.2, \y+0.5);
+        \draw[white, thick] (0.8, \y) -- (0.8, \y+0.5);
+      }
+      
+      % O Racha (Buraco no muro)
+      \fill[white] (-0.2, 1.3) -- (0.3, 2.1) -- (0.1, 2.5) -- (0.8, 2.8) -- (1.2, 1.9) -- (0.6, 1.5) -- cycle;
+      \draw[thick, gray] (-0.2, 1.3) -- (0.3, 2.1) -- (0.1, 2.5) -- (0.8, 2.8) -- (1.2, 1.9) -- (0.6, 1.5) -- cycle;
+      
+      \node[rotate=10, text=red, font=\bfseries] at (0.5, 2.0) {CRASH!};
+    \end{scope}
+
+    \node[above=0.1cm of {(4.5, 2.8)}, text=red!70!black, font=\small\bfseries] {Barreira \textit{Nós e Eles}};
+
+    % Flecha gigante quebrando o muro (usando poligono)
+    \filldraw[fill=structure.fg, draw=structure.fg!50!black, thick] (2.2, 0.6) -- (3.8, 0.6) -- (3.8, 0.3) -- (4.6, 0.85) -- (3.8, 1.4) -- (3.8, 1.1) -- (2.2, 1.1) -- cycle;
+    \node[text=white, font=\bfseries\small] at (3.0, 0.85) {ÁGIL};
+
+    % Conexões Pós-Quebra
+    \draw[-{Latex[length=3mm]}, ultra thick, structure.fg, loosely dashed] (dev.east) to[out=0, in=180] (4.5, 2.2) to[out=0, in=170] (cli.west);
+    \draw[-{Latex[length=3mm]}, ultra thick, structure.fg, loosely dashed] (bus.east) to[out=0, in=180] (4.5, -0.7) to[out=0, in=190] (cli.west);
+    
+    \node[draw, fill=gray!10, thick, rounded corners, text width=9.5cm, align=center, font=\small] at (4.5, -2.5) {
+      \textbf{Resultado:}\\
+      Comunicação direta, alinhamento TI \& Negócios e o cliente como membro central da equipe rumo a um único objetivo.
+    };
+
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Foco no Software e Redução de Artefatos}
+  \begin{block}{Software Operacional Acima de Tudo}
+    A ênfase primária é a \textbf{entrega rápida e contínua} de software que funciona, em vez de documentação extensa.
+  \end{block}
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Traditional
+    \node[draw, fill=red!10, thick, text width=3.5cm, align=center, rounded corners] (trad) at (0, 0) {
+      \textbf{Tradicional}\\
+      \footnotesize Excesso de modelos,\\diagramas e papéis
+    };
+    
+    % Agile
+    \node[draw, fill=green!10, thick, text width=3.5cm, align=center, rounded corners] (agile) at (6, 0) {
+      \textbf{Ágil}\\
+      \footnotesize Apenas artefatos que\\agregam valor imediato
+    };
+
+    % Arrow
+    \draw[-{Latex[length=3mm]}, ultra thick] (trad) -- (agile) node[midway, above, font=\scriptsize, text width=2cm, align=center] {Redução de\\Desperdício};
+  \end{tikzpicture}
+
+  \vspace{0.4cm}
+  \begin{itemize}
+    \item \textbf{Exemplo:} Em vez de criar um documento de requisitos de 100 páginas, a equipe ágil mantém um conjunto priorizado de \textit{Histórias de Usuário}.
+  \end{itemize}
+\end{frame}
+
+\subsection{O Kanban Ágil}
+\begin{frame}{Transparência e Fluxo: O Quadro Kanban}
+  Para organizar o trabalho ágil, as equipes utilizam quadros visuais, como o \textbf{Kanban}, que mapeiam o ciclo de vida das tarefas desde a sua criação até a conclusão.
+
+  \vspace{0.4cm}
+  \begin{itemize}
+    \item \textbf{To Do (A Fazer):} Tarefas mapeadas para a Sprint atual, aguardando início.
+    \item \textbf{Doing (Em Andamento):} Onde os desenvolvedores estão atuando ativamente.
+    \item \textbf{Done (Concluído):} Tarefas finalizadas e testadas, prontas para entrega.
+  \end{itemize}
+
+  \vspace{0.3cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Kanban Board structure
+    \filldraw[fill=gray!5, draw=gray!30, thick, rounded corners] (0,0) rectangle (9, 3);
+    \draw[gray!30] (3, 0) -- (3, 3);
+    \draw[gray!30] (6, 0) -- (6, 3);
+    
+    \node[font=\bfseries, text=gray!80!black] at (1.5, 2.7) {To Do};
+    \node[font=\bfseries, text=gray!80!black] at (4.5, 2.7) {Doing};
+    \node[font=\bfseries, text=gray!80!black] at (7.5, 2.7) {Done};
+    \draw[gray!30] (0, 2.4) -- (9, 2.4);
+
+    % Cards moving
+    \node[draw=gray!50, fill=white, rounded corners=1pt, text width=2cm, align=center, font=\tiny] (c1) at (1.5, 1.5) {Tarefa A};
+    \node[draw=orange!50, fill=orange!10, rounded corners=1pt, text width=2cm, align=center, font=\tiny] (c2) at (4.5, 1.5) {Tarefa B};
+    \node[draw=green!50!black, fill=green!10, rounded corners=1pt, text width=2cm, align=center, font=\tiny] (c3) at (7.5, 1.5) {Tarefa C};
+
+    \draw[-{Latex[length=2mm]}, thick, gray, dashed] (2.7, 1.5) -- (3.3, 1.5);
+    \draw[-{Latex[length=2mm]}, thick, gray, dashed] (5.7, 1.5) -- (6.3, 1.5);
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Quadro Kanban: Visão do Desenvolvedor Frontend}
+  O desenvolvedor \textbf{Frontend} foca nas tarefas relacionadas à interface com o usuário, telas, estilos e consumo de APIs.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    \filldraw[fill=gray!5, draw=gray!30, thick, rounded corners] (0,0) rectangle (10.5, 4.5);
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.15) {Kanban Board \quad \textcolor{blue!50!white}{\circle*{4}} Filtro: Dev Frontend};
+    
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (0.5, 3.5) {To Do};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (4.0, 3.5) {Doing};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (7.5, 3.5) {Done};
+    \draw[gray!30] (0, 3.2) -- (10.5, 3.2);
+
+    % Card in To Do
+    \begin{scope}[shift={(0.5, 1.8)}]
+      \filldraw[fill=white, draw=gray!40, thick, rounded corners=1pt] (0,0) rectangle (2.8, 1.2);
+      \filldraw[fill=blue!50!white, draw=none] (0,0) rectangle (0.1, 1.2);
+      \node[right, font=\tiny, text=gray] at (0.1, 1.0) {Task \#101};
+      \node[right, font=\tiny\bfseries, text=black] at (0.1, 0.6) {Ajustar CSS da Home};
+      \node[left, font=\tiny] at (2.7, 0.2) {\textcolor{blue!50!white}{\circle*{4}}};
+    \end{scope}
+
+    % Card in Doing
+    \begin{scope}[shift={(4.0, 1.8)}]
+      \filldraw[fill=white, draw=orange!40, thick, rounded corners=1pt] (0,0) rectangle (2.8, 1.2);
+      \filldraw[fill=blue!50!white, draw=none] (0,0) rectangle (0.1, 1.2);
+      \node[right, font=\tiny, text=gray] at (0.1, 1.0) {Task \#105};
+      \node[right, font=\tiny\bfseries, text=black] at (0.1, 0.6) {Criar Tela de Perfil};
+      \node[left, font=\tiny] at (2.7, 0.2) {\textcolor{blue!50!white}{\circle*{4}}};
+    \end{scope}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Quadro Kanban: Visão do Desenvolvedor Backend}
+  Enquanto isso, o desenvolvedor \textbf{Backend} visualiza e atua nas tarefas de infraestrutura, banco de dados e regras de negócio.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    \filldraw[fill=gray!5, draw=gray!30, thick, rounded corners] (0,0) rectangle (10.5, 4.5);
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.15) {Kanban Board \quad \textcolor{green!50!white}{\circle*{4}} Filtro: Dev Backend};
+    
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (0.5, 3.5) {To Do};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (4.0, 3.5) {Doing};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (7.5, 3.5) {Done};
+    \draw[gray!30] (0, 3.2) -- (10.5, 3.2);
+
+    % Card in To Do
+    \begin{scope}[shift={(0.5, 1.8)}]
+      \filldraw[fill=white, draw=gray!40, thick, rounded corners=1pt] (0,0) rectangle (2.8, 1.2);
+      \filldraw[fill=green!50!white, draw=none] (0,0) rectangle (0.1, 1.2);
+      \node[right, font=\tiny, text=gray] at (0.1, 1.0) {Task \#102};
+      \node[right, font=\tiny\bfseries, text=black] at (0.1, 0.6) {Criar Tabela Users};
+      \node[left, font=\tiny] at (2.7, 0.2) {\textcolor{green!50!white}{\circle*{4}}};
+    \end{scope}
+
+    % Card in Doing
+    \begin{scope}[shift={(4.0, 1.8)}]
+      \filldraw[fill=white, draw=orange!40, thick, rounded corners=1pt] (0,0) rectangle (2.8, 1.2);
+      \filldraw[fill=green!50!white, draw=none] (0,0) rectangle (0.1, 1.2);
+      \node[right, font=\tiny, text=gray] at (0.1, 1.0) {Task \#106};
+      \node[right, font=\tiny\bfseries, text=black] at (0.1, 0.6) {Endpoint GET /profile};
+      \node[left, font=\tiny] at (2.7, 0.2) {\textcolor{green!50!white}{\circle*{4}}};
+    \end{scope}
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 1
+
+\subsection{Histórias de Usuário}
+\begin{frame}{Exemplo Prático: História de Usuário (User Story)}
+  Em ferramentas como o \textbf{Azure DevOps}, os requisitos não são documentos gigantescos, mas sim cartões chamados de \textit{User Stories}.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Window Background
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0,0) rectangle (9.5, 5.0);
+    
+    % Header
+    \filldraw[fill=gray!10, draw=none, rounded corners=2pt] (0, 4.3) rectangle (9.5, 5.0);
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.65) {\textcolor{blue!60!white}{\rule{8pt}{10pt}} 1234 \quad Tela de Login Seguro};
+    
+    % State and Save buttons
+    \node[left, font=\scriptsize, fill=white, draw=gray!40, rounded corners=1pt, inner sep=2pt] at (9.3, 4.65) {Save \& Close};
+    \node[left, font=\scriptsize, text=gray!80!black] at (7.2, 4.65) {\textcolor{gray}{\circle*{4}} New \ $\nabla$};
+
+    % Main Body (Left side)
+    \draw[gray!30] (6, 0) -- (6, 4.3); % Divider
+    
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (0.2, 4.0) {Description};
+    \filldraw[fill=white, draw=gray!30] (0.2, 2.7) rectangle (5.8, 3.8);
+    \node[right, text width=5.2cm, font=\tiny, align=left] at (0.3, 3.25) {
+      \textbf{Como} um usuário do sistema,\\
+      \textbf{Eu quero} fazer login usando autenticação em dois fatores,\\
+      \textbf{Para que} meus dados estejam protegidos.
+    };
+    
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (0.2, 2.4) {Acceptance Criteria};
+    \filldraw[fill=white, draw=gray!30] (0.2, 0.2) rectangle (5.8, 2.2);
+    \node[right, text width=5.2cm, font=\tiny, align=left] at (0.3, 1.2) {
+      $\square$ O sistema deve enviar SMS com código de 6 dígitos.\\
+      $\square$ O código expira em 5 minutos.\\
+      $\square$ Bloqueio após 3 tentativas falhas.
+    };
+
+    % Sidebar (Right side)
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (6.2, 4.0) {Details};
+    
+    \node[right, font=\tiny, text=gray!70!black] at (6.2, 3.5) {Assignee};
+    \node[right, font=\tiny] at (6.2, 3.2) {\textcolor{blue!50!white}{\circle*{6}} Unassigned};
+    
+    \node[right, font=\tiny, text=gray!70!black] at (6.2, 2.7) {Story Points};
+    \node[right, font=\tiny] at (6.2, 2.4) {5};
+    
+    \node[right, font=\tiny, text=gray!70!black] at (6.2, 1.9) {Area};
+    \node[right, font=\tiny] at (6.2, 1.6) {Frontend\textbackslash Auth};
+
+    \node[right, font=\tiny, text=gray!70!black] at (6.2, 1.1) {Iteration};
+    \node[right, font=\tiny] at (6.2, 0.8) {Sprint 14};
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 2
+\subsection{Simulação Prática (Azure DevOps)}
+\begin{frame}{Simulação: Kanban Board (Azure Boards)}
+  A História de Usuário é movida no quadro Kanban à medida que a equipe trabalha, garantindo total transparência do progresso.
+
+  \vspace{0.3cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Azure Boards Kanban Layout
+    \filldraw[fill=gray!5, draw=gray!30, thick, rounded corners] (0,0) rectangle (10.5, 4.5);
+    
+    % Columns Header
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (0.5, 4.2) {New \quad \textcolor{gray}{(1)}};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (3.5, 4.2) {Active \quad \textcolor{gray}{(1)}};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (6.5, 4.2) {Resolved \quad \textcolor{gray}{(0)}};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (9.0, 4.2) {Closed};
+    
+    \draw[gray!30] (3.2, 0) -- (3.2, 4.5);
+    \draw[gray!30] (6.2, 0) -- (6.2, 4.5);
+    \draw[gray!30] (8.8, 0) -- (8.8, 4.5);
+    \draw[gray!30] (0, 3.9) -- (10.5, 3.9);
+
+    % Card 1 (New)
+    \begin{scope}[shift={(0.2, 2.5)}]
+      \filldraw[fill=white, draw=gray!40, thick, rounded corners=1pt] (0,0) rectangle (2.8, 1.2);
+      \filldraw[fill=blue!60!white, draw=none] (0,0) rectangle (0.1, 1.2); % Blue left border for US
+      \node[right, font=\tiny, text=gray] at (0.1, 1.0) {1234};
+      \node[right, font=\tiny\bfseries, text=black] at (0.1, 0.6) {Tela de Login Seguro};
+      \node[right, font=\tiny, text=gray] at (0.1, 0.2) {State: New};
+      \node[left, font=\tiny] at (2.7, 0.2) {\textcolor{gray}{\circle*{4}}};
+    \end{scope}
+    
+    % Card 2 (Active - faded)
+    \begin{scope}[shift={(3.4, 2.5)}, opacity=0.4]
+      \filldraw[fill=white, draw=gray!40, thick, rounded corners=1pt] (0,0) rectangle (2.6, 1.2);
+      \filldraw[fill=blue!60!white, draw=none] (0,0) rectangle (0.1, 1.2); 
+      \node[right, font=\tiny, text=gray] at (0.1, 1.0) {1234};
+      \node[right, font=\tiny\bfseries, text=black] at (0.1, 0.6) {Tela de Login Seguro};
+      \node[right, font=\tiny, text=gray] at (0.1, 0.2) {State: Active};
+      \node[left, font=\tiny] at (2.5, 0.2) {\textcolor{blue!50!white}{\circle*{4}}};
+    \end{scope}
+
+    \draw[-{Latex[length=3mm]}, ultra thick, structure.fg] (3.0, 3.1) -- (3.6, 3.1) node[midway, above, font=\scriptsize] {Arrastar};
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 3
+\begin{frame}{Simulação: Código e Versionamento (Azure Repos)}
+  Ao iniciar a tarefa, o desenvolvedor cria um \textbf{Ramo (\textit{Branch})} diretamente vinculado à História de Usuário.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Azure Repos view
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0,0) rectangle (10, 4.5);
+    \filldraw[fill=gray!5, draw=none, rounded corners=2pt] (0, 3.8) rectangle (10, 4.5);
+    
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.15) {Commits \quad \textcolor{gray!80!black}{\normalsize |} \quad \textcolor{gray!80!black}{(Branch)} \ feature/US-1234-login \ $\nabla$};
+
+    % Table header
+    \node[right, font=\tiny\bfseries, text=gray] at (0.2, 3.5) {Message};
+    \node[right, font=\tiny\bfseries, text=gray] at (5.5, 3.5) {Author};
+    \node[right, font=\tiny\bfseries, text=gray] at (8.5, 3.5) {Commit};
+    \draw[gray!30] (0, 3.3) -- (10, 3.3);
+
+    % Commit 1
+    \node[right, font=\scriptsize\bfseries] at (0.2, 2.9) {Added 2FA logic to auth controller};
+    \node[right, font=\tiny, text=gray] at (0.2, 2.5) {Linked to: \#1234 Tela de Login Seguro};
+    \node[right, font=\scriptsize] at (5.5, 2.9) {\textcolor{blue!50!white}{\circle*{4}} Dev 1};
+    \node[right, font=\scriptsize, text=blue!70!black] at (8.5, 2.9) {a1b2c3d};
+    \draw[gray!15] (0, 2.2) -- (10, 2.2);
+
+    % Commit 2
+    \node[right, font=\scriptsize\bfseries] at (0.2, 1.8) {Implemented OTP input UI components};
+    \node[right, font=\tiny, text=gray] at (0.2, 1.4) {Linked to: \#1234 Tela de Login Seguro};
+    \node[right, font=\scriptsize] at (5.5, 1.8) {\textcolor{blue!50!white}{\circle*{4}} Dev 1};
+    \node[right, font=\scriptsize, text=blue!70!black] at (8.5, 1.8) {f4e5d6c};
+    \draw[gray!15] (0, 1.1) -- (10, 1.1);
+    
+    % Parent Commit
+    \node[right, font=\scriptsize\bfseries] at (0.2, 0.7) {Merge pull request \#54 from main};
+    \node[right, font=\scriptsize] at (5.5, 0.7) {\textcolor{blue!50!white}{\circle*{4}} Dev 2};
+    \node[right, font=\scriptsize, text=blue!70!black] at (8.5, 0.7) {7a8b9c0};
+
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 4
+\begin{frame}{Simulação: Integração Contínua (Azure Pipelines)}
+  Quando o código está pronto, o Dev cria um \textbf{Pull Request} (PR). Isso aciona um \textit{Pipeline} automatizado para compilar e testar a solução.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Azure Pipelines layout
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0,0) rectangle (10, 4.5);
+    \filldraw[fill=gray!5, draw=none, rounded corners=2pt] (0, 3.8) rectangle (10, 4.5);
+    
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.15) {\textcolor{green!60!black}{\circle*{6}} \quad PR Automated Build \#2026.09.17.1};
+    \node[right, font=\scriptsize, text=gray] at (0.2, 3.5) {feature/US-1234-login \quad \textcolor{blue!50!white}{\circle*{4}} Dev 1 \quad 3m 42s};
+
+    % Pipeline Stages
+    \draw[thick, gray!40] (1.5, 1.5) -- (8.5, 1.5);
+    
+    % Job 1: Build
+    \node[draw=green!60!black, fill=white, circle, minimum size=0.8cm, inner sep=0pt, thick] (b1) at (1.5, 1.5) {\textcolor{green!60!black}{\checkmark}};
+    \node[below=0.2cm of b1, font=\scriptsize\bfseries] {Build};
+    \node[below=0.6cm of b1, font=\tiny, text=gray] {1m 10s};
+
+    % Job 2: Test
+    \node[draw=green!60!black, fill=white, circle, minimum size=0.8cm, inner sep=0pt, thick] (b2) at (5.0, 1.5) {\textcolor{green!60!black}{\checkmark}};
+    \node[below=0.2cm of b2, font=\scriptsize\bfseries] {Test};
+    \node[below=0.6cm of b2, font=\tiny, text=gray] {2m 15s};
+
+    % Job 3: SonarQube (Quality Gate)
+    \node[draw=green!60!black, fill=white, circle, minimum size=0.8cm, inner sep=0pt, thick] (b3) at (8.5, 1.5) {\textcolor{green!60!black}{\checkmark}};
+    \node[below=0.2cm of b3, font=\scriptsize\bfseries] {Code Quality};
+    \node[below=0.6cm of b3, font=\tiny, text=gray] {17s};
+
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 5
+\begin{frame}{Simulação: Revisão e Fechamento (Pull Request)}
+  Outro membro da equipe revisa o código, aprova e o \textit{Merge} (união com o ramo principal) é realizado, concluindo a História.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Azure PR layout
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0,0) rectangle (10.5, 4.5);
+    \filldraw[fill=gray!5, draw=none, rounded corners=2pt] (0, 3.6) rectangle (10.5, 4.5);
+    
+    % Header
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.15) {PR 55: Adiciona autenticação de dois fatores (2FA)};
+    \node[right, font=\scriptsize, text=gray] at (0.2, 3.8) {\textcolor{green!60!black}{\textbf{Active}} \quad \textcolor{blue!50!white}{\circle*{4}} Dev 1 requested into \textbf{main} from \textbf{feature/US-1234-login}};
+    
+    % Complete Button
+    \node[draw=none, fill=blue!70!white, text=white, font=\scriptsize\bfseries, rounded corners=2pt, inner sep=4pt] at (9.2, 4.05) {Complete};
+
+    % Body
+    \node[right, font=\scriptsize\bfseries, text=black] at (0.2, 3.2) {Files};
+    \node[right, font=\scriptsize, text=green!60!black] at (0.2, 2.8) {+ 124 lines};
+    \node[right, font=\scriptsize, text=red!60!black] at (1.5, 2.8) {- 12 lines};
+    
+    \node[right, font=\scriptsize\bfseries, text=black] at (0.2, 2.2) {Linked Work Items};
+    \node[right, font=\scriptsize, text=blue!70!black] at (0.2, 1.8) {\textcolor{blue!50!white}{\rule{6pt}{8pt}} 1234 Tela de Login Seguro};
+    
+    % Reviewers
+    \draw[gray!30] (6, 0) -- (6, 3.6); % Divider
+    \node[right, font=\scriptsize\bfseries, text=black] at (6.2, 3.2) {Reviewers};
+    
+    % Dev 2 (Approved)
+    \node[right, font=\scriptsize, text=black] at (6.2, 2.7) {\textcolor{green!60!black}{\checkmark} \quad \textcolor{blue!50!white}{\circle*{6}} Dev 2 (Approved)};
+    
+    % Policies
+    \node[right, font=\scriptsize\bfseries, text=black] at (6.2, 1.8) {Checks};
+    \node[right, font=\scriptsize, text=black] at (6.2, 1.3) {\textcolor{green!60!black}{\checkmark} \quad Build succeeded};
+    \node[right, font=\scriptsize, text=black] at (6.2, 0.9) {\textcolor{green!60!black}{\checkmark} \quad Work item linked};
+    \node[right, font=\scriptsize, text=black] at (6.2, 0.5) {\textcolor{green!60!black}{\checkmark} \quad Comments resolved (3/3)};
+    
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 6: Visão Geral do Scrum Master
+\subsection{O Papel do Scrum Master}
+\begin{frame}{Papel do Scrum Master: Visão Geral da Sprint}
+  O \textbf{Scrum Master} acompanha a saúde da Sprint analisando o total de Histórias de Usuário, tarefas (Tasks) e a carga de trabalho de toda a equipe.
+
+  \vspace{0.3cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Azure Sprints View Background
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0,0) rectangle (10.5, 5.0);
+    \filldraw[fill=gray!10, draw=none, rounded corners=2pt] (0, 4.3) rectangle (10.5, 5.0);
+    
+    % Header
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.65) {Sprint 14 \quad \textcolor{gray}{\normalsize |} \quad \textcolor{gray}{\scriptsize Aug 1 - Aug 15}};
+    \node[right, font=\scriptsize, text=gray] at (7.0, 4.65) {View: Backlog \ $\nabla$};
+
+    % Table Header
+    \node[right, font=\tiny\bfseries, text=gray] at (0.2, 4.0) {Title};
+    \node[right, font=\tiny\bfseries, text=gray] at (5.5, 4.0) {State};
+    \node[right, font=\tiny\bfseries, text=gray] at (7.5, 4.0) {Effort};
+    \node[right, font=\tiny\bfseries, text=gray] at (9.0, 4.0) {Assigned To};
+    \draw[gray!30] (0, 3.8) -- (10.5, 3.8);
+
+    % Row 1: US Login
+    \node[right, font=\scriptsize] at (0.2, 3.4) {\textcolor{blue!60!white}{\rule{6pt}{8pt}} 1234 Tela de Login Seguro};
+    \node[right, font=\tiny, fill=blue!10, text=blue!80!black, rounded corners=1pt] at (5.5, 3.4) {Active};
+    \node[right, font=\scriptsize] at (7.5, 3.4) {5};
+    \node[right, font=\tiny] at (9.0, 3.4) {\textcolor{gray}{\circle*{4}} Unassigned};
+
+    % Tasks for US 1
+    \node[right, font=\tiny] at (0.5, 2.9) {\textcolor{orange!80!white}{\rule{5pt}{7pt}} 1235 Criar interface (Frontend)};
+    \node[right, font=\tiny, fill=blue!10, text=blue!80!black, rounded corners=1pt] at (5.5, 2.9) {Active};
+    \node[right, font=\tiny] at (7.5, 2.9) {12h};
+    \node[right, font=\tiny] at (9.0, 2.9) {\textcolor{blue!50!white}{\circle*{4}} Dev Frontend};
+
+    \node[right, font=\tiny] at (0.5, 2.4) {\textcolor{orange!80!white}{\rule{5pt}{7pt}} 1236 API de Autenticação (Backend)};
+    \node[right, font=\tiny, fill=green!10, text=green!80!black, rounded corners=1pt] at (5.5, 2.4) {Closed};
+    \node[right, font=\tiny] at (7.5, 2.4) {8h};
+    \node[right, font=\tiny] at (9.0, 2.4) {\textcolor{green!50!white}{\circle*{4}} Dev Backend};
+    
+    % Row 2: US Pagamento
+    \node[right, font=\scriptsize] at (0.2, 1.7) {\textcolor{blue!60!white}{\rule{6pt}{8pt}} 1280 Integração com Gateway de Pagto};
+    \node[right, font=\tiny, fill=gray!20, text=gray!80!black, rounded corners=1pt] at (5.5, 1.7) {New};
+    \node[right, font=\scriptsize] at (7.5, 1.7) {8};
+    
+    % Tasks for US 2
+    \node[right, font=\tiny] at (0.5, 1.2) {\textcolor{orange!80!white}{\rule{5pt}{7pt}} 1281 Consumir webhook de pagto};
+    \node[right, font=\tiny, fill=gray!20, text=gray!80!black, rounded corners=1pt] at (5.5, 1.2) {New};
+    \node[right, font=\tiny] at (7.5, 1.2) {20h};
+    \node[right, font=\tiny] at (9.0, 1.2) {\textcolor{green!50!white}{\circle*{4}} Dev Backend};
+
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 7: Scrum Master - Capacidade
+\begin{frame}{Papel do Scrum Master: Gestão de Capacidade}
+  O Scrum Master nota um problema crítico no Azure DevOps: a barra de capacidade do Dev Backend está vermelha! O dev tem mais horas estimadas em tarefas do que horas disponíveis na Sprint.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Work details pane
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0,0) rectangle (8, 4);
+    \node[right, font=\bfseries, text=black] at (0.2, 3.6) {Work details \quad \textcolor{gray}{\normalsize (Capacity)}};
+    \draw[gray!30] (0, 3.2) -- (8, 3.2);
+
+    % Team overall
+    \node[right, font=\scriptsize\bfseries] at (0.2, 2.8) {Team (40h / 60h)};
+    \filldraw[fill=gray!20] (0.2, 2.4) rectangle (7.8, 2.6);
+    \filldraw[fill=green!60!black] (0.2, 2.4) rectangle (5.2, 2.6); % ~66%
+
+    % Dev Frontend
+    \node[right, font=\scriptsize] at (0.2, 1.8) {\textcolor{blue!50!white}{\circle*{4}} Dev Frontend (12h / 30h)};
+    \filldraw[fill=gray!20] (0.2, 1.4) rectangle (7.8, 1.6);
+    \filldraw[fill=green!60!black] (0.2, 1.4) rectangle (3.2, 1.6); % 40%
+
+    % Dev Backend (Over capacity)
+    \node[right, font=\scriptsize, text=red!80!black] at (0.2, 0.8) {\textcolor{green!50!white}{\circle*{4}} Dev Backend (35h / 30h) \textbf{Over capacity}};
+    \filldraw[fill=gray!20] (0.2, 0.4) rectangle (7.8, 0.6);
+    \filldraw[fill=red!70!black] (0.2, 0.4) rectangle (7.8, 0.6); % 100%+ (full red bar)
+    
+    % Indicator line for capacity limit
+    \draw[thick, black, dashed] (6.5, 0.2) -- (6.5, 0.8) node[above, font=\tiny] {Max: 30h};
+
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 8: Movendo Histórias
+\begin{frame}{Papel do Scrum Master: Protegendo o Time}
+  Para resolver a sobrecarga, o Scrum Master e o \textit{Product Owner} movem histórias menos prioritárias para a próxima Sprint (ou para o Backlog), protegendo o time.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Azure Sprints View Background (Smaller)
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0, 0) rectangle (6.5, 4.0);
+    \node[right, font=\bfseries\small, text=black] at (0.2, 3.6) {Sprint 14 Backlog};
+    
+    \node[draw=gray!40, fill=white, rounded corners=1pt, text width=5cm] (us1) at (3.2, 2.8) {\scriptsize \textcolor{blue!60!white}{\rule{6pt}{8pt}} 1234 Login Seguro};
+    
+    \node[draw=red!50!black, fill=red!5, rounded corners=1pt, text width=5cm, dashed] (us2) at (3.2, 1.8) {\scriptsize \textcolor{blue!60!white}{\rule{6pt}{8pt}} 1280 Gateway Pagto};
+
+    % Next Sprint Pane
+    \filldraw[fill=gray!5, draw=gray!40, thick, rounded corners=2pt] (8, 0) rectangle (11.5, 4.0);
+    \node[right, font=\bfseries\small, text=black] at (8.2, 3.6) {Planning};
+    
+    \node[right, font=\scriptsize, text=black] at (8.2, 3.0) {\textbf{[ > ]} \ Sprint 15};
+    \node[right, font=\scriptsize, text=black] at (8.2, 2.5) {\textbf{[ > ]} \ Sprint 16};
+    \node[right, font=\scriptsize, text=black] at (8.2, 2.0) {\textbf{[ = ]} \ Backlog};
+
+    % Drag arrow
+    \draw[-{Latex[length=3mm]}, ultra thick, red!70!black] (us2.east) to[out=0, in=180] (8.5, 3.0);
+    
+    \node[below=0.5cm of us2, font=\scriptsize, align=center] {Carga de \textbf{20h} do Backend\\removida da Sprint Atual};
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 9: Visão do Dev Frontend
+\subsection{Paralelismo no Desenvolvimento}
+\begin{frame}{Paralelismo: Visão do Dev Frontend}
+  A agilidade permite que diferentes especialidades atuem ao mesmo tempo. O \textbf{Dev Frontend} filtra o quadro Kanban apenas para suas tarefas.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Azure Boards Taskboard Layout
+    \filldraw[fill=gray!5, draw=gray!30, thick, rounded corners] (0,0) rectangle (10.5, 4.5);
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.15) {Taskboard \quad \textcolor{blue!50!white}{\circle*{4}} Filtered: Dev Frontend};
+    
+    % Columns Header
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (0.5, 3.5) {To Do};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (4.0, 3.5) {Doing};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (7.5, 3.5) {Done};
+    \draw[gray!30] (0, 3.2) -- (10.5, 3.2);
+
+    % Card in Doing
+    \begin{scope}[shift={(4.0, 1.8)}]
+      \filldraw[fill=white, draw=orange!40, thick, rounded corners=1pt] (0,0) rectangle (3.0, 1.2);
+      \filldraw[fill=orange!80!white, draw=none] (0,0) rectangle (0.1, 1.2); % Orange left border for Task
+      \node[right, font=\tiny, text=gray] at (0.1, 1.0) {Task 1235};
+      \node[right, font=\tiny\bfseries, text=black] at (0.1, 0.6) {Criar interface de Login};
+      \node[right, font=\tiny, text=gray] at (0.1, 0.2) {Remaining: 4h};
+      \node[left, font=\tiny] at (2.9, 0.2) {\textcolor{blue!50!white}{\circle*{4}}};
+    \end{scope}
+
+    \node[draw, fill=blue!5, rounded corners, font=\scriptsize, align=center] at (5.25, 0.7) {Trabalhando no visual do formulário\\e aguardando o Backend...};
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 10: Visão do Dev Backend
+\begin{frame}{Paralelismo: Visão do Dev Backend}
+  No mesmo exato momento, o \textbf{Dev Backend} está focado nas suas atividades da mesma História, garantindo que o tempo da equipe seja otimizado.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Azure Boards Taskboard Layout
+    \filldraw[fill=gray!5, draw=gray!30, thick, rounded corners] (0,0) rectangle (10.5, 4.5);
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.15) {Taskboard \quad \textcolor{green!50!white}{\circle*{4}} Filtered: Dev Backend};
+    
+    % Columns Header
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (0.5, 3.5) {To Do};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (4.0, 3.5) {Doing};
+    \node[right, font=\scriptsize\bfseries, text=gray!70!black] at (7.5, 3.5) {Done};
+    \draw[gray!30] (0, 3.2) -- (10.5, 3.2);
+
+    % Card in Doing
+    \begin{scope}[shift={(4.0, 1.8)}]
+      \filldraw[fill=white, draw=orange!40, thick, rounded corners=1pt] (0,0) rectangle (3.0, 1.2);
+      \filldraw[fill=orange!80!white, draw=none] (0,0) rectangle (0.1, 1.2);
+      \node[right, font=\tiny, text=gray] at (0.1, 1.0) {Task 1236};
+      \node[right, font=\tiny\bfseries, text=black] at (0.1, 0.6) {API de Autenticação / JWT};
+      \node[right, font=\tiny, text=gray] at (0.1, 0.2) {Remaining: 8h};
+      \node[left, font=\tiny] at (2.9, 0.2) {\textcolor{green!50!white}{\circle*{4}}};
+    \end{scope}
+
+    \node[draw, fill=green!5, rounded corners, font=\scriptsize, align=center] at (5.25, 0.7) {Criando os \textit{endpoints} da API\\em paralelo com o trabalho do Frontend.};
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 11: Daily Scrum e Ajuste de Prazos
+\begin{frame}{Daily Scrum: Visibilidade e Ajuste de Prazos}
+  Na \textbf{Daily Scrum}, a equipe sincroniza o andamento. Se uma tarefa (ex: Backend) atrasar, as \textit{due dates} (datas de entrega) das demais são ajustadas, dando visibilidade imediata ao Scrum Master.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Calendar / Gantt Background
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0,0) rectangle (10.5, 5.0);
+    \filldraw[fill=gray!10, draw=none, rounded corners=2pt] (0, 4.3) rectangle (10.5, 5.0);
+    
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.65) {Sprint Schedule / Cronograma (Visão Scrum Master)};
+
+    % Days Header
+    \foreach \x/\day in {2/Seg, 4/Ter, 6/Qua, 8/Qui, 10/Sex} {
+      \node[font=\scriptsize\bfseries, text=gray!80!black] at (\x - 0.5, 4.0) {\day};
+      \draw[gray!20] (\x - 1.5, 3.8) -- (\x - 1.5, 0);
+    }
+    \draw[gray!30] (0, 3.8) -- (10.5, 3.8);
+
+    % Backend Task (Original)
+    \filldraw[fill=green!20, draw=green!60!black, thick, rounded corners=1pt] (0.6, 2.8) rectangle (3.4, 3.4);
+    \node[right, font=\scriptsize] at (0.6, 3.1) {\textcolor{green!50!white}{\circle*{4}} Backend: API};
+    
+    % Frontend Task (Original, dependent on Backend)
+    \filldraw[fill=blue!20, draw=blue!60!black, thick, rounded corners=1pt, opacity=0.3] (3.6, 2.0) rectangle (6.4, 2.6);
+    \node[right, font=\scriptsize, opacity=0.5] at (3.6, 2.3) {\textcolor{blue!50!white}{\circle*{4}} Front: Integrar};
+
+    % Dependency Line (Original)
+    \draw[-{Latex[length=2mm]}, thick, dashed, gray, opacity=0.5] (3.4, 3.1) to[out=0, in=180] (3.6, 2.3);
+
+    % The Delay (Backend is delayed)
+    \filldraw[fill=red!20, draw=red!60!black, thick, rounded corners=1pt] (3.5, 2.8) rectangle (5.4, 3.4);
+    \node[right, font=\scriptsize, text=red!80!black] at (3.5, 3.1) {\textbf{Atraso (+1d)}};
+    
+    % Frontend Task (Shifted)
+    \draw[-{Latex[length=3mm]}, ultra thick, red] (6.5, 2.3) -- (7.4, 2.3);
+    
+    \filldraw[fill=orange!20, draw=orange!80!black, thick, rounded corners=1pt] (7.6, 2.0) rectangle (10.4, 2.6);
+    \node[right, font=\scriptsize] at (7.6, 2.3) {\textcolor{blue!50!white}{\circle*{4}} Nova \textit{Due Date}};
+    
+    % New Dependency Line
+    \draw[-{Latex[length=2mm]}, thick, red] (5.4, 3.1) to[out=0, in=180] (7.6, 2.3);
+
+    \node[draw=red!80!black, fill=white, rounded corners, font=\scriptsize, align=center, thick] at (5.25, 0.7) {\textbf{\textcolor{red}{Visibilidade do Scrum Master:}}\\O ajuste diário no quadro reflete o atraso em cascata,\\mostrando se a entrega final da Sprint está comprometida.};
+
+  \end{tikzpicture}
+\end{frame}
+
+% Slide 12: Fluxo da Sprint (2 Semanas)
+\subsection{Qualidade (QA) na Sprint}
+\begin{frame}{Fluxo da Sprint: Desenvolvimento e Qualidade (QA)}
+  Em uma Sprint típica de \textbf{duas semanas}, o trabalho é cadenciado para garantir que a História de Usuário (HU) seja desenvolvida, testada e corrigida dentro do mesmo ciclo.
+
+  \vspace{0.3cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Background
+    \filldraw[fill=gray!5, draw=gray!30, thick, rounded corners] (0, 0) rectangle (11, 5.5);
+    
+    % Timeline Split
+    \draw[thick, dashed, gray!60] (5.5, 0.2) -- (5.5, 5.3);
+    
+    \node[font=\bfseries, text=structure.fg] at (2.75, 5.0) {Semana 1};
+    \node[font=\bfseries, text=structure.fg] at (8.25, 5.0) {Semana 2};
+
+    % Week 1: Dev Frontend & Backend
+    \node[draw=blue!50!black, fill=blue!10, thick, rounded corners, text width=4cm, align=center, minimum height=1.5cm] (dev) at (2.75, 3.5) {
+      \textbf{Desenvolvimento}\\
+      \scriptsize Dev Frontend e Backend\\constroem a funcionalidade.
+    };
+
+    % Week 2: QA Testing
+    \node[draw=orange!50!black, fill=orange!10, thick, rounded corners, text width=4cm, align=center, minimum height=1.5cm] (qa) at (8.25, 3.5) {
+      \textbf{Homologação (QA)}\\
+      \scriptsize Analistas de Qualidade testam as HUs buscando \textit{bugs}.
+    };
+
+    % Arrows from Dev to QA
+    \draw[-{Latex[length=3mm]}, ultra thick, structure.fg] (dev.east) -- (qa.west) node[midway, above, font=\scriptsize] {Entrega};
+
+    % Bugs found
+    \node[draw=red!50!black, fill=red!10, thick, rounded corners, text width=4cm, align=center, minimum height=1.2cm] (bugs) at (8.25, 1.2) {
+      \textbf{Correção de Bugs}\\
+      \scriptsize Devs corrigem os \textit{bugs}\\antes da Sprint terminar.
+    };
+
+    % Arrows from QA to Bugs
+    \draw[-{Latex[length=3mm]}, ultra thick, red!70!black] (qa.south) -- (bugs.north) node[midway, right, font=\scriptsize] {\textit{Bugs} reportados};
+
+    % Feedback arrow back to DEV if needed?
+    \draw[-{Latex[length=3mm]}, thick, gray, dashed] (bugs.west) to[out=180, in=-90] (dev.south);
+    \node[font=\tiny, text=gray] at (4.0, 1.5) {Retrabalho (se crítico)};
+
+    % Info Box
+    \node[draw, fill=green!5, rounded corners, font=\scriptsize, align=center, thick, text width=10cm] at (5.5, -0.7) {
+      \textbf{Objetivo do Fluxo:}\\
+      A Sprint só é um sucesso se a HU chegar ao fim da Semana 2\\totalmente funcional, testada e sem \textit{bugs} impeditivos.
+    };
+
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Exemplo Prático: Módulo de Construção de Laminador}
+  \vspace{0.2cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    
+    % Main Timeline Arrow
+    \draw[-{Latex[length=4mm]}, ultra thick, gray] (0, 3) -- (11, 3);
+    
+    % Week markers
+    \draw[thick, gray] (0, 2.8) -- (0, 3.2) node[above=0.2cm, font=\bfseries] {Início da Sprint};
+    \draw[thick, dashed, gray] (5.5, 0.5) -- (5.5, 5.5) node[above=0.1cm, font=\bfseries, fill=white, inner sep=2pt] {Semana 1 \quad | \quad Semana 2};
+    \draw[thick, gray] (10.5, 2.8) -- (10.5, 3.2) node[above=0.2cm, font=\bfseries] {Fim da Sprint};
+
+    % Labels Top (Backend) / Bottom (Frontend)
+    \node[font=\bfseries, text=green!70!black] at (-1.5, 4.5) {BACKEND};
+    \node[font=\bfseries, text=blue!70!black] at (-1.5, 1.5) {FRONTEND};
+
+    % Backend Tasks (Above the line)
+    % Week 1
+    \node[draw=green!60!black, fill=green!5, thick, rounded corners, text width=3cm, align=center, font=\scriptsize] (b1) at (2.5, 4.8) {API de Cálculo Estrutural\\(8 pts)};
+    \draw[thick, green!60!black] (b1.south) -- (2.5, 3);
+    
+    \node[draw=green!60!black, fill=green!5, thick, rounded corners, text width=3.5cm, align=center, font=\scriptsize] (b2) at (4.8, 3.8) {Modelagem do BD Laminador\\(5 pts)};
+    \draw[thick, green!60!black] (b2.south) -- (4.8, 3);
+
+    % Week 2
+    \node[draw=orange!60!black, fill=orange!10, thick, rounded corners, text width=3.5cm, align=center, font=\scriptsize] (b3) at (8.0, 4.5) {Ajustes Finos e\\Correção de \textit{Bugs} API\\(3 pts)};
+    \draw[thick, orange!60!black] (b3.south) -- (8.0, 3);
+
+    % Frontend Tasks (Below the line)
+    % Week 1
+    \node[draw=blue!60!black, fill=blue!5, thick, rounded corners, text width=3.5cm, align=center, font=\scriptsize] (f1) at (2.0, 1.5) {Interface de Inserção de Chapas\\(8 pts)};
+    \draw[thick, blue!60!black] (f1.north) -- (2.0, 3);
+
+    \node[draw=blue!60!black, fill=blue!5, thick, rounded corners, text width=3.2cm, align=center, font=\scriptsize] (f2) at (4.5, 0.6) {Renderização 3D Básica\\(13 pts)};
+    \draw[thick, blue!60!black] (f2.north) -- (4.5, 3);
+
+    % Week 2
+    \node[draw=blue!60!black, fill=blue!5, thick, rounded corners, text width=3cm, align=center, font=\scriptsize] (f3) at (7.5, 1.5) {Integração com API\\(5 pts)};
+    \draw[thick, blue!60!black] (f3.north) -- (7.5, 3);
+    
+    \node[draw=orange!60!black, fill=orange!10, thick, rounded corners, text width=3.5cm, align=center, font=\scriptsize] (f4) at (9.2, 0.6) {Refinamento Visual \& Bugs\\(3 pts)};
+    \draw[thick, orange!60!black] (f4.north) -- (9.2, 3);
+
+  \end{tikzpicture}
+\end{frame}
+
+\subsection{Lidando com a Imprevisibilidade}
+\begin{frame}{Planejamento em Mundos Incertos}
+  A agilidade reconhece os limites do planejamento a longo prazo.
+
+  \vspace{0.2cm}
+  \begin{columns}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{O Plano Rígido}
+        \footnotesize 
+        Assumir que os requisitos não mudarão gera projetos propensos a falhas, atrasos e alto custo de mudança quando o cliente alterar de ideia.
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{O Plano Flexível (Ágil)}
+        \footnotesize 
+        O planejamento é contínuo e adaptativo. Aceita-se que o escopo pode e \textbf{vai} mudar ao longo do desenvolvimento.
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.3cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    \draw[-{Latex[length=3mm]}, thick] (0, 1.5) -- (8, 1.5) node[right] {\textbf{Tempo}};
+    
+    % Plano rigido
+    \node[text width=1.8cm, align=center, font=\scriptsize] at (0, 2) {Planejamento Inicial};
+    \draw[fill=red] (0,1.4) rectangle (0.1,1.6);
+    \draw[->, thick, red, dashed] (0.1, 1.7) to[bend left] (7.5, 1.7);
+    \node[text width=2cm, align=center, font=\scriptsize, text=red] at (4, 2.2) {Tenta prever o futuro (Falho)};
+
+    % Plano flexivel
+    \foreach \x in {0, 2, 4, 6} {
+      \draw[fill=green] (\x,1.4) rectangle (\x+0.1,1.6);
+      \node[below=0.1cm, font=\scriptsize, align=center] at (\x, 1.5) {Plano\\Curto};
+    }
+    \node[text width=4cm, align=center, font=\scriptsize, text=green!50!black] at (3, 0.5) {Replanejamento constante a cada iteração (\textit{Sprint})};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Requisitos para Projetar um Processo Ágil}
+  A agilidade pode ser applied a \textbf{qualquer} processo de software, desde que seja projetado para que a equipe possa:
+
+  \vspace{0.2cm}
+  \begin{block}{Pilares de Projeto do Processo Ágil}
+    \begin{enumerate}
+      \item \textbf{Adaptar e racionalizar tarefas:} Ajustar o trabalho à realidade do projeto;
+      \item \textbf{Planejamento fluido:} Compreender a natureza dinâmica da metodologia;
+      \item \textbf{Artefatos enxutos:} Eliminar tudo, exceto os artefatos essenciais;
+      \item \textbf{Entrega incremental:} Entregar software operacional ao cliente o mais rápido possível.
+    \end{enumerate}
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{alertblock}{Alerta: Agilidade não é Licença para Gambiarra}
+    Não cometa o erro de supor que a agilidade dá licença para abreviar soluções! \\
+    \textbf{Processo é um requisito, e a disciplina é essencial.}
+  \end{alertblock}
+\end{frame}
+
+
+\section{Agilidade e o Custo das Mudanças (Seção 3.2)}
+
+\begin{frame}{Agilidade e o Custo das Mudanças}
+  \begin{block}{O Senso Comum na Engenharia de Software}
+    Décadas de experiência demonstram que os \textbf{custos de mudanças aumentam de forma não linear} (exponencial) conforme o projeto avança.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Mudança no Início (Requisitos)}
+        \begin{itemize}
+          \item \textbf{Ações:} Editar especificação, alterar detalhamento de uso ou ampliar lista de funções.
+          \item \textbf{Custo:} Mínimo.
+          \item \textbf{Impacto:} Praticamente nulo no cronograma final.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Mudança Tardia (Validação)}
+        \begin{itemize}
+          \item \textbf{Ações:} Alterar arquitetura, criar 3 novos componentes, modificar 5 existentes, novos testes.
+          \item \textbf{Custo:} Cresce rapidamente.
+          \item \textbf{Impacto:} Esforço massivo para evitar efeitos colaterais.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Exemplo Prático: Impacto de uma Mudança Tardia}
+  Se uma grande mudança funcional for solicitada durante os \textbf{testes de validação}:
+
+  \vspace{0.3cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    \node[softboxalert, text width=3.5cm] (req) at (0, 2) {
+      \textbf{Solicitação Tardia}\\
+      \scriptsize Mudança funcional grande solicitada por stakeholder
+    };
+
+    \node[softboxalert, text width=3.5cm] (arq) at (4.5, 2) {
+      \textbf{Revisão Arquitetural}\\
+      \scriptsize Reestruturação do projeto da arquitetura
+    };
+
+    \node[softboxalert, text width=3.5cm] (comp) at (9.0, 2) {
+      \textbf{Novos Componentes}\\
+      \scriptsize +3 componentes novos\\
+      \scriptsize +5 componentes alterados
+    };
+
+    \node[qcard, text width=11.5cm, align=center] (effect) at (4.5, -0.2) {
+      \textbf{\textcolor{mRed}{Controle de Efeitos Colaterais Inesperados}}\\
+      \footnotesize Exige reprojeto de casos de teste, revalidação completa e esforço substancial de engenharia.
+    };
+
+    \draw[softarrowalert] (req) -- (arq);
+    \draw[softarrowalert] (arq) -- (comp);
+    \draw[softarrowalert] (comp) |- (effect);
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Figura 3.1 -- Curva do Custo das Mudanças}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Fundo cinza claro
+    \fill[black!6] (0,0) rectangle (9.5,5.2);
+
+    % Eixos principais
+    \draw[very thick] (0,5.2) -- (0,0) -- (9.5,0);
+
+    % Rótulos dos eixos
+    \node[rotate=90, font=\small\bfseries, anchor=south] at (-0.35, 2.6) {Custo de desenvolvimento};
+    \node[font=\small\bfseries, anchor=north] at (4.75, -0.15) {Progresso do cronograma de desenvolvimento};
+
+    % Curva 1: Linha preta contínua exponencial
+    \draw[ultra thick, black] (0,0) .. controls (3,0.3) and (6.5,1.5) .. (9.0,4.8);
+
+    % Curva 2: Linha cinza contínua suave
+    \draw[ultra thick, black!40] (0,0) .. controls (2,0.6) and (5,1.2) .. (9.0,2.8);
+
+    % Curva 3: Linha preta tracejada
+    \draw[ultra thick, black, dashed] (0,0) .. controls (1.5,0.7) and (4,1.1) .. (9.0,1.1);
+
+    % Rótulo 1: Custo de alterações usando-se processos ágeis (aponta para curva preta)
+    \node[font=\tiny\bfseries, align=left] (lbl1) at (4.3, 4.0) {Custo de alterações\\usando-se\\processos ágeis};
+    \draw[-{Latex[length=1.8mm]}, thick] (lbl1.east) -- (7.4, 2.9);
+
+    % Rótulo 2: Custo de alterações usando-se processos de software convencionais (aponta para curva cinza)
+    \node[font=\tiny\bfseries, align=left] (lbl2) at (2.2, 1.8) {Custo de alterações\\usando-se processos de\\\textit{software} convencionais};
+    \draw[-{Latex[length=1.8mm]}, thick] (lbl2.east) -- (4.1, 1.05);
+
+    % Rótulo 3: Custo ideal de alterações usando-se processos ágeis (aponta para linha tracejada)
+    \node[font=\tiny\bfseries, align=left] (lbl3) at (6.8, 0.5) {Custo ideal de alterações\\usando-se processos ágeis};
+    \draw[-{Latex[length=1.8mm]}, thick] (lbl3.west) -- (5.3, 1.1);
+  \end{tikzpicture}
+\end{frame}
+
+\subsection{Achatamento da Curva}
+\begin{frame}{Achatamento da Curva de Mudança}
+  \begin{block}{O Argumento Ágil}
+    Um processo ágil bem elaborado \textbf{“achata” o custo da curva de mudança}, permitindo assimilar alterações tardias sem impacto significativo.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Como isso é alcançado?}
+    \begin{itemize}
+      \item \textbf{Entregas Incrementais:} Reduzem o escopo da mudança.
+      \item \textbf{Práticas Ágeis Associadas:} Testes contínuos de unidades e programação em pares.
+    \end{itemize}
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{alertblock}{Debate em Curso}
+    Há evidências de redução significativa nos custos de alterações, mas o nível exato em que a curva se torna plana ainda é debatido.
+  \end{alertblock}
+\end{frame}
+
+\section{O Processo Ágil}
+
+\begin{frame}{O que é Processo Ágil? -- Preceitos}
+  Um processo ágil lida com a imprevisibilidade lidando com três preceitos fundamentais [Fow02]:
+  
+  \vspace{0.2cm}
+  \begin{enumerate}
+    \item \textbf{Dificuldade de Previsão:} É difícil prever quais requisitos persistirão e como as prioridades do cliente sofrerão alterações.
+    \item \textbf{Projeto e Construção Intercalados:} Modelos de projeto precisam ser testados durante a construção. É difícil saber quanto de projeto é necessário antes da implementação.
+    \item \textbf{Planejamento Limitado:} Análise, projeto, construção e testes não são tão previsíveis do ponto de vista de planejamento.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Administrando a Imprevisibilidade}
+  \begin{block}{Adaptabilidade do Processo}
+    Para administrar a imprevisibilidade, o processo deve ser \textbf{adaptável} para alterar rapidamente o projeto e as condições técnicas.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Adaptação Incremental e Feedback}
+    \begin{itemize}
+      \item A equipe precisa do \textbf{feedback do cliente} para fazer adaptações apropriadas.
+      \item O \textbf{protótipo operacional} (ou incremento executável) é o catalisador eficaz para esse feedback.
+      \item Entregas curtas capacitam o cliente a avaliar o incremento e influenciar o processo regularmente.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Os 12 Princípios}
+\begin{frame}{Princípios da Agilidade (Agile Alliance)}
+  A satisfação do cliente é alcançada com a \textbf{oferta de valor e entregas frequentes}.
+  
+  \vspace{0.2cm}
+  \begin{itemize}
+    \item \textbf{Equipe e Ambiente:} Indivíduos motivados, comunicação presencial e auto-organização.
+    \item \textbf{Foco Técnico:} Excelência técnica e bom projeto. 
+    \item \textbf{Simplicidade:} A arte de maximizar o volume de trabalho \textit{não realizado}.
+    \item \textbf{Software Operacional:} O objetivo principal, desenvolvido em um ritmo sustentável a longo prazo.
+    \item \textbf{Introspecção e Melhoria:} A equipe busca continuamente melhorar sua forma de trabalho.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{A Política do Desenvolvimento Ágil}
+  O debate metodológico entre agilistas e tradicionais não deve virar uma "guerra santa".
+  
+  \vspace{0.2cm}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Visão Ágil Extremista}
+        Os metodologistas tradicionais focam em documentação excessiva em vez de sistemas úteis e operacionais.
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{alertblock}{Visão Tradicional Extremista}
+        Os ágeis são "hackers" que terão surpresas ao lidar com softwares de porte empresarial.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.2cm}
+  \begin{block}{O Caminho do Meio}
+    Software funcional é importante, mas também precisa de confiabilidade, usabilidade e facilidade de manutenção. Deve-se \textbf{mesclar o melhor das duas escolas}.
+  \end{block}
+\end{frame}
+
+
+\section{Scrum}
+
+\subsection{Fundamentos e Artefatos}
+\begin{frame}{O Método Scrum}
+  \begin{block}{O que é?}
+    \textbf{Scrum} (nome derivado do \textit{rugby}) é um método ágil concebido por Jeff Sutherland (início dos anos 1990) e expandido por Schwaber e Beedle.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Princípios e Atividades}
+    Coerente com o manifesto ágil, o Scrum incorpora atividades de \textbf{requisitos, análise, projeto, evolução e entrega}.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Sprints}
+    O trabalho ocorre em janelas de tempo limitadas (\textit{time-boxes}) chamadas \textbf{sprints}. O número de sprints varia conforme o projeto, e o processo é adaptado pela equipe em tempo real.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Equipe Scrum e Artefatos (1/2)}
+  \begin{block}{A Equipe Scrum}
+    É interdisciplinar, auto-organizada e pequena (3 a 6 desenvolvedores), composta por:
+    \begin{itemize}
+      \item \textbf{Product Owner:} Cuida dos interesses do cliente/negócio.
+      \item \textbf{Scrum Master:} Facilitador que remove obstáculos.
+      \item \textbf{Equipe de Desenvolvimento.}
+    \end{itemize}
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{O Backlog do Produto}
+    Uma \textbf{lista priorizada} de requisitos que agregam valor ao negócio. É dinâmico e ordenado pelo \textit{Product Owner}.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Equipe Scrum e Artefatos (2/2)}
+  \begin{block}{O Backlog do Sprint}
+    Subconjunto do backlog do produto selecionado para ser completado no \textit{sprint} atual (geralmente 2 a 4 semanas). Não se adiciona novas características durante o sprint.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{O Incremento de Código}
+    União de itens completados nos sprints anteriores com os itens do sprint atual. A equipe decide como completá-lo e quando está pronto.
+  \end{block}
+  
+  \vspace{0.2cm}
+  \begin{block}{O Papel do Scrum Master}
+    Comanda a reunião diária de 15 minutos, remove obstáculos, ajuda a equipe e o \textit{product owner} a gerenciar o backlog.
+  \end{block}
+\end{frame}
+
+\subsection{Cerimônias Scrum (Eventos)}
+\begin{frame}{Reunião de Planejamento do Sprint}
+  \begin{block}{Preparação e Priorização}
+    A equipe e o \textit{product owner} desenvolvem e ordenam os itens do backlog pela importância para o negócio e pela complexidade técnica.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Definindo a Meta do Sprint}
+    Antes do sprint, o \textit{product owner} enuncia a \textbf{meta de desenvolvimento}. O Scrum Master e a equipe selecionam os itens para o \textit{backlog do sprint}.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Comprometimento da Equipe}
+    A equipe determina o que pode entregar no incremento dentro da janela de tempo e define os papéis necessários para a execução do trabalho.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Figura 3.2 -- Fluxo do Processo Scrum}
+  \centering
+  \vspace{0.5cm}
+  \begin{tikzpicture}[scale=0.8, every node/.style={transform shape}]
+    % Product Backlog
+    \node[draw, thick, fill=gray!10, minimum width=1.5cm, minimum height=2.5cm, text width=2cm, align=center] (pb) at (0, 0) {Itens\\pendentes};
+    \node[above=0.1cm of pb, text width=3cm, align=center, font=\scriptsize] {\textbf{Backlog do produto:}\\Priorização das funcionalidades};
+
+    % Sprint Backlog
+    \node[draw, thick, fill=gray!20, minimum width=1.5cm, minimum height=1.5cm, text width=2cm, align=center] (sb) at (3.5, 0) {Funcionalidades\\atribuídas};
+    \node[below=0.1cm of sb, text width=2.5cm, align=center, font=\scriptsize] {\textbf{Backlog do sprint:}\\Atribuição ao \textit{sprint}};
+
+    % Arrows
+    \draw[-{Latex[length=3mm]}, thick] (pb) -- (sb);
+
+    % Sprint Cycle (30 days)
+    \node[circle, draw, ultra thick, minimum size=3cm, align=center] (sprint) at (7.5, 0) {30 dias};
+    \draw[-{Latex[length=4mm]}, ultra thick] (sb) -- (sprint);
+
+    % Daily Cycle (24 hours)
+    \node[circle, draw, thick, fill=white, minimum size=1.5cm, align=center] (daily) at (7.5, 0.8) {24\\horas};
+
+    % Daily Scrum note
+    \node[right=1.2cm of daily, text width=2.5cm, align=center, font=\scriptsize] (scrum_note) {\textbf{Scrum:}\\reuniões diárias\\de 15 minutos};
+    \draw[-{Latex[length=2mm]}, thick] (scrum_note) -- (daily);
+
+    % Increment
+    \node[draw, thick, fill=gray!40, minimum width=2cm, minimum height=1.5cm, text width=2cm, align=center] (inc) at (11.5, 0) {Incremento};
+    \node[below=0.1cm of inc, text width=3cm, align=center, font=\scriptsize] {\textbf{Nova funcionalidade}\\demonstrada no\\final do \textit{sprint}};
+
+    \draw[-{Latex[length=4mm]}, ultra thick] (sprint) -- (inc);
+
+    % Curved arrows around sprint
+    \draw[->, ultra thick, bend left=45] (5.8, 1.8) to (9.2, 1.8);
+    \draw[->, ultra thick, bend left=45] (9.2, -1.8) to (5.8, -1.8);
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Reunião Diária do Scrum}
+  \begin{block}{O que é?}
+    Evento diário de \textbf{15 minutos} para sincronizar atividades e planejar as próximas 24 horas. Participam obrigatoriamente o \textit{Scrum Master} e a equipe de desenvolvimento.
+  \end{block}
+  \vspace{0.2cm}
+  \centering
+  \begin{tikzpicture}[scale=0.95, every node/.style={transform shape}]
+    % Teams App Window
+    \filldraw[fill=gray!5, draw=gray!30, thick, rounded corners=2pt] (0, -0.2) rectangle (10.5, 5.5);
+    % Top bar
+    \filldraw[fill=violet!70!white, draw=none, rounded corners=2pt] (0, 4.8) rectangle (10.5, 5.5);
+    \node[right, font=\bfseries\small, text=white] at (0.2, 5.15) {Microsoft Teams \quad | \quad Canal: Daily Scrum};
+
+    % Message 1: Scrum Master
+    % Avatar
+    \node[circle, fill=violet!30, text=violet!80!black, minimum size=0.7cm, inner sep=0pt, font=\scriptsize\bfseries] at (0.6, 4.1) {SM};
+    % Name and time
+    \node[right, font=\footnotesize\bfseries, text=black] at (1.1, 4.4) {Scrum Master};
+    \node[right, font=\scriptsize, text=gray] at (3.5, 4.4) {09:00 AM};
+    % Text
+    \node[right, text width=9.0cm, font=\footnotesize, text=gray!90!black, align=left] at (1.1, 3.65) {Bom dia, time! Hora da nossa Daily. Por favor, respondam às \textbf{3 Perguntas-Chave} para nosso alinhamento diário.};
+    
+    % Divider
+    \draw[gray!20] (0.5, 3.0) -- (10.0, 3.0);
+
+    % Message 2: Dev Frontend
+    % Avatar
+    \node[circle, fill=blue!30, text=blue!80!black, minimum size=0.7cm, inner sep=0pt, font=\scriptsize\bfseries] at (0.6, 2.4) {DF};
+    % Name and time
+    \node[right, font=\footnotesize\bfseries, text=black] at (1.1, 2.7) {Dev Frontend};
+    \node[right, font=\scriptsize, text=gray] at (3.5, 2.7) {09:05 AM};
+    % Text
+    \node[right, text width=9.2cm, font=\footnotesize, text=gray!90!black, align=left] at (1.1, 1.25) {
+      \textbf{1. O que você realizou desde a última reunião?}\\
+      \textcolor{gray!80!black}{- Finalizei a interface da tela de Login e enviei o PR.}\\[0.15cm]
+      \textbf{2. Quais obstáculos está encontrando?}\\
+      \textcolor{gray!80!black}{- Sem impedimentos técnicos no momento.}\\[0.15cm]
+      \textbf{3. O que planeja realizar até a próxima reunião?}\\
+      \textcolor{gray!80!black}{- Iniciar a listagem de usuários e consumir a API do Backend.}
+    };
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Reunião Diária do Scrum (Cont.)}
+  \begin{block}{Objetivos}
+    Revelar problemas cedo. O Scrum Master deve focar em \textbf{eliminar os obstáculos} antes do próximo encontro. Não é uma reunião para solucionar problemas (isso é feito à parte). Promove a "socialização do conhecimento".
+  \end{block}
+\end{frame}
+
+\begin{frame}{Reunião de Revisão do Sprint}
+  \begin{block}{Quando e Quem?}
+    Ocorre ao final do sprint (ex: 4 horas de reunião para sprint de 4 semanas). Participam: Scrum Master, Equipe de Desenvolvimento, Product Owner e envolvidos.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{A Demonstração (Demo)}
+    A atividade principal é uma \textbf{demonstração do incremento de software} completado (funções entregues na janela de tempo, não necessariamente tudo o que foi planejado).
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Aceitação e Feedback}
+    O \textit{Product Owner} pode ou não aceitar o incremento. Feedbacks são recolhidos para a próxima rodada de planejamento, onde novas características podem ser adicionadas ou eliminadas do backlog.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Retrospectiva do Sprint}
+  \begin{block}{Objetivo e Duração}
+    Realizada após a Revisão e antes do próximo Planejamento (ex: 3 horas para sprint de 4 semanas). 
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Debate da Equipe}
+    O Scrum Master encoraja a equipe a debater e responder:
+    \begin{itemize}
+      \item O que deu certo no sprint?
+      \item O que poderia melhorar?
+      \item Com o que a equipe se compromete a melhorar no próximo sprint?
+    \end{itemize}
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Melhoria Contínua}
+    A equipe busca melhorar suas práticas, adaptar a definição de "pronto" e se preparar efetivamente para o próximo incremento.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Exemplo Prático: Pauta de Retrospectiva}
+  Uma ferramenta visual colaborativa (como \textit{Miro} ou \textit{Trello}) é frequentemente usada para estruturar o debate e agrupar os \textit{post-its} virtuais da equipe.
+
+  \vspace{0.4cm}
+  \centering
+  \begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Board Background
+    \filldraw[fill=gray!5, draw=gray!30, thick, rounded corners] (0,0) rectangle (10.5, 4.5);
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.15) {Painel: Retrospectiva Sprint 14};
+    
+    % Columns Header
+    \node[right, font=\scriptsize\bfseries, text=green!70!black] at (0.5, 3.5) {(+) O que deu certo?};
+    \node[right, font=\scriptsize\bfseries, text=red!70!black] at (4.0, 3.5) {(-) O que precisa melhorar?};
+    \node[right, font=\scriptsize\bfseries, text=blue!70!black] at (7.4, 3.5) {(>) Planos de Ação (Próx. Sprint)};
+    \draw[gray!30] (0, 3.2) -- (10.5, 3.2);
+
+    % Sticky Notes: O que deu certo
+    \begin{scope}[shift={(0.3, 2.0)}]
+      \filldraw[fill=green!15, draw=green!40, thick, rounded corners=1pt] (0,0) rectangle (2.6, 1.0);
+      \node[right, text width=2.4cm, font=\tiny, text=black, align=center] at (0.05, 0.5) {Comunicação mais fluida com o PO para tirar dúvidas.};
+    \end{scope}
+    \begin{scope}[shift={(0.6, 0.8)}]
+      \filldraw[fill=green!15, draw=green!40, thick, rounded corners=1pt] (0,0) rectangle (2.6, 1.0);
+      \node[right, text width=2.4cm, font=\tiny, text=black, align=center] at (0.05, 0.5) {A Integração Contínua não quebrou nenhuma vez.};
+    \end{scope}
+
+    % Sticky Notes: O que precisa melhorar
+    \begin{scope}[shift={(3.8, 2.0)}]
+      \filldraw[fill=red!15, draw=red!40, thick, rounded corners=1pt] (0,0) rectangle (2.6, 1.0);
+      \node[right, text width=2.4cm, font=\tiny, text=black, align=center] at (0.05, 0.5) {Ambiente de teste caiu 2 vezes atrasando QA.};
+    \end{scope}
+    \begin{scope}[shift={(4.1, 0.8)}]
+      \filldraw[fill=red!15, draw=red!40, thick, rounded corners=1pt] (0,0) rectangle (2.6, 1.0);
+      \node[right, text width=2.4cm, font=\tiny, text=black, align=center] at (0.05, 0.5) {Gargalo e lentidão nas aprovações de Pull Requests.};
+    \end{scope}
+
+    % Sticky Notes: Planos de Ação
+    \begin{scope}[shift={(7.3, 2.0)}]
+      \filldraw[fill=blue!15, draw=blue!40, thick, rounded corners=1pt] (0,0) rectangle (2.8, 1.0);
+      \node[right, text width=2.6cm, font=\tiny, text=black, align=center] at (0.05, 0.5) {\textbf{Ação (DevOps):} Adicionar monitoramento automático do servidor de testes.};
+    \end{scope}
+    \begin{scope}[shift={(7.6, 0.8)}]
+      \filldraw[fill=blue!15, draw=blue!40, thick, rounded corners=1pt] (0,0) rectangle (2.8, 1.0);
+      \node[right, text width=2.6cm, font=\tiny, text=black, align=center] at (0.05, 0.5) {\textbf{Ação (Time):} Limitar tarefas em andamento (WIP) e priorizar code review.};
+    \end{scope}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Retrospectiva em Equipes Grandes: Agrupamento e Votação}
+  Em equipes maiores, dezenas de tópicos são levantados simultaneamente. Para focar no que é mais crítico, a equipe \textbf{agrupa os post-its por temas similares} e utiliza \textbf{Dot Voting} (votação por pontos) para priorizar a discussão e definir planos de ação.
+
+  \vspace{0.3cm}  
+  \centering
+  \begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Board Background
+    \filldraw[fill=gray!5, draw=gray!30, thick, rounded corners] (0,0) rectangle (10.5, 5.2);
+    \node[right, font=\bfseries\small, text=black] at (0.2, 4.85) {Painel de Retrospectiva: Temas Agrupados e Votação (Dot Voting)};
+    
+    % Dividers
+    \draw[gray!30, thick] (3.5, 0) -- (3.5, 4.5);
+    \draw[gray!30, thick] (7.0, 0) -- (7.0, 4.5);
+    \draw[gray!30, thick] (0, 4.5) -- (10.5, 4.5);
+
+    % Columns Header
+    \node[font=\scriptsize\bfseries, text=black] at (1.75, 4.2) {Tema 1: Infraestrutura};
+    \node[font=\scriptsize\bfseries, text=black] at (5.25, 4.2) {Tema 2: Revisão de Código};
+    \node[font=\scriptsize\bfseries, text=black] at (8.75, 4.2) {Tema 3: Reuniões};
+
+    % Theme 1 (Infra)
+    \begin{scope}[shift={(0.4, 3.0)}]
+      \filldraw[fill=yellow!15, draw=yellow!60!orange, thick, rounded corners=1pt] (0,0) rectangle (2.7, 0.9);
+      \node[right, text width=2.5cm, font=\tiny, text=black, align=center] at (0.05, 0.45) {O ambiente de homologação caiu 3 vezes.};
+    \end{scope}
+    \begin{scope}[shift={(0.6, 1.9)}]
+      \filldraw[fill=yellow!15, draw=yellow!60!orange, thick, rounded corners=1pt] (0,0) rectangle (2.7, 0.9);
+      \node[right, text width=2.5cm, font=\tiny, text=black, align=center] at (0.05, 0.45) {Lentidão no script de deploy automatizado.};
+      % Votos
+      \filldraw[fill=red!80, draw=none] (2.2, 0.7) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (2.4, 0.7) circle (0.1);
+    \end{scope}
+    \begin{scope}[shift={(0.3, 0.8)}]
+      \filldraw[fill=yellow!15, draw=yellow!60!orange, thick, rounded corners=1pt] (0,0) rectangle (2.7, 0.9);
+      \node[right, text width=2.5cm, font=\tiny, text=black, align=center] at (0.05, 0.45) {Falta de memória no banco de dados.};
+      % Votos
+      \filldraw[fill=red!80, draw=none] (2.0, 0.7) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (2.2, 0.7) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (2.4, 0.7) circle (0.1);
+    \end{scope}
+    % Total de votos tema 1
+    \node[font=\scriptsize\bfseries, text=gray!80!black] at (1.75, 0.3) {Total: 5 Votos};
+
+
+    % Theme 2 (Code Review)
+    \begin{scope}[shift={(3.9, 2.7)}]
+      \filldraw[fill=cyan!10, draw=cyan!40, thick, rounded corners=1pt] (0,0) rectangle (2.7, 1.2);
+      \node[right, text width=2.5cm, font=\tiny, text=black, align=center] at (0.05, 0.45) {Pull Requests demoram em média 3 dias para aprovação.};
+      % Votos (muitos votos)
+      \filldraw[fill=red!80, draw=none] (1.6, 1.0) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (1.8, 1.0) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (2.0, 1.0) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (2.2, 1.0) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (2.4, 1.0) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (1.8, 0.75) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (2.0, 0.75) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (2.2, 0.75) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (2.4, 0.75) circle (0.1);
+    \end{scope}
+    \begin{scope}[shift={(4.1, 1.3)}]
+      \filldraw[fill=cyan!10, draw=cyan!40, thick, rounded corners=1pt] (0,0) rectangle (2.7, 0.9);
+      \node[right, text width=2.5cm, font=\tiny, text=black, align=center] at (0.05, 0.45) {Gargalo nos Seniores para fazer os reviews.};
+      \filldraw[fill=red!80, draw=none] (2.2, 0.7) circle (0.1);
+      \filldraw[fill=red!80, draw=none] (2.4, 0.7) circle (0.1);
+    \end{scope}
+    % Total de votos tema 2
+    \filldraw[fill=red!10, draw=red!40, thick, rounded corners=2pt] (3.65, 0.1) rectangle (6.85, 0.6);
+    \node[font=\scriptsize\bfseries, text=red!80!black] at (5.25, 0.35) {11 Votos $\rightarrow$ PRIORIDADE 1};
+
+    % Theme 3 (Reuniões)
+    \begin{scope}[shift={(7.4, 2.7)}]
+      \filldraw[fill=green!10, draw=green!40, thick, rounded corners=1pt] (0,0) rectangle (2.7, 0.9);
+      \node[right, text width=2.5cm, font=\tiny, text=black, align=center] at (0.05, 0.45) {Muitas reuniões que poderiam ser um e-mail.};
+      \filldraw[fill=red!80, draw=none] (2.4, 0.7) circle (0.1);
+    \end{scope}
+    \begin{scope}[shift={(7.6, 1.4)}]
+      \filldraw[fill=green!10, draw=green!40, thick, rounded corners=1pt] (0,0) rectangle (2.7, 0.9);
+      \node[right, text width=2.5cm, font=\tiny, text=black, align=center] at (0.05, 0.45) {Daily scrum passando de 30 minutos com frequência.};
+      \filldraw[fill=red!80, draw=none] (2.4, 0.7) circle (0.1);
+    \end{scope}
+    % Total de votos tema 3
+    \node[font=\scriptsize\bfseries, text=gray!80!black] at (8.75, 0.3) {Total: 2 Votos};
+
+  \end{tikzpicture}
+\end{frame}
+
+% --- Início dos 5 slides de Casos de Teste ---
+
+\subsection{Aprofundamento: Casos de Teste}
+\begin{frame}{Casos de Teste (Test Cases)}
+  \begin{block}{O que é um Caso de Teste?}
+    É um conjunto de \textbf{condições, passos e variáveis} sob as quais um Analista de Qualidade (QA) ou testador determinará se um requisito de software (como uma História de Usuário) foi implementado corretamente e funciona conforme esperado.
+  \end{block}
+  
+  \vspace{0.2cm}
+  \begin{itemize}
+    \item \textbf{No Azure DevOps:} São representados como \textit{Work Items} específicos (geralmente organizados dentro de um "Test Plan").
+    \item \textbf{Composição Básica:} Possuem \textit{Pré-condições}, \textit{Ações (Passos a executar)}, e o \textit{Resultado Esperado} para cada passo.
+    \item \textbf{Rastreabilidade:} Ficam vinculados diretamente à História de Usuário que estão validando. Se a User Story muda, o Caso de Teste deve ser revisado e atualizado.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Execução de um Caso de Teste}
+  A execução de um Caso de Teste no ciclo ágil garante que novas funcionalidades entreguem o valor esperado e não quebrem o restante do sistema.
+
+  \vspace{0.3cm}
+  \begin{itemize}
+    \item \textbf{Manual vs Automatizado:} Podem ser executados manualmente por um humano (clicando e validando visualmente) ou via scripts automatizados (ex: Cypress, Selenium, JUnit).
+    \item \textbf{Passo a Passo (Test Runner):} Em ferramentas como Azure DevOps, o QA usa um painel chamado \textit{Test Runner} que exibe o passo a passo na tela. Para cada passo, ele marca como \textcolor{green!60!black}{\textbf{Passou (Passed)}} ou \textcolor{red!80!black}{\textbf{Falhou (Failed)}}.
+    \item \textbf{Evidências e Bugs:} Se um passo falha, o testador anexa evidências (prints de tela, logs de rede) e abre um \textit{Bug} diretamente vinculado àquele passo que falhou, bloqueando a entrega final da User Story até a correção.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Criação pelo Analista de Qualidade (QA)}
+  Durante o planejamento ou no decorrer da Sprint, o Analista de Qualidade cria os cenários positivos e negativos para cobrir todas as regras de negócio da História.
+
+  \vspace{0.3cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Azure DevOps Window
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0,0) rectangle (10.5, 4.3);
+    \filldraw[fill=blue!5, draw=none, rounded corners=2pt] (0, 3.6) rectangle (10.5, 4.3);
+    
+    % Header
+    \node[right, font=\bfseries\small, text=black] at (0.2, 3.95) {Azure DevOps \quad | \quad Test Plans \quad $>$ \quad \textcolor{blue!60!black}{Test Case 305}};
+    \draw[gray!30] (0, 3.6) -- (10.5, 3.6);
+
+    % Body
+    \node[right, font=\bfseries, text=black] at (0.3, 3.2) {Validar Login com credenciais incorretas \quad \textcolor{gray}{$\square$} \textnormal{\scriptsize Result}};
+    \node[right, font=\scriptsize, text=gray] at (0.3, 2.8) {State: \textbf{Design} \quad Assigned To: \textbf{Analista QA} \quad Area: \textbf{Autenticação}};
+    
+    % Steps Table Header
+    \filldraw[fill=gray!15, draw=none] (0.3, 2.1) rectangle (10.2, 2.5);
+    \node[right, font=\scriptsize\bfseries] at (0.4, 2.3) {Step};
+    \node[right, font=\scriptsize\bfseries] at (1.2, 2.3) {Action};
+    \node[right, font=\scriptsize\bfseries] at (6.0, 2.3) {Expected Result};
+    \node[right, font=\scriptsize\bfseries] at (9.2, 2.3) {Pass?};
+
+    % Steps Rows
+    \node[right, font=\scriptsize] at (0.4, 1.7) {1};
+    \node[right, font=\scriptsize] at (1.2, 1.7) {Acessar a tela de login (/login).};
+    \node[right, font=\scriptsize, text=gray!80!black] at (6.0, 1.7) {Campos de usuário e senha visíveis.};
+    \node[right, font=\footnotesize, text=gray] at (9.4, 1.7) {$\square$};
+    \draw[gray!20] (0.3, 1.4) -- (10.2, 1.4);
+
+    \node[right, font=\scriptsize] at (0.4, 1.1) {2};
+    \node[right, font=\scriptsize] at (1.2, 1.1) {Inserir email "teste@errado" e senha "123".};
+    \node[right, font=\scriptsize, text=gray!80!black] at (6.0, 1.1) {Botão 'Entrar' habilitado.};
+    \node[right, font=\footnotesize, text=gray] at (9.4, 1.1) {$\square$};
+    \draw[gray!20] (0.3, 0.8) -- (10.2, 0.8);
+
+    \node[right, font=\scriptsize] at (0.4, 0.5) {3};
+    \node[right, font=\scriptsize] at (1.2, 0.5) {Clicar no botão 'Entrar'.};
+    \node[right, font=\scriptsize, text=gray!80!black] at (6.0, 0.5) {Exibir alerta vermelho: "Credenciais inválidas".};
+    \node[right, font=\footnotesize, text=gray] at (9.4, 0.5) {$\square$};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Casos de Teste para o Frontend}
+  Casos focados em garantir que a \textbf{Interface de Usuário (UI)} reaja como esperado (responsividade, estados de botões, validação visual e usabilidade).
+
+  \vspace{0.3cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Azure DevOps Window
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0,0) rectangle (10.5, 4.3);
+    \filldraw[fill=blue!5, draw=none, rounded corners=2pt] (0, 3.6) rectangle (10.5, 4.3);
+    
+    % Header
+    \node[right, font=\bfseries\small, text=black] at (0.2, 3.95) {Azure DevOps \quad | \quad Test Plans \quad $>$ \quad \textcolor{blue!60!black}{Test Case 308}};
+    \draw[gray!30] (0, 3.6) -- (10.5, 3.6);
+
+    % Body
+    \node[right, font=\bfseries, text=black] at (0.3, 3.2) {Comportamento responsivo do menu lateral (Frontend) \quad \textcolor{gray}{$\square$} \textnormal{\scriptsize Result}};
+    \node[right, font=\scriptsize, text=gray] at (0.3, 2.8) {Assigned To: \textbf{Dev Frontend} \quad Linked Work Item: \textbf{User Story 105}};
+    
+    % Steps Table Header
+    \filldraw[fill=gray!15, draw=none] (0.3, 2.1) rectangle (10.2, 2.5);
+    \node[right, font=\scriptsize\bfseries] at (0.4, 2.3) {Step};
+    \node[right, font=\scriptsize\bfseries] at (1.2, 2.3) {Action (UI)};
+    \node[right, font=\scriptsize\bfseries] at (6.0, 2.3) {Expected Result};
+    \node[right, font=\scriptsize\bfseries] at (9.2, 2.3) {Pass?};
+
+    % Steps Rows
+    \node[right, font=\scriptsize] at (0.4, 1.7) {1};
+    \node[right, font=\scriptsize] at (1.2, 1.7) {Abrir aplicação no navegador Chrome desktop.};
+    \node[right, font=\scriptsize, text=gray!80!black] at (6.0, 1.7) {Menu lateral expandido ocupando 250px.};
+    \node[right, font=\footnotesize, text=gray] at (9.4, 1.7) {$\square$};
+    \draw[gray!20] (0.3, 1.4) -- (10.2, 1.4);
+
+    \node[right, font=\scriptsize] at (0.4, 1.1) {2};
+    \node[right, font=\scriptsize] at (1.2, 1.1) {Redimensionar janela para largura de 320px.};
+    \node[right, font=\scriptsize, text=gray!80!black] at (6.0, 1.1) {Menu lateral retrai e vira ícone hamburguer.};
+    \node[right, font=\footnotesize, text=gray] at (9.4, 1.1) {$\square$};
+    \draw[gray!20] (0.3, 0.8) -- (10.2, 0.8);
+    
+    \node[right, font=\scriptsize] at (0.4, 0.5) {3};
+    \node[right, font=\scriptsize] at (1.2, 0.5) {Clicar no ícone hamburguer.};
+    \node[right, font=\scriptsize, text=gray!80!black] at (6.0, 0.5) {Menu lateral sobrepõe a tela (overlay).};
+    \node[right, font=\footnotesize, text=gray] at (9.4, 0.5) {$\square$};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Casos de Teste para o Backend}
+  Casos focados em garantir que as \textbf{Regras de Negócio e APIs} (Endpoints, payloads, validações de segurança e persistência no banco de dados) funcionem corretamente.
+
+  \vspace{0.3cm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}]
+    % Azure DevOps Window
+    \filldraw[fill=white, draw=gray!40, thick, rounded corners=2pt] (0,0) rectangle (10.5, 4.3);
+    \filldraw[fill=blue!5, draw=none, rounded corners=2pt] (0, 3.6) rectangle (10.5, 4.3);
+    
+    % Header
+    \node[right, font=\bfseries\small, text=black] at (0.2, 3.95) {Azure DevOps \quad | \quad Test Plans \quad $>$ \quad \textcolor{blue!60!black}{Test Case 310}};
+    \draw[gray!30] (0, 3.6) -- (10.5, 3.6);
+
+    % Body
+    \node[right, font=\bfseries, text=black] at (0.3, 3.2) {Validação de Payload no Endpoint POST /users (Backend) \quad \textcolor{gray}{$\square$} \textnormal{\scriptsize Result}};
+    \node[right, font=\scriptsize, text=gray] at (0.3, 2.8) {Assigned To: \textbf{Dev Backend} \quad Linked Work Item: \textbf{User Story 106}};
+    
+    % Steps Table Header
+    \filldraw[fill=gray!15, draw=none] (0.3, 2.1) rectangle (10.2, 2.5);
+    \node[right, font=\scriptsize\bfseries] at (0.4, 2.3) {Step};
+    \node[right, font=\scriptsize\bfseries] at (1.2, 2.3) {Action (API / Postman)};
+    \node[right, font=\scriptsize\bfseries] at (6.0, 2.3) {Expected Result};
+    \node[right, font=\scriptsize\bfseries] at (9.2, 2.3) {Pass?};
+
+    % Steps Rows
+    \node[right, font=\scriptsize] at (0.4, 1.7) {1};
+    \node[right, font=\scriptsize] at (1.2, 1.7) {Enviar POST /users com payload sem campo 'email'.};
+    \node[right, font=\scriptsize, text=gray!80!black] at (6.0, 1.7) {Retornar HTTP 400 (Bad Request).};
+    \node[right, font=\footnotesize, text=gray] at (9.4, 1.7) {$\square$};
+    \draw[gray!20] (0.3, 1.4) -- (10.2, 1.4);
+
+    \node[right, font=\scriptsize] at (0.4, 1.1) {2};
+    \node[right, font=\scriptsize] at (1.2, 1.1) {Validar o body da resposta de erro JSON.};
+    \node[right, font=\scriptsize, text=gray!80!black] at (6.0, 1.1) {Body deve conter: "Email is required".};
+    \node[right, font=\footnotesize, text=gray] at (9.4, 1.1) {$\square$};
+    \draw[gray!20] (0.3, 0.8) -- (10.2, 0.8);
+
+    \node[right, font=\scriptsize] at (0.4, 0.5) {3};
+    \node[right, font=\scriptsize] at (1.2, 0.5) {Verificar integridade do banco de dados.};
+    \node[right, font=\scriptsize, text=gray!80!black] at (6.0, 0.5) {Nenhum usuário foi criado na tabela 'users'.};
+    \node[right, font=\footnotesize, text=gray] at (9.4, 0.5) {$\square$};
+  \end{tikzpicture}
+\end{frame}
+\section{Conceito e Filosofia Ágil}
+
+\begin{frame}{O que é a Engenharia de Software Ágil?}
+  A Engenharia de Software Ágil combina uma \textbf{filosofia} com um conjunto de \textbf{princípios de desenvolvimento}.
+
+  \vspace{0.3cm}
+  \begin{block}{A Filosofia Ágil}
+    \begin{itemize}
+      \item Satisfação do cliente por meio da \textbf{entrega incremental antecipada};
+      \item Equipes de projeto \textbf{pequenas e altamente motivadas};
+      \item Utilização de \textbf{métodos informais} e artefatos mínimos;
+      \item Acima de tudo: \textbf{simplicidade} no desenvolvimento geral.
+    \end{itemize}
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Princípios de Desenvolvimento}
+    \begin{itemize}
+      \item Priorizam a \textbf{entrega} mais do que a análise e o projeto (embora essas atividades não sejam desencorajadas).
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\section{Equipe e o Fator Humano}
+
+\subsection{O Papel da Equipe}
+\begin{frame}{Quem Realiza? A Equipe Ágil}
+  Engenheiros de software, gerentes, clientes e usuários trabalham conjuntamente em uma \textbf{equipe ágil}.
+
+  \vspace{0.3cm}
+  \begin{block}{Características Fundamentais}
+    \begin{itemize}
+      \item \textbf{Auto-organização:} A equipe controla seu próprio destino e toma suas decisões.
+      \item \textbf{Comunicação Acelerada:} Elimina barreiras e aproxima todos os participantes.
+      \item \textbf{Colaboração Contínua:} Todos os envolvidos atuam integrados a serviço do produto.
+    \end{itemize}
+  \end{block}
+
+  \vspace{0.3cm}
+  \centering
+  \begin{tikzpicture}[node distance=0.5cm, scale=0.85, every node/.style={transform shape}]
+    \node [softbox] (dev) {Engenheiros de Software};
+    \node [softbox, right=of dev] (ger) {Gerentes};
+    \node [softbox, right=of ger] (cli) {Clientes / Usuários};
+    \node [softcore, below=0.4cm of ger] (team) {Equipe Ágil\\Auto-organizada};
+    
+    \draw [softarrow] (dev) -- (team);
+    \draw [softarrow] (ger) -- (team);
+    \draw [softarrow] (cli) -- (team);
+  \end{tikzpicture}
+\end{frame}
+
+\subsection{O Fator Humano (Cockburn)}
+\begin{frame}{O Fator Humano nos Processos (Cockburn)}
+  Alistair Cockburn [Cockburn, 2002] destaca uma falha essencial dos modelos prescritivos tradicionais:
+
+  \vspace{0.2cm}
+  \begin{alertblock}{Desenvolvedores Não são Robôs}
+    Engenheiros de software apresentam grande variação individual em:
+    \begin{itemize}
+      \item Estilos de trabalho e níveis de habilidade;
+      \item Criatividade, organização, consistência e espontaneidade;
+      \item Habilidade de comunicação escrita.
+    \end{itemize}
+  \end{alertblock}
+
+  \vspace{0.2cm}
+  \begin{block}{Requisito para os Modelos de Processo}
+    Para funcionarem na prática, os processos devem:
+    \begin{enumerate}
+      \item Fornecer um mecanismo realista que estimule a \textbf{disciplina} necessária; OU
+      \item Apresentar \textbf{tolerância} com as pessoas que realizam o trabalho.
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+
+\section{Processo Ágil e Artefatos}
+
+\subsection{Etapas e Artefatos}
+\begin{frame}{Etapas do Processo: "Engenharia de Software Light"}
+  O desenvolvimento ágil pode ser denominado como uma \textbf{“engenharia de software light”}.
+
+  \vspace{0.2cm}
+  \begin{itemize}
+    \item As atividades metodológicas básicas \textbf{permanecem}:
+  \end{itemize}
+
+  \vspace{0.2cm}
+  \centering
+  \begin{tikzpicture}[node distance=0.25cm, scale=0.85, every node/.style={transform shape}]
+    \node [softbox] (com) {Comunicação};
+    \node [softbox, right=of com] (plan) {Planejamento};
+    \node [softbox, right=of plan] (mod) {Modelagem};
+    \node [softbox, right=of mod] (const) {Construção};
+    \node [softbox, right=of const] (entr) {Entrega};
+    
+    \draw [softarrow] (com) -- (plan);
+    \draw [softarrow] (plan) -- (mod);
+    \draw [softarrow] (mod) -- (const);
+    \draw [softarrow] (const) -- (entr);
+  \end{tikzpicture}
+
+  \vspace{0.3cm}
+  \begin{block}{Transformação Prática}
+    Essas fases se transformam em um \textbf{conjunto de tarefas mínimas} que impulsiona a equipe para o desenvolvimento e para a entrega contínua.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Artefatos e Garantia de Qualidade}
+  \begin{block}{O Artefato Principal}
+    O artefato mais importante é um \textbf{“incremento de software” operacional}, entregue ao cliente na data combinada.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Documentos Mais Importantes}
+    \begin{itemize}
+      \item \textbf{Histórias de Usuário (\textit{User Stories});}
+      \item \textbf{Casos de Teste Relacionados.}
+    \end{itemize}
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{block}{Garantia de Qualidade}
+    Se a equipe concorda que o processo funciona e produz \textbf{incrementos passíveis de entrega} que \textbf{satisfaçam o cliente}, o trabalho foi realizado corretamente.
+  \end{block}
+\end{frame}
+
+
+\section{Aplicabilidade e Limitações}
+
+\begin{frame}{Aplicabilidade e Limitações dos Métodos Ágeis}
+  \begin{block}{Objetivo dos Métodos Ágeis}
+    Sanar fraquezas, supostas e reais, da engenharia de software convencional, entregando sistemas corretos rapidamente.
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{alertblock}{Limitações Importantes}
+    O desenvolvimento ágil oferece grandes benefícios, porém:
+    \begin{itemize}
+      \item \textbf{Não é indicado para todos} os projetos, produtos, pessoas e situações.
+    \end{itemize}
+  \end{alertblock}
+
+  \vspace{0.2cm}
+  \begin{block}{Visão Prática}
+    Não é a antítese da prática confiável — pode ser aplicado como uma \textbf{filosofia geral} para todos os trabalhos de software.
+  \end{block}
+\end{frame}
+\begin{frame}{Quando NÃO utilizar Métodos Ágeis?}
+  \begin{block}{Critérios de Inviabilidade}
+    O desenvolvimento ágil pode não ser a melhor abordagem quando:
+  \end{block}
+
+  \vspace{0.2cm}
+  \begin{itemize}
+    \item \textbf{Requisitos Estritamente Fixos:} O escopo, o orçamento e os prazos são inflexíveis (ex: determinados contratos governamentais).
+    \item \textbf{Sistemas Críticos:} Projetos com alto risco de vida ou regulação severa (ex: softwares aeroespaciais, equipamentos médicos), que exigem documentação rigorosa e design prévio detalhado (BDUF - \textit{Big Design Up Front}).
+    \item \textbf{Cliente Indisponível:} O cliente ou representante (Product Owner) não tem disponibilidade para colaboração frequente e feedback contínuo.
+    \item \textbf{Equipes Muito Grandes ou Terceirizadas:} A comunicação orgânica (face a face) falha e a coordenação requer processos estruturados mais rígidos.
+    \item \textbf{Cultura Organizacional Rígida:} A empresa resiste à autonomia das equipes, prefere microgerenciamento e tem baixa tolerância a mudanças de escopo.
+  \end{itemize}
+\end{frame}
+
+\end{document}

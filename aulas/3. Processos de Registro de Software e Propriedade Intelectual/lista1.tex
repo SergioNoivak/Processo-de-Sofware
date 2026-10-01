@@ -1,0 +1,132 @@
+\documentclass[12pt]{article}
+
+% Idioma e codificação
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% Matemática e listas
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+
+% Layout e cores
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% Cores institucionais
+\definecolor{maincolor}{RGB}{0,100,50}
+\definecolor{forestgreen}{RGB}{0,100,50}
+
+% Cabeçalho e rodapé
+\usepackage{fancyhdr}
+
+% Blocos
+\usepackage[most]{tcolorbox}
+\newtcolorbox{block}[1]{%
+  colback=green!5,
+  colframe=maincolor,
+  coltitle=white,
+  title=#1,
+  fonttitle=\bfseries,
+  boxrule=1.5pt,
+  arc=3mm,
+  left=6pt,
+  right=6pt,
+  top=6pt,
+  bottom=6pt
+}
+
+% Margens
+\geometry{margin=2.5cm}
+
+% Fancyhdr
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{2pt}
+
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{forestgreen}\leaders\hrule height \headrulewidth\hfill}}
+
+\renewcommand{\footrule}{\hbox to\headwidth{%
+  \color{forestgreen}\leaders\hrule height \footrulewidth\hfill}}
+
+% Altura do cabeçalho (corrigida)
+\setlength{\headheight}{52pt}
+\addtolength{\topmargin}{-20pt}
+
+% Cabeçalho
+\fancyhead[L]{%
+  \includegraphics[height=1.2cm]{Universidade_de_Rio_Verde.jpg}
+}
+
+\fancyhead[R]{%
+  \raggedleft
+  \textcolor{forestgreen}{%
+    \small
+    \textbf{Trabalho Prático}\\
+    Me.~Sergio Souza Novak\\
+    \textit{Processo de Software}
+    }
+    }
+    
+    % Rodapé
+    \fancyfoot[C]{\textcolor{forestgreen}{\thepage}}
+    
+    % =========================
+    \begin{document}
+    % =========================
+    
+    \vspace*{0.2cm}
+    
+\begin{center}
+  {\Large \textbf{Trabalho Prático: Documentação para Registro de Software no INPI}}\\[0.2cm]
+\end{center}
+
+\vspace{0.4cm}
+
+\textbf{Objetivo:} Realizar a preparação e organização da documentação necessária para o registro de um software no INPI (Instituto Nacional da Propriedade Industrial).
+
+\textbf{Instruções:}
+\begin{itemize}
+    \item O trabalho deve ser realizado em \textbf{duplas}.
+    \item \textcolor{red}{\textbf{Os dois da dupla devem entregar o trabalho.}}
+    \item Os membros da dupla devem constar como os \textbf{autores} do software na documentação.
+    \item Os alunos podem utilizar qualquer software desenvolvido por eles ao longo da graduação, independentemente da sua complexidade.
+    \item É obrigatório o preenchimento de todos os documentos (.odt) fornecidos.
+    \item Deve ser gravado e entregue um \textbf{vídeo explicativo} demonstrando o funcionamento do software.
+    \item A entrega final deverá ser feita através de um único arquivo compactado (ZIP).
+    \item \textcolor{red}{\textbf{Ambos os alunos da dupla devem realizar a entrega do trabalho no sistema.}}
+\end{itemize}
+
+\textbf{Estrutura do Arquivo ZIP:}
+
+O arquivo compactado deve obrigatoriamente conter a seguinte estrutura de diretórios e arquivos:
+
+\begin{verbatim}
+.
+|-- Autores
+|   |-- [Nome do Aluno 1].txt
+|   \-- [Nome do Aluno 2].txt
+|-- Código
+|   \-- app.py
+|-- comprovação de chave SHA256
+|   \-- Imagem colada.png
+|-- DECLARAÇÃO DE AUTENTICIDADE.odt
+|-- FORMULARIO.odt
+|-- imagens
+|   \-- Imagem colada.png
+|-- TERMO DE PARTICIPAÇÃO DOS AUTORES.odt
+\-- vídeo.mp4
+\end{verbatim}
+
+\vspace{0.4cm}
+
+\textbf{Observações Finais:}
+Certifiquem-se de que todos os formulários e termos (.odt ou docx) estejam devidamente preenchidos com os dados da dupla (autores). A comprovação da chave SHA256 deve corresponder ao código-fonte (app.py ou outro arquivo único, podendo ser zipado) e documentação fornecidos.
+
+% =========================
+\end{document}
+% =========================

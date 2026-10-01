@@ -1,0 +1,198 @@
+\documentclass[12pt]{article}
+
+% Idioma e codificação
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% Matemática e listas
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+
+% Layout e cores
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% Cores institucionais
+\definecolor{maincolor}{RGB}{0,100,50}
+\definecolor{forestgreen}{RGB}{0,100,50}
+
+% Cabeçalho e rodapé
+\usepackage{fancyhdr}
+
+% Blocos
+\usepackage[most]{tcolorbox}
+\newtcolorbox{block}[1]{%
+  colback=green!5,
+  colframe=maincolor,
+  coltitle=white,
+  title=#1,
+  fonttitle=\bfseries,
+  boxrule=1.5pt,
+  arc=3mm,
+  left=6pt,
+  right=6pt,
+  top=6pt,
+  bottom=6pt
+}
+
+% Margens
+\geometry{margin=2.5cm}
+
+% Fancyhdr
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{2pt}
+
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{forestgreen}\leaders\hrule height \headrulewidth\hfill}}
+
+\renewcommand{\footrule}{\hbox to\headwidth{%
+  \color{forestgreen}\leaders\hrule height \footrulewidth\hfill}}
+
+% Altura do cabeçalho (corrigida)
+\setlength{\headheight}{52pt}
+\addtolength{\topmargin}{-20pt}
+
+% Cabeçalho
+\fancyhead[L]{%
+  \includegraphics[height=1.2cm]{Universidade_de_Rio_Verde.jpg}
+}
+
+\fancyhead[R]{%
+  \raggedleft
+  \textcolor{forestgreen}{%
+    \small
+    \textbf{Lista de Exercícios}\\
+    Me.~Sergio Souza Novak\\
+    \textit{Processo de Software}
+    }
+    }
+    
+    % Rodapé
+    \fancyfoot[C]{\textcolor{forestgreen}{\thepage}}
+    
+    % =========================
+    \begin{document}
+    % =========================
+    
+    \vspace*{0.2cm}
+    
+\begin{center}
+  {\Large \textbf{Lista de Exercícios: Organização de Pastas e Arquivos}}\\[0.2cm]
+  {\normalsize Informática Básica --- Criação de Estruturas de Diretórios}
+\end{center}
+
+\vspace{0.4cm}
+
+\textbf{Objetivo:} Praticar a criação de pastas, subpastas e a organização de arquivos com diferentes extensões no sistema operacional.
+
+\textbf{Instruções Gerais:}
+\begin{itemize}
+    \item Crie no seu computador uma pasta principal com o seu \textbf{Nome Completo} na Área de Trabalho.
+    \item Dentro dela, monte as estruturas de pastas e arquivos conforme indicado em cada exercício.
+    \item Para criar os arquivos, você pode criar documentos em branco (txt, docx ou xlsx) salvando-os com os nomes e extensões indicadas.
+    \item Responda às questões propostas.
+\end{itemize}
+
+\vspace{0.3cm}
+
+% -------------------------------------------------------
+\begin{block}{Exercício 1 --- Empresa Sementeira}
+% -------------------------------------------------------
+
+A empresa \textbf{SementeVerde Agro} precisa organizar seus arquivos de gestão e controle de estoque. Crie no seu computador a seguinte estrutura:
+
+\begin{verbatim}
+SementeVerde Agro
+|-- Administrativo
+|   |-- contrato_arrendamento.docx
+|   \-- cadastro_funcionarios.xlsx
+|-- Comercial
+|   |-- lista_clientes.xlsx
+|   \-- tabela_precos_2026.docx
+\-- Estoque
+    |-- controle_soja.xlsx
+    \-- laudo_milho.docx
+\end{verbatim}
+
+\textbf{Questões:}
+\begin{enumerate}[label=\alph*)]
+    \item Quantas pastas e quantos arquivos você criou neste exercício?
+    \item Em qual pasta está salvo o arquivo \texttt{tabela\_precos\_2026.docx}?
+    \item Quais são as extensões dos arquivos utilizados no exercício?
+\end{enumerate}
+
+\end{block}
+
+\vspace{0.4cm}
+
+% -------------------------------------------------------
+\begin{block}{Exercício 2 --- Empresa Madeireira}
+% -------------------------------------------------------
+
+A empresa \textbf{MadeiraForte SA} precisa organizar seus documentos de manejo florestal, produção e vendas. Monte a seguinte estrutura:
+
+\begin{verbatim}
+MadeiraForte SA
+|-- Manejo Florestal
+|   \-- Licencas
+|       \-- IBAMA
+|           \-- licenca_ambiental.docx
+|-- Producao
+|   \-- Corte
+|       \-- Talhao 01
+|           |-- plano_de_corte.xlsx
+|           \-- mapa_plantio.png
+\-- Vendas
+    \-- Atacado
+        \-- Nacional
+            |-- orcamento_moveis.docx
+            \-- pedido_aprovado.docx
+\end{verbatim}
+
+\textbf{Questões:}
+\begin{enumerate}[label=\alph*)]
+    \item Qual é o caminho completo de pastas para encontrar o arquivo \texttt{licenca\_ambiental.docx}?
+    \item Quantos níveis de subpastas existem na seção de \textbf{Vendas} até chegar ao arquivo \texttt{orcamento\_moveis.docx}?
+    \item Se você adicionar um arquivo chamado \texttt{nota\_fiscal.docx} dentro da pasta \textbf{Nacional}, em qual nível de profundidade ele estará localizado?
+\end{enumerate}
+
+\end{block}
+
+\vspace{0.4cm}
+
+% -------------------------------------------------------
+\begin{block}{Exercício 3 --- Empresa de Consórcio Agrícola}
+% -------------------------------------------------------
+
+A empresa \textbf{Consórcio Campo Unido} gerencia dados de associados e contratos de consórcio. Crie a estrutura de diretórios e arquivos a seguir:
+
+\begin{verbatim}
+Consorcio Campo Unido
+|-- Associados
+|   |-- cadastro_produtores.xlsx
+|   \-- documentos_joao.docx
+|-- Consorcio Tratores
+|   |-- contrato_grupo_A.docx
+|   \-- recibo_parcela.docx
+\-- Financeiro
+    |-- arrecadacao_mensal.xlsx
+    \-- prestacao_contas.docx
+\end{verbatim}
+
+\textbf{Questões:}
+\begin{enumerate}[label=\alph*)]
+    \item Onde está armazenado o contrato do grupo de tratores?
+    \item Qual programa você usaria para abrir o arquivo \texttt{arrecadacao\_mensal.xlsx}?
+    \item Se fosse adicionado um consórcio de colheitadeiras, qual pasta você criaria e qual arquivo colocaria dentro dela?
+\end{enumerate}
+
+\end{block}
+
+% =========================
+\end{document}
+% =========================
